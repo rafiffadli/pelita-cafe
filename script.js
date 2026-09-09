@@ -536,10 +536,13 @@ const FOODPANDA_DELIVERY_URL = 'https://www.foodpanda.my/restaurant/yi1i/pelita-
 function redirectToFoodpanda() {
   const branch = (typeof BRANCHES !== 'undefined' && typeof AppState !== 'undefined' && BRANCHES[AppState.selectedBranch]) ? BRANCHES[AppState.selectedBranch] : null;
   const targetUrl = (branch && branch.foodpandaUrl) || FOODPANDA_DELIVERY_URL;
-  const win = window.open(targetUrl, '_blank', 'noopener,noreferrer');
-  if (!win || win.closed || typeof win.closed === 'undefined') {
-    window.location.href = targetUrl;
-  }
+  const a = document.createElement('a');
+  a.href = targetUrl;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 window.BRANCHES = BRANCHES;
@@ -1992,6 +1995,11 @@ function updateCartDrawer() {
         deliveryNoteText.textContent = isBM
           ? 'Pesanan penghantaran (delivery) diuruskan terus melalui Foodpanda.'
           : 'Pelita Cafe delivery is fulfilled directly via Foodpanda.';
+      }
+      const deliveryLink = document.getElementById('cart-delivery-link');
+      if (deliveryLink) {
+        const branch = (typeof BRANCHES !== 'undefined' && typeof AppState !== 'undefined' && BRANCHES[AppState.selectedBranch]) ? BRANCHES[AppState.selectedBranch] : null;
+        deliveryLink.href = (branch && branch.foodpandaUrl) || FOODPANDA_DELIVERY_URL;
       }
     } else {
       deliveryNotice.style.display = 'none';
