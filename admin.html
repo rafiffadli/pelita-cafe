@@ -1225,7 +1225,7 @@
         <p id="firebase-status-desc" style="display: none;"></p>
       </div>
       <button type="button" class="btn-seed-menu" id="btn-seed" onclick="handleSyncInitialMenu()" style="display: none;">
-        ⚡ Sync Initial Menu (20 Dishes)
+        Sync Initial Menu (20 Dishes)
       </button>
     </div>
 
@@ -1234,17 +1234,17 @@
     <!-- Admin Section Tabs -->
     <div class="admin-tabs">
       <button type="button" class="tab-btn is-active" id="tab-btn-menu" onclick="switchAdminTab('menu')">
-        🍽️ Dishes & Menu
+        Dishes & Menu
       </button>
       <button type="button" class="tab-btn" id="tab-btn-outlets" onclick="switchAdminTab('outlets')">
-        📍 Outlets Info
+        Outlets Info
       </button>
       <button type="button" class="tab-btn" id="tab-btn-orders" onclick="switchAdminTab('orders')" style="position: relative;">
-        📋 Kitchen & Live Orders
+        Kitchen & Live Orders
         <span id="orders-badge-count" style="display: none; background: #EF4444; color: #FFF; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 10px; margin-left: 6px;">0</span>
       </button>
       <button type="button" class="tab-btn" id="tab-btn-staff" onclick="switchAdminTab('staff')">
-        👥 Staff & Team Access
+        Staff & Team Access
       </button>
     </div>
 
@@ -1252,28 +1252,36 @@
     <div id="tab-content-menu">
 <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon">🍽️</div>
+        <div class="stat-icon" style="color: var(--gold);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+        </div>
         <div>
           <div class="stat-value" id="stat-total-dishes">0</div>
           <div class="stat-label">Total Menu Dishes</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color: #10B981;">🟢</div>
+        <div class="stat-icon" style="color: #10B981;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
         <div>
           <div class="stat-value" id="stat-available">0</div>
           <div class="stat-label">Available / In Stock</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="color: #EF4444;">🔴</div>
+        <div class="stat-icon" style="color: #EF4444;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        </div>
         <div>
           <div class="stat-value" id="stat-sold-out">0</div>
           <div class="stat-label">Sold Out Items</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">📂</div>
+        <div class="stat-icon" style="color: var(--gold);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+        </div>
         <div>
           <div class="stat-value" id="stat-categories">7</div>
           <div class="stat-label">Active Categories</div>
@@ -1319,7 +1327,7 @@
     <!-- Tab 2: Outlets Info Management -->
     <div id="tab-content-outlets" style="display: none;">
       <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 24px;">
-        <h3 style="color: var(--gold); font-size: 1.1rem; margin-bottom: 4px;">📍 Outlet Address & Map Link Editor</h3>
+        <h3 style="color: var(--gold); font-size: 1.1rem; margin-bottom: 4px;">Outlet Address & Map Link Editor</h3>
         <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
           Update the location address for both Pelita Cafe outlets. When saved, the updated address will automatically reflect across the entire public website, including the outlet cards, copy buttons, Google Maps links, Waze links, and footer.
         </p>
@@ -1334,14 +1342,14 @@
               <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF;">Pelita Cafe Putrajaya</h2>
               <span style="font-size: 0.8rem; color: var(--gold); font-weight: 600;">Presint 15 Outlet</span>
             </div>
-            <span style="font-size: 1.8rem;">🏛️</span>
+            <span style="color: var(--gold); display: inline-flex; align-items: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V9l7-5 7 5v12"></path><path d="M9 21v-6a3 3 0 0 1 6 0v6"></path></svg></span>
           </div>
 
           <form onsubmit="handleSaveOutletLocation(event, 'putrajaya')">
             <div class="form-group">
               <label for="putrajaya-addr">Full Address</label>
               <textarea id="putrajaya-addr" class="form-control" rows="3" required oninput="autoGenerateMapLinks('putrajaya')"></textarea>
-              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Displayed on website & copied when customers click 📋 Copy Address.</small>
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Displayed on website & copied when customers click Copy Address.</small>
             </div>
 
             <div class="form-group">
@@ -1358,7 +1366,7 @@
             <!-- Operating Hours & Schedule Section -->
             <div style="background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 8px; padding: 16px; margin-bottom: 18px;">
               <h4 style="color: var(--gold); font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                <span>⏰</span> Operating Hours & Schedule
+                Operating Hours & Schedule
               </h4>
               
               <div class="form-group">
@@ -1401,7 +1409,7 @@
             <div id="putrajaya-closure-box" class="closure-notice-box">
               <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 0; text-transform: none; font-size: 0.88rem; color: #FFF; font-weight: 600;">
                 <input type="checkbox" id="putrajaya-is-closed" style="width: 18px; height: 18px; accent-color: #EF4444;" onchange="toggleClosureNoticeInput('putrajaya')">
-                <span>🚨 Temporary Closure / Special Notice</span>
+                <span>Temporary Closure / Special Notice</span>
               </label>
               <div id="putrajaya-notice-fields" style="display: none; margin-top: 12px;">
                 <label for="putrajaya-closure-notice" style="color: #FCA5A5; font-size: 0.78rem;">Closure Notice / Announcement to Public</label>
@@ -1428,7 +1436,7 @@
 
             <div style="display: flex; gap: 10px; margin-top: 22px;">
               <button type="button" class="btn-seed-menu" style="flex: 1;" onclick="autoGenerateMapLinks('putrajaya', true)">
-                🔄 Auto-Generate Links
+                Auto-Generate Links
               </button>
               <button type="submit" class="btn-primary-admin" style="flex: 1.2;">
                 Save Putrajaya
@@ -1444,14 +1452,14 @@
               <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF;">Pelita Cafe Sepang</h2>
               <span style="font-size: 0.8rem; color: var(--gold); font-weight: 600;">Heritage Origin (Since 2004)</span>
             </div>
-            <span style="font-size: 1.8rem;">🏡</span>
+            <span style="color: var(--gold); display: inline-flex; align-items: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></span>
           </div>
 
           <form onsubmit="handleSaveOutletLocation(event, 'sepang')">
             <div class="form-group">
               <label for="sepang-addr">Full Address</label>
               <textarea id="sepang-addr" class="form-control" rows="3" required oninput="autoGenerateMapLinks('sepang')"></textarea>
-              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Displayed on website & copied when customers click 📋 Copy Address.</small>
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Displayed on website & copied when customers click Copy Address.</small>
             </div>
 
             <div class="form-group">
@@ -1468,7 +1476,7 @@
             <!-- Operating Hours & Schedule Section -->
             <div style="background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 8px; padding: 16px; margin-bottom: 18px;">
               <h4 style="color: var(--gold); font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                <span>⏰</span> Operating Hours & Schedule
+                Operating Hours & Schedule
               </h4>
               
               <div class="form-group">
@@ -1511,7 +1519,7 @@
             <div id="sepang-closure-box" class="closure-notice-box">
               <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 0; text-transform: none; font-size: 0.88rem; color: #FFF; font-weight: 600;">
                 <input type="checkbox" id="sepang-is-closed" style="width: 18px; height: 18px; accent-color: #EF4444;" onchange="toggleClosureNoticeInput('sepang')">
-                <span>🚨 Temporary Closure / Special Notice</span>
+                <span>Temporary Closure / Special Notice</span>
               </label>
               <div id="sepang-notice-fields" style="display: none; margin-top: 12px;">
                 <label for="sepang-closure-notice" style="color: #FCA5A5; font-size: 0.78rem;">Closure Notice / Announcement to Public</label>
@@ -1538,7 +1546,7 @@
 
             <div style="display: flex; gap: 10px; margin-top: 22px;">
               <button type="button" class="btn-seed-menu" style="flex: 1;" onclick="autoGenerateMapLinks('sepang', true)">
-                🔄 Auto-Generate Links
+                Auto-Generate Links
               </button>
               <button type="submit" class="btn-primary-admin" style="flex: 1.2;">
                 Save Sepang
@@ -1558,7 +1566,7 @@
         <div class="staff-admin-card">
           <div style="margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 14px;">
             <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF; display: flex; align-items: center; gap: 8px;">
-              <span>➕</span> Add New Staff / Admin
+              <span style="color: var(--gold); display: inline-flex; align-items: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span> Add New Staff / Admin
             </h2>
             <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
               Create login credentials so cafe staff or managers can access this dashboard.
@@ -1602,12 +1610,12 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 14px;">
             <div>
               <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF; display: flex; align-items: center; gap: 8px;">
-                <span>👥</span> Authorized Team Members
+                <span style="color: var(--gold); display: inline-flex; align-items: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span> Authorized Team Members
               </h2>
               <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Users with access to manage dishes, prices, and outlet addresses.</p>
             </div>
             <button type="button" class="btn-seed-menu" onclick="loadStaffList()" style="padding: 6px 12px; font-size: 0.8rem;">
-              🔄 Refresh List
+              Refresh List
             </button>
           </div>
 
@@ -1625,7 +1633,7 @@
       <div class="setup-banner kds-header-bar" style="margin-bottom: 24px;">
         <div>
           <h3 style="color: var(--gold); font-size: 1.15rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-            <span>📋</span> Kitchen Display System (KDS) & Live Orders
+            <span style="color: var(--gold); display: inline-flex; align-items: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg></span> Kitchen Display System (KDS) & Live Orders
           </h3>
           <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin: 0;">
             Track incoming customer orders in real time. Advancing an order's status immediately updates the customer's live tracking screen!
@@ -1634,10 +1642,10 @@
 
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
           <button type="button" id="btn-audio-toggle" class="btn-seed-menu" onclick="toggleKitchenAudio()" style="font-size: 0.82rem; padding: 7px 14px;">
-            🔔 Sound Chime: ON
+            Sound Chime: ON
           </button>
           <button type="button" class="btn-seed-menu" onclick="loadAdminOrders()" style="font-size: 0.82rem; padding: 7px 14px;">
-            🔄 Refresh
+            Refresh
           </button>
         </div>
       </div>
@@ -1647,17 +1655,17 @@
         <!-- Outlet Filter Pills -->
         <div class="kds-pills-row" id="order-branch-filters">
           <button type="button" class="pill-btn is-active" data-order-branch="all" onclick="setOrderBranchFilter('all')">All Outlets</button>
-          <button type="button" class="pill-btn" data-order-branch="putrajaya" onclick="setOrderBranchFilter('putrajaya')">🏛️ Putrajaya</button>
-          <button type="button" class="pill-btn" data-order-branch="sepang" onclick="setOrderBranchFilter('sepang')">🏡 Sepang</button>
+          <button type="button" class="pill-btn" data-order-branch="putrajaya" onclick="setOrderBranchFilter('putrajaya')">Putrajaya</button>
+          <button type="button" class="pill-btn" data-order-branch="sepang" onclick="setOrderBranchFilter('sepang')">Sepang</button>
         </div>
 
         <!-- Status Filter Pills -->
         <div class="kds-pills-row" id="order-status-filters">
           <button type="button" class="pill-btn is-active" data-order-status="active" onclick="setOrderStatusFilter('active')">Active Orders</button>
-          <button type="button" class="pill-btn" data-order-status="received" onclick="setOrderStatusFilter('received')">📥 Received</button>
-          <button type="button" class="pill-btn" data-order-status="in_progress" onclick="setOrderStatusFilter('in_progress')">🍳 Cooking</button>
-          <button type="button" class="pill-btn" data-order-status="prepared" onclick="setOrderStatusFilter('prepared')">📦 Ready</button>
-          <button type="button" class="pill-btn" data-order-status="served" onclick="setOrderStatusFilter('served')">✅ Served (History)</button>
+          <button type="button" class="pill-btn" data-order-status="received" onclick="setOrderStatusFilter('received')">Received</button>
+          <button type="button" class="pill-btn" data-order-status="in_progress" onclick="setOrderStatusFilter('in_progress')">Cooking</button>
+          <button type="button" class="pill-btn" data-order-status="prepared" onclick="setOrderStatusFilter('prepared')">Ready</button>
+          <button type="button" class="pill-btn" data-order-status="served" onclick="setOrderStatusFilter('served')">Served (History)</button>
         </div>
 
         <!-- Search input -->
@@ -1760,7 +1768,7 @@
   <!-- Toast Notification -->
   <div id="admin-toast" class="toast-admin"></div>
 
-  <script src="script.js?v=4.7"></script>
+  <script src="script.js?v=5.3"></script>
   <script>
     // --- CYBERSECURITY SANITIZATION HELPERS (Anti-XSS & Safe Attributes) ---
     function escapeHtml(str) {
@@ -1989,7 +1997,7 @@
                 ${isSoldOut ? 'Sold Out' : 'In Stock'}
               </span>
               <button type="button" class="btn-upload-overlay" onclick="triggerPhotoUpload('${safeId}')">
-                📷 Change Photo
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>Change Photo
               </button>
             </div>
 
@@ -2012,15 +2020,15 @@
 
               <div class="dish-card-actions">
                 <button type="button" class="toggle-stock-btn ${isSoldOut ? 'to-available' : 'to-sold-out'}" onclick="toggleStock('${safeId}')">
-                  ${isSoldOut ? '✓ Mark In Stock' : '✕ Mark Sold Out'}
+                  ${isSoldOut ? 'Mark In Stock' : 'Mark Sold Out'}
                 </button>
 
                 <div style="display: flex; gap: 6px;">
                   <button type="button" class="btn-icon" title="Edit Details" onclick="openDishModal('${safeId}')">
-                    ✏️
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                   </button>
                   <button type="button" class="btn-icon delete" title="Delete Dish" onclick="handleDeleteDish('${safeId}')">
-                    🗑️
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                   </button>
                 </div>
               </div>
@@ -2544,7 +2552,7 @@
                 </span>
                 ${(member.email.toLowerCase() !== adminEmail.toLowerCase()) ? `
                   <button type="button" class="btn-icon delete" title="Delete / Remove Staff" onclick="handleRemoveStaff('${safeUid}', '${safeName}')">
-                    🗑️
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                   </button>
                 ` : ''}
               </div>
@@ -2622,7 +2630,7 @@
       kitchenAudioEnabled = !kitchenAudioEnabled;
       const btn = document.getElementById('btn-audio-toggle');
       if (btn) {
-        btn.innerHTML = kitchenAudioEnabled ? '🔔 Sound Chime: ON' : '🔕 Sound Chime: OFF';
+        btn.textContent = kitchenAudioEnabled ? 'Sound Chime: ON' : 'Sound Chime: OFF';
       }
       if (kitchenAudioEnabled) {
         playKitchenChime();
@@ -2735,7 +2743,9 @@
       if (!filtered.length) {
         container.innerHTML = `
           <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--bg-espresso); border: 1px dashed var(--border); border-radius: var(--radius);">
-            <div style="font-size: 2.2rem; margin-bottom: 10px;">📋</div>
+            <div style="display: flex; justify-content: center; margin-bottom: 10px; color: var(--gold);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+            </div>
             <div style="font-weight: 600; font-size: 1rem; color: #FFF;">No orders found</div>
             <p style="font-size: 0.82rem; margin-top: 6px;">There are no orders matching the selected filter (${orderStatusFilter === 'active' ? 'Active Orders' : orderStatusFilter}).</p>
           </div>
@@ -2747,31 +2757,31 @@
         const rawOrderId = order.orderId || order.id || 'N/A';
         const safeOrderId = sanitizeId(rawOrderId);
         const status = order.status || 'received';
-        const branchBadge = (order.branch === 'putrajaya') ? '🏛️ Putrajaya' : '🏡 Sepang';
+        const branchBadge = (order.branch === 'putrajaya') ? 'Putrajaya' : 'Sepang';
 
         // Robust order type detection ('dinein', 'dine_in', 'dine-in', 'takeaway', 'delivery')
         const rawType = (order.orderType || '').toLowerCase().replace(/[-_\s]/g, '');
-        let orderTypeBadge = '🥡 Takeaway';
+        let orderTypeBadge = 'Takeaway';
         let orderTypeStyle = 'background: rgba(255, 255, 255, 0.08); color: #E5E7EB; border: 1px solid rgba(255, 255, 255, 0.15);';
         if (rawType === 'dinein') {
-          orderTypeBadge = '🍽️ Dine-in';
+          orderTypeBadge = 'Dine-in';
           orderTypeStyle = 'background: rgba(200, 138, 54, 0.2); color: var(--gold); border: 1px solid rgba(200, 138, 54, 0.4); font-weight: 700;';
         } else if (rawType === 'delivery') {
-          orderTypeBadge = '🛵 Delivery';
+          orderTypeBadge = 'Delivery';
           orderTypeStyle = 'background: rgba(59, 130, 246, 0.2); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.4); font-weight: 700;';
         }
         
         let statusBadgeClass = 'order-status-received';
-        let statusLabel = '📥 Received';
+        let statusLabel = 'Received';
         if (status === 'in_progress') {
           statusBadgeClass = 'order-status-in_progress';
-          statusLabel = '🍳 In Progress';
+          statusLabel = 'In Progress';
         } else if (status === 'prepared') {
           statusBadgeClass = 'order-status-prepared';
-          statusLabel = '📦 Food Ready';
+          statusLabel = 'Food Ready';
         } else if (status === 'served') {
           statusBadgeClass = 'order-status-served';
-          statusLabel = '✅ Served';
+          statusLabel = 'Served';
         }
 
         // Format time
@@ -2786,37 +2796,37 @@
         if (status === 'received') {
           actionButtonsHtml = `
             <button type="button" class="btn-primary-admin" style="flex: 2; min-width: 120px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'in_progress')">
-              🍳 Start Cooking
+              Start Cooking
             </button>
             <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem; color: #EF4444;" onclick="cancelAdminOrder('${safeOrderId}')">
-              🗑️ Void
+              Void
             </button>
           `;
         } else if (status === 'in_progress') {
           actionButtonsHtml = `
             <button type="button" class="btn-primary-admin" style="flex: 2; min-width: 120px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem; background: #10B981; border-color: #10B981;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'prepared')">
-              📦 Food Ready
+              Food Ready
             </button>
             <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'received')">
-              ↩ Reset
+              Reset
             </button>
           `;
         } else if (status === 'prepared') {
           actionButtonsHtml = `
             <button type="button" class="btn-primary-admin" style="flex: 2; min-width: 120px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem; background: #3B82F6; border-color: #3B82F6;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'served')">
-              ✅ Mark Served
+              Mark Served
             </button>
             <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'in_progress')">
-              ↩ Revert
+              Revert
             </button>
           `;
         } else if (status === 'served') {
           actionButtonsHtml = `
             <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 90px; min-height: 40px; padding: 8px 12px; font-size: 0.8rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'prepared')">
-              ↩ Re-open
+              Re-open
             </button>
             <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 40px; padding: 8px 12px; font-size: 0.8rem; color: #EF4444;" onclick="cancelAdminOrder('${safeOrderId}')">
-              🗑️ Delete
+              Delete
             </button>
           `;
         }

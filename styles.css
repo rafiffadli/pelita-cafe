@@ -3605,7 +3605,7 @@ input, textarea, select {
     font-size: 0.72rem;
   }
   .btn-header-wa span[data-i18n] {
-    display: none; /* Hide text, keep 🛒 and badge */
+    display: none; /* Hide text, keep cart icon and badge */
   }
 
   /* Hero */

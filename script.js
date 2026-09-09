@@ -628,7 +628,7 @@ const I18N = {
     story_tl_desc_2: 'Introduced authentic wok dishes, fiery geprek, and expanded our loyal local following.',
     story_tl_title_3: 'Putrajaya Flagship Branch',
     story_tl_desc_3: 'Launched our contemporary dining concept at Presint 15 with specialty barista coffees.',
-    story_tl_title_4: '4.8★ Across 451 Google Reviews',
+    story_tl_title_4: '4.8 Rating Across 451 Google Reviews',
     story_tl_desc_4: 'Serving thousands of delighted patrons weekly with 100% Halal quality reassurance.',
 
     // Outlets & Hours
@@ -638,12 +638,12 @@ const I18N = {
     outlet_sub_putrajaya: 'Presint 15 Flagship Outlet',
     outlet_sub_sepang: 'Heritage Origin (Established 2004)',
     label_address: 'Address',
-    btn_copy_addr: '📋 Copy Address',
+    btn_copy_addr: 'Copy Address',
     label_hours: 'Operating Hours',
     closed_thu_fri: 'Closed Thursday & Friday',
     closed_fri: 'Closed Friday',
     label_phone: 'Phone & WhatsApp',
-    btn_copy_phone: '📋 Copy Number',
+    btn_copy_phone: 'Copy Number',
     open_now: 'OPEN NOW',
     closed_now: 'CLOSED NOW',
 
@@ -681,7 +681,7 @@ const I18N = {
     reviews_subtext: 'Real experiences shared by diners across our Putrajaya and Sepang outlets.',
     google_rating_label: 'Google Business Rating',
     google_verified_text: 'Based on 451 Verified Google Maps Reviews',
-    google_leave_review: '⭐ Read More or Leave a Review on Google ↗',
+    google_leave_review: 'Read More or Leave a Review on Google ↗',
     review_text_1: '"Pelita Cafe Presint 15 is our regular family lunch spot. Their signature Nasi Ayam has juicy roasted chicken and fragrant rice that reminds you of traditional cooking. Very clean interior, air-conditioned and welcoming staff!"',
     reviewer_origin_1: 'Local Guide • Putrajaya Outlet',
     review_text_2: '"Been eating here since their early days in Salak Tinggi! The Ayam Gepuk & Ayam Geprek sambal is top notch — crispy chicken with authentic spicy kick. Also love their iced coffee kaw!"',
@@ -721,7 +721,7 @@ const I18N = {
     cart_placeholder_notes: 'Special Requests (e.g. Less sweet, separate sambal)',
     cart_sec_dishes: '4. Selected Dishes',
     cart_empty: 'Your order is empty. Browse our menu and pick your favourites!',
-    cart_browse_btn: '🍽️ Browse Menu & Add Dishes',
+    cart_browse_btn: 'Browse Menu & Add Dishes',
     cart_est_total: 'Estimated Total:',
     order_type_dinein: 'Dine-In',
     order_type_takeaway: 'Takeaway (Bungkus)',
@@ -827,7 +827,7 @@ const I18N = {
     story_tl_desc_2: 'Memperkenalkan masakan kuali panas berasap, hidangan geprek berapi, dan menambat hati pelanggan setia.',
     story_tl_title_3: 'Cawangan Utama Putrajaya',
     story_tl_desc_3: 'Melancarkan konsep kafe moden di Presint 15 bersama bancuhan kopi barista istimewa.',
-    story_tl_title_4: '4.8★ Menerusi 451+ Ulasan Google',
+    story_tl_title_4: 'Penarafan 4.8 Menerusi 451+ Ulasan Google',
     story_tl_desc_4: 'Menyajikan ribuan pelanggan gembira setiap minggu dengan jaminan kualiti 100% Halal.',
 
     // Outlets & Hours
@@ -837,12 +837,12 @@ const I18N = {
     outlet_sub_putrajaya: 'Cawangan Utama Presint 15',
     outlet_sub_sepang: 'Asal Usul Warisan (Sejak 2004)',
     label_address: 'Alamat',
-    btn_copy_addr: '📋 Salin Alamat',
+    btn_copy_addr: 'Salin Alamat',
     label_hours: 'Waktu Operasi',
     closed_thu_fri: 'Tutup Khamis & Jumaat',
     closed_fri: 'Tutup Jumaat',
     label_phone: 'Telefon & WhatsApp',
-    btn_copy_phone: '📋 Salin Nombor',
+    btn_copy_phone: 'Salin Nombor',
     open_now: 'BUKA SEKARANG',
     closed_now: 'TUTUP SEKARANG',
 
@@ -880,7 +880,7 @@ const I18N = {
     reviews_subtext: 'Pengalaman sebenar yang dikongsi oleh para pengunjung di cawangan Putrajaya dan Sepang.',
     google_rating_label: 'Penarafan Google Business',
     google_verified_text: 'Berdasarkan 451 Ulasan Disahkan di Google Maps',
-    google_leave_review: '⭐ Baca Ulasan atau Tinggalkan Ulasan di Google ↗',
+    google_leave_review: 'Baca Ulasan atau Tinggalkan Ulasan di Google ↗',
     review_text_1: '"Pelita Cafe Presint 15 adalah tempat makan tengah hari tetap keluarga kami. Nasi Ayam istimewa mereka ada ayam panggang yang juicy dan nasi wangi yang mengingatkan pada masakan tradisional. Ruang sangat bersih, berhawa dingin dan kakitangan mesra!"',
     reviewer_origin_1: 'Pemandu Tempatan (Local Guide) • Cawangan Putrajaya',
     review_text_2: '"Dah makan kat sini sejak awal pembukaan di Salak Tinggi lagi! Sambal Ayam Gepuk & Ayam Geprek memang terbaik — ayam rangup dengan kepedasan asli menyengat. Kopi ais kaw mereka pun padu!"',
@@ -920,7 +920,7 @@ const I18N = {
     cart_placeholder_notes: 'Permintaan Khas (cth. Kurang manis, sambal asing)',
     cart_sec_dishes: '4. Hidangan Dipilih',
     cart_empty: 'Pesanan anda masih kosong. Pilih sajian kegemaran anda!',
-    cart_browse_btn: '🍽️ Terokai Menu & Tambah Hidangan',
+    cart_browse_btn: 'Terokai Menu & Tambah Hidangan',
     cart_est_total: 'Anggaran Jumlah:',
     order_type_dinein: 'Makan Sini (Dine-In)',
     order_type_takeaway: 'Bungkus (Takeaway)',
@@ -1484,7 +1484,7 @@ function initBranchStatusBadges() {
     if (noticeBanner) {
       if (status.isTemporaryClosed && branch && branch.closureNotice) {
         noticeBanner.style.display = 'block';
-        noticeBanner.innerHTML = `📢 <strong>${isBM ? 'Notis Khas:' : 'Special Notice:'}</strong> ${branch.closureNotice}`;
+        noticeBanner.innerHTML = `<span style="display:inline-flex; align-items:center; margin-right:6px; vertical-align:middle;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span><strong>${isBM ? 'Notis Khas:' : 'Special Notice:'}</strong> ${branch.closureNotice}`;
       } else {
         noticeBanner.style.display = 'none';
       }
@@ -1539,7 +1539,9 @@ function renderMenu() {
   if (filtered.length === 0) {
     container.innerHTML = `
       <div class="empty-menu-state">
-        <div class="empty-icon">🍽️</div>
+        <div class="empty-icon" style="color: var(--gold);">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+        </div>
         <h3>${isBM ? 'Tiada hidangan dijumpai' : 'No dishes found'}</h3>
         <p>${isBM ? 'Cuba ubah carian atau pilih kategori lain.' : 'Try changing your search terms or filter category.'}</p>
         <button type="button" class="btn-primary-sm" onclick="resetMenuFilters()">
@@ -1561,10 +1563,11 @@ function renderMenu() {
     const qtyInCart = AppState.cart[item.id] || 0;
     const isSoldOut = Boolean(item.isSoldOut);
 
-    // Spicy peppers
+    // Spicy flame indicator
     let spicyIcons = '';
     if (item.spicyLevel > 0) {
-      spicyIcons = `<span class="spicy-indicator" title="Spicy Level: ${Number(item.spicyLevel)}">` + '🌶️'.repeat(Math.min(3, Math.max(1, Number(item.spicyLevel)))) + `</span>`;
+      const flameSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#E24A4A" stroke="#E24A4A" stroke-width="1" style="display:inline-block; vertical-align:-1px; margin-right:1px;"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>';
+      spicyIcons = `<span class="spicy-indicator" title="Spicy Level: ${Number(item.spicyLevel)}">` + flameSvg.repeat(Math.min(3, Math.max(1, Number(item.spicyLevel)))) + `</span>`;
     }
 
     return `
@@ -1928,7 +1931,7 @@ function updateCartItem(itemId, change) {
   if (change > 0) {
     const isBM = AppState.lang === 'bm';
     const dishName = isBM ? (item.nameBM || item.name) : item.name;
-    showToast(`✓ ${escapeHtml(dishName)} ${isBM ? 'ditambah ke troli!' : 'added to cart!'}`);
+    showToast(`${escapeHtml(dishName)} ${isBM ? 'ditambah ke troli!' : 'added to cart!'}`);
   }
 }
 
@@ -2001,7 +2004,7 @@ function updateCartDrawer() {
       checkoutBtn.style.background = '#D70F64';
       checkoutBtn.style.borderColor = '#D70F64';
       checkoutBtn.innerHTML = `
-        <span style="font-size: 1.1rem; margin-right: 4px;">🛵</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <span>${isBM ? 'Pesan Melalui Foodpanda ↗' : 'Order on Foodpanda ↗'}</span>
       `;
     } else {
@@ -2312,25 +2315,25 @@ function renderOrderTrackerStatus(order) {
 
   const statusConfigs = {
     received: {
-      emoji: '📥',
+      iconSvg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 15 11"></polyline><line x1="12" y1="2" x2="12" y2="14"></line><path d="M20 16.5v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2"></path></svg>',
       textEN: 'Your order ticket has been received by our kitchen.',
       textBM: 'Pesanan anda telah diterima oleh pihak dapur Pelita Cafe.',
       isServed: false
     },
     in_progress: {
-      emoji: '🍳',
+      iconSvg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-2V7a4 4 0 0 0-8 0v3H6a2 2 0 0 0-2 2v2a8 8 0 0 0 16 0v-2a2 2 0 0 0-2-2z"></path><line x1="12" y1="2" x2="12" y2="3"></line></svg>',
       textEN: 'Our chefs and barista are preparing your food & drinks fresh.',
       textBM: 'Tukang masak & barista kami sedang menyiapkan hidangan anda.',
       isServed: false
     },
     prepared: {
-      emoji: '📦',
+      iconSvg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
       textEN: 'Your order is prepared and ready! Please collect at the counter.',
       textBM: 'Pesanan anda telah sedia! Sila ambil di kaunter pengambilan.',
       isServed: true
     },
     served: {
-      emoji: '✅',
+      iconSvg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
       textEN: 'Order completed and served. Selamat menjamu selera!',
       textBM: 'Pesanan telah selesai disajikan. Terima kasih & selamat menjamu selera!',
       isServed: true
@@ -2339,7 +2342,7 @@ function renderOrderTrackerStatus(order) {
 
   const currentCfg = statusConfigs[currentStep] || statusConfigs.received;
   if (banner && emoji && text) {
-    emoji.textContent = currentCfg.emoji;
+    emoji.innerHTML = currentCfg.iconSvg;
     text.textContent = isBM ? currentCfg.textBM : currentCfg.textEN;
     if (currentCfg.isServed) {
       banner.classList.add('is-served');
@@ -2408,7 +2411,7 @@ function openDishModal(dishId) {
       <div class="dish-modal-info-col">
         ${item.spicyLevel > 0 ? `
           <div class="dish-modal-tags">
-            <span class="tag-pill">🌶️ ${isBM ? 'Tahap Pedas' : 'Spicy'}: ${Number(item.spicyLevel)}/3</span>
+            <span class="tag-pill">${isBM ? 'Tahap Pedas' : 'Spicy'}: ${Number(item.spicyLevel)}/3</span>
           </div>
         ` : ''}
         <h2 class="dish-modal-title">${displayName}</h2>
@@ -2417,14 +2420,14 @@ function openDishModal(dishId) {
         
         <div class="dish-modal-features">
           <div class="feature-item">
-            <span class="feat-icon">🔥</span>
+            <span class="feat-icon" style="color: var(--gold); display: inline-flex; align-items: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg></span>
             <div>
               <strong>${isBM ? 'Dimasak Segar' : 'Cooked Fresh'}</strong>
               <small>${isBM ? 'Penyediaan kuali panas segera' : 'Cooked hot upon order'}</small>
             </div>
           </div>
           <div class="feature-item">
-            <span class="feat-icon">🌿</span>
+            <span class="feat-icon" style="color: var(--gold); display: inline-flex; align-items: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-7.3 16.8 1 1 0 0 0 .3.2l7 3 7-3a1 1 0 0 0 .3-.2A10 10 0 0 0 12 2z"></path><path d="M12 2v20"></path></svg></span>
             <div>
               <strong>${isBM ? 'Bahan Asli' : 'Natural Ingredients'}</strong>
               <small>${isBM ? 'Bahan tempatan terpilih' : 'Finest local ingredients'}</small>
@@ -2444,7 +2447,7 @@ function openDishModal(dishId) {
           `}
           ${typeof navigator !== 'undefined' && navigator.share ? `
             <button type="button" class="btn-share-dish" onclick="shareDish('${safeId}')">
-              <span>📤</span> <span>${isBM ? 'Kongsi Sajian Ini' : 'Share Dish with Friends'}</span>
+              <span style="display:inline-flex; align-items:center; margin-right:4px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></span> <span>${isBM ? 'Kongsi Sajian Ini' : 'Share Dish with Friends'}</span>
             </button>
           ` : ''}
         </div>
@@ -2493,7 +2496,7 @@ async function copyTextToClipboard(text, btnElement) {
     if (btnElement) {
       const originalText = btnElement.innerHTML;
       btnElement.classList.add('copied');
-      btnElement.innerHTML = '✓ Copied!';
+      btnElement.innerHTML = 'Copied!';
       setTimeout(() => {
         btnElement.classList.remove('copied');
         btnElement.innerHTML = originalText;
