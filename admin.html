@@ -1,0 +1,2966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | Pelita Cafe Menu Management</title>
+  <meta name="description" content="Pelita Cafe Admin Portal - Update menu dishes, prices, and photos.">
+  <link rel="icon" type="image/webp" href="assets/images/logo.webp">
+  
+  <!-- Security Headers & Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://firebasestorage.googleapis.com https://pelita-cafe.firebasestorage.app; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com; base-uri 'self'; object-src 'none';">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Firebase Compat Libraries (Lightweight CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-storage-compat.js"></script>
+
+  <!-- Pelita Firebase Bridge -->
+  <script src="firebase-config.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #18110D;
+      --bg-espresso: #201915;
+      --bg-card: #281F1A;
+      --bg-light: #FAF7F2;
+      --primary: #9B4A24;
+      --primary-hover: #B85A2E;
+      --gold: #C88A36;
+      --gold-light: #F4E8D8;
+      --text-main: #FFFFFF;
+      --text-muted: #B8A89A;
+      --border: rgba(200, 138, 54, 0.2);
+      --border-dark: #382C24;
+      --green: #10B981;
+      --red: #EF4444;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar */
+    .admin-navbar {
+      background: var(--bg-espresso);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #FFF;
+    }
+
+    .admin-brand img {
+      height: 36px;
+      width: auto;
+    }
+
+    .admin-brand-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      background: rgba(200, 138, 54, 0.18);
+      color: var(--gold);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .admin-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-view-site {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-view-site:hover {
+      background: var(--gold);
+      color: #18110D;
+    }
+
+    .btn-logout {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-logout:hover {
+      background: #EF4444;
+      color: #FFF;
+    }
+
+    /* Layout */
+    .admin-container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+      flex: 1;
+    }
+
+    /* Auth Screen */
+    .auth-wrapper {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .auth-header img {
+      height: 48px;
+      margin-bottom: 14px;
+    }
+
+    .auth-header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      color: #FFF;
+    }
+
+    .auth-header p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      color: #FFF;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--gold);
+    }
+
+    .btn-primary-admin {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold), #B37525);
+      color: #18110D;
+      font-weight: 700;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary-admin:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .day-pill-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .day-pill-btn:hover {
+      border-color: var(--border);
+      color: #FFF;
+    }
+    .day-pill-btn.is-active {
+      background: rgba(200, 138, 54, 0.22);
+      border-color: var(--gold);
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .closure-notice-box {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 14px;
+      margin-bottom: 18px;
+      transition: all 0.2s;
+    }
+    .closure-notice-box.is-active {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #EF4444;
+    }
+
+    .order-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .order-status-received {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+    .order-status-in_progress {
+      background: rgba(245, 158, 11, 0.15);
+      color: #FBBF24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+    .order-status-prepared {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .order-status-served {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60A5FA;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+
+    .setup-banner {
+      background: rgba(200, 138, 54, 0.1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .setup-banner-text h3 {
+      font-size: 0.95rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .setup-banner-text p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    
+    /* Navigation Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border-dark);
+      color: var(--text-muted);
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--gold);
+      color: #FFF;
+    }
+
+    .tab-btn.is-active {
+      background: var(--gold);
+      color: #18110D;
+      border-color: var(--gold);
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      background: rgba(200, 138, 54, 0.12);
+      color: var(--gold);
+    }
+
+    .stat-value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #FFF;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 24px;
+      background: var(--bg-espresso);
+      border: 1px solid var(--border-dark);
+      padding: 16px;
+      border-radius: var(--radius);
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 10px 14px 10px 38px;
+      color: #FFF;
+      font-size: 0.9rem;
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill-btn:hover,
+    .pill-btn.is-active {
+      background: var(--gold);
+      color: #18110D;
+      border-color: var(--gold);
+    }
+
+    .action-btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-add-dish {
+      background: var(--primary);
+      color: #FFF;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-add-dish:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-seed-menu {
+      background: rgba(200, 138, 54, 0.15);
+      color: var(--gold);
+      border: 1px solid rgba(200, 138, 54, 0.4);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-seed-menu:hover {
+      background: var(--gold);
+      color: #18110D;
+    }
+
+    /* Menu Items Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .dish-card {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .dish-card:hover {
+      border-color: var(--border);
+      transform: translateY(-2px);
+    }
+
+    .dish-card.is-sold-out {
+      opacity: 0.72;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .dish-card-img-wrap {
+      position: relative;
+      height: 180px;
+      background: #110C09;
+      overflow: hidden;
+    }
+
+    .dish-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .btn-upload-overlay {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(24, 17, 13, 0.85);
+      border: 1px solid rgba(200, 138, 54, 0.5);
+      color: #FFF;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn-upload-overlay:hover {
+      background: var(--gold);
+      color: #18110D;
+    }
+
+    .stock-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stock-badge.available {
+      background: rgba(16, 185, 129, 0.9);
+      color: #FFF;
+    }
+
+    .stock-badge.sold-out {
+      background: rgba(239, 68, 68, 0.95);
+      color: #FFF;
+    }
+
+    .dish-card-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .dish-card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .dish-name-en {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #FFF;
+    }
+
+    .dish-name-bm {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+
+    .dish-price-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(200, 138, 54, 0.12);
+      border: 1px solid rgba(200, 138, 54, 0.3);
+      border-radius: 6px;
+      padding: 4px 8px;
+    }
+
+    .dish-price-prefix {
+      font-size: 0.75rem;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .dish-price-input {
+      background: transparent;
+      border: none;
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 0.95rem;
+      width: 54px;
+      text-align: right;
+      outline: none;
+    }
+
+    .dish-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 14px;
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .dish-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-dark);
+      padding-top: 14px;
+      margin-top: auto;
+      gap: 8px;
+    }
+
+    .toggle-stock-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .toggle-stock-btn.to-sold-out {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .toggle-stock-btn.to-available {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-icon {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      color: #FFF;
+      border-color: var(--gold);
+    }
+
+    .btn-icon.delete:hover {
+      border-color: #EF4444;
+      color: #EF4444;
+    }
+
+    /* Modal */
+    .admin-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .admin-modal-backdrop.is-open {
+      display: flex;
+    }
+
+    .admin-modal {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .admin-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .admin-modal-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      color: #FFF;
+    }
+
+    .close-modal-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .toast-admin {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--gold);
+      color: #FFF;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 999;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Grid Utilities for Responsive Admin Layouts */
+    .outlets-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+      gap: 24px;
+    }
+
+    .outlet-admin-card {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+    }
+
+    .staff-admin-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 380px) 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .staff-admin-card {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+    }
+
+    .kds-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .kds-toolbar {
+      background: var(--bg-espresso);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .kds-pills-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .kds-search-box {
+      min-width: 200px;
+      flex: 1;
+      max-width: 280px;
+    }
+
+    .kds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: 20px;
+    }
+
+    .staff-item-row {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS FOR ADMIN PORTAL
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .admin-container {
+        padding: 20px 16px 40px;
+      }
+      .staff-admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Prevent iOS auto-zoom on form inputs */
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+
+      /* Navbar */
+      .admin-navbar {
+        padding: 10px 14px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .admin-brand img {
+        height: 30px;
+      }
+      .admin-brand-tag {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+      }
+      .admin-nav-actions {
+        gap: 8px;
+      }
+      .btn-view-site,
+      .btn-logout {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      /* Setup Banner */
+      .setup-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .setup-banner .btn-seed-menu {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+
+      /* Tabs - Smooth horizontal scrolling */
+      .admin-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 6px;
+        margin-bottom: 20px;
+        gap: 8px;
+      }
+      .admin-tabs::-webkit-scrollbar {
+        display: none;
+      }
+      .tab-btn {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px 15px;
+        font-size: 0.84rem;
+        min-height: 42px;
+      }
+
+      /* Stats Grid: 2 columns */
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .stat-card {
+        padding: 14px;
+        gap: 12px;
+      }
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      .stat-value {
+        font-size: 1.4rem;
+      }
+      .stat-label {
+        font-size: 0.75rem;
+      }
+
+      /* Controls Bar: Stacked */
+      .controls-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+        gap: 12px;
+      }
+      .search-box {
+        min-width: 100%;
+        width: 100%;
+      }
+      .category-pills {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+      .category-pills::-webkit-scrollbar {
+        display: none;
+      }
+      .pill-btn {
+        flex-shrink: 0;
+        white-space: nowrap;
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .action-btn-group {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+      }
+      .btn-add-dish,
+      .btn-seed-menu {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 12px;
+        font-size: 0.82rem;
+        text-align: center;
+        min-height: 42px;
+      }
+
+      /* Outlets Tab */
+      .outlets-admin-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px;
+      }
+      .outlet-admin-card {
+        padding: 18px !important;
+      }
+
+      /* Staff Tab */
+      .staff-admin-card {
+        padding: 18px !important;
+      }
+      .staff-item-row {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      /* Kitchen KDS */
+      .kds-header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .kds-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 14px;
+      }
+      .kds-search-box {
+        max-width: 100%;
+        width: 100%;
+      }
+      .kds-pills-row {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+      .kds-pills-row::-webkit-scrollbar {
+        display: none;
+      }
+      .kds-grid {
+        grid-template-columns: 1fr;
+      }
+
+      /* Modal */
+      .admin-modal-backdrop {
+        padding: 12px;
+      }
+      .admin-modal {
+        padding: 20px 16px;
+        max-height: 94vh;
+      }
+      .form-grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .admin-container {
+        padding: 14px 10px 36px;
+      }
+      .admin-navbar {
+        padding: 8px 10px;
+      }
+      .admin-brand {
+        gap: 8px;
+      }
+      .admin-brand img {
+        height: 28px;
+      }
+      .admin-brand-tag {
+        display: none;
+      }
+      .auth-card {
+        padding: 24px 16px;
+        border-radius: 12px;
+      }
+      .auth-header h1 {
+        font-size: 1.35rem;
+      }
+      .menu-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px;
+      }
+      .dish-card-img-wrap {
+        height: 160px;
+      }
+      .dish-card-body {
+        padding: 14px;
+      }
+      .dish-name-en {
+        font-size: 0.98rem;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+      }
+      .toast-admin {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .admin-container {
+        padding: 10px 6px 30px;
+      }
+      .btn-view-site {
+        display: none;
+      }
+      .tab-btn {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+      }
+      .dish-card-actions {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .toggle-stock-btn {
+        width: 100%;
+        text-align: center;
+      }
+      .dish-card-actions .btn-icon {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="admin-navbar">
+    <a href="index.html" class="admin-brand">
+      <img src="assets/images/logo-white.webp" alt="Pelita Cafe">
+      <span class="admin-brand-tag">ADMIN PORTAL</span>
+    </a>
+
+    <div class="admin-nav-actions" id="nav-actions" style="display: none;">
+      <a href="index.html" class="btn-view-site" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        View Public Site
+      </a>
+      <button type="button" class="btn-logout" onclick="handleLogout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Login Screen -->
+  <section id="auth-screen" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <img src="assets/images/logo-white.webp" alt="Pelita Cafe">
+        <h1>Staff & Admin Login</h1>
+        <p>Manage dishes, update prices & upload food photos</p>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="auth-email">Email Address</label>
+          <input type="email" id="auth-email" class="form-control" placeholder="admin@pelitacafe.com" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" class="form-control" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+
+        <button type="submit" class="btn-primary-admin" id="btn-login-submit" style="margin-top: 14px;">
+          <span>Sign In to Dashboard</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <div style="margin-top: 18px; text-align: center;">
+          <p id="auth-mode-hint" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
+            Protected by Firebase Authentication
+          </p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main Dashboard Screen -->
+  <main id="dashboard-screen" class="admin-container" style="display: none;">
+    
+    <!-- Setup / Firebase Status Banner -->
+    <div class="setup-banner" id="setup-banner">
+      <div class="setup-banner-text">
+        <h3 id="firebase-status-title" style="margin: 0; font-size: 1.15rem; font-weight: 700;">Welcome to Admin Portal</h3>
+        <p id="firebase-status-desc" style="display: none;"></p>
+      </div>
+      <button type="button" class="btn-seed-menu" id="btn-seed" onclick="handleSyncInitialMenu()" style="display: none;">
+        ⚡ Sync Initial Menu (20 Dishes)
+      </button>
+    </div>
+
+    <!-- Stats Overview -->
+    
+    <!-- Admin Section Tabs -->
+    <div class="admin-tabs">
+      <button type="button" class="tab-btn is-active" id="tab-btn-menu" onclick="switchAdminTab('menu')">
+        🍽️ Dishes & Menu
+      </button>
+      <button type="button" class="tab-btn" id="tab-btn-outlets" onclick="switchAdminTab('outlets')">
+        📍 Outlets Info
+      </button>
+      <button type="button" class="tab-btn" id="tab-btn-orders" onclick="switchAdminTab('orders')" style="position: relative;">
+        📋 Kitchen & Live Orders
+        <span id="orders-badge-count" style="display: none; background: #EF4444; color: #FFF; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 10px; margin-left: 6px;">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-btn-staff" onclick="switchAdminTab('staff')">
+        👥 Staff & Team Access
+      </button>
+    </div>
+
+    <!-- Tab 1: Menu Management -->
+    <div id="tab-content-menu">
+<div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🍽️</div>
+        <div>
+          <div class="stat-value" id="stat-total-dishes">0</div>
+          <div class="stat-label">Total Menu Dishes</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color: #10B981;">🟢</div>
+        <div>
+          <div class="stat-value" id="stat-available">0</div>
+          <div class="stat-label">Available / In Stock</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color: #EF4444;">🔴</div>
+        <div>
+          <div class="stat-value" id="stat-sold-out">0</div>
+          <div class="stat-label">Sold Out Items</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📂</div>
+        <div>
+          <div class="stat-value" id="stat-categories">7</div>
+          <div class="stat-label">Active Categories</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="search-input" placeholder="Search dish name, ID, or tag..." oninput="renderDashboardGrid()">
+      </div>
+
+      <div class="category-pills" id="category-pills">
+        <button type="button" class="pill-btn is-active" onclick="setCategoryFilter('all')">All Delights</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('signatures')">Signatures</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('kopitiam')">All-Day Kopitiam</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('wok')">Wok Specialties</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('omelettes')">Omelettes</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('bites')">Light Bites</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('coffee')">Barista Coffee</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('noncoffee')">Teas & Local Kaw</button>
+        <button type="button" class="pill-btn" onclick="setCategoryFilter('juices')">Cold Pressed & Coolers</button>
+      </div>
+
+      <div class="action-btn-group">
+        <button type="button" class="btn-add-dish" onclick="openDishModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Add New Dish
+        </button>
+      </div>
+    </div>
+
+    <!-- Dish Cards Grid -->
+    <div class="menu-grid" id="admin-menu-grid">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    
+    </div> <!-- End tab-content-menu -->
+
+    <!-- Tab 2: Outlets Info Management -->
+    <div id="tab-content-outlets" style="display: none;">
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 24px;">
+        <h3 style="color: var(--gold); font-size: 1.1rem; margin-bottom: 4px;">📍 Outlet Address & Map Link Editor</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
+          Update the location address for both Pelita Cafe outlets. When saved, the updated address will automatically reflect across the entire public website, including the outlet cards, copy buttons, Google Maps links, Waze links, and footer.
+        </p>
+      </div>
+
+      <div class="outlets-admin-grid">
+        
+        <!-- Putrajaya Outlet Card -->
+        <div class="outlet-admin-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 14px;">
+            <div>
+              <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF;">Pelita Cafe Putrajaya</h2>
+              <span style="font-size: 0.8rem; color: var(--gold); font-weight: 600;">Presint 15 Outlet</span>
+            </div>
+            <span style="font-size: 1.8rem;">🏛️</span>
+          </div>
+
+          <form onsubmit="handleSaveOutletLocation(event, 'putrajaya')">
+            <div class="form-group">
+              <label for="putrajaya-addr">Full Address</label>
+              <textarea id="putrajaya-addr" class="form-control" rows="3" required oninput="autoGenerateMapLinks('putrajaya')"></textarea>
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Displayed on website & copied when customers click 📋 Copy Address.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="putrajaya-short">Short Area Label (For Footer)</label>
+              <input type="text" id="putrajaya-short" class="form-control" placeholder="e.g. Presint 15">
+            </div>
+
+            <div class="form-group">
+              <label for="putrajaya-phone">Phone & WhatsApp Number</label>
+              <input type="text" id="putrajaya-phone" class="form-control" placeholder="+6012-337 7807" required>
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Updates call numbers, WhatsApp ordering, and chat links for Putrajaya.</small>
+            </div>
+
+            <!-- Operating Hours & Schedule Section -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 8px; padding: 16px; margin-bottom: 18px;">
+              <h4 style="color: var(--gold); font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                <span>⏰</span> Operating Hours & Schedule
+              </h4>
+              
+              <div class="form-group">
+                <label for="putrajaya-hours">Display Hours (English)</label>
+                <input type="text" id="putrajaya-hours" class="form-control" placeholder="Sat – Wed: 9:00 AM – 10:00 PM (Closed Thursday & Friday)" required>
+              </div>
+
+              <div class="form-group">
+                <label for="putrajaya-hours-bm">Display Hours (Bahasa Melayu)</label>
+                <input type="text" id="putrajaya-hours-bm" class="form-control" placeholder="Sabtu – Rabu: 9:00 PG – 10:00 MLM (Tutup Khamis & Jumaat)">
+              </div>
+
+              <div class="form-group">
+                <label>Open Days (Active Schedule)</label>
+                <div id="putrajaya-days-group" style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button type="button" class="day-pill-btn" data-day="0" onclick="toggleDayPill(this, 'putrajaya')">Sun</button>
+                  <button type="button" class="day-pill-btn" data-day="1" onclick="toggleDayPill(this, 'putrajaya')">Mon</button>
+                  <button type="button" class="day-pill-btn" data-day="2" onclick="toggleDayPill(this, 'putrajaya')">Tue</button>
+                  <button type="button" class="day-pill-btn" data-day="3" onclick="toggleDayPill(this, 'putrajaya')">Wed</button>
+                  <button type="button" class="day-pill-btn" data-day="4" onclick="toggleDayPill(this, 'putrajaya')">Thu</button>
+                  <button type="button" class="day-pill-btn" data-day="5" onclick="toggleDayPill(this, 'putrajaya')">Fri</button>
+                  <button type="button" class="day-pill-btn" data-day="6" onclick="toggleDayPill(this, 'putrajaya')">Sat</button>
+                </div>
+                <small style="color: var(--text-muted); font-size: 0.74rem; margin-top: 5px; display: block;">Days highlighted in gold will calculate as OPEN on the live site.</small>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="putrajaya-open-time">Daily Open Time</label>
+                  <input type="time" id="putrajaya-open-time" class="form-control" value="09:00" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="putrajaya-close-time">Daily Close Time</label>
+                  <input type="time" id="putrajaya-close-time" class="form-control" value="22:00" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Holiday / Special Closure Notice Box -->
+            <div id="putrajaya-closure-box" class="closure-notice-box">
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 0; text-transform: none; font-size: 0.88rem; color: #FFF; font-weight: 600;">
+                <input type="checkbox" id="putrajaya-is-closed" style="width: 18px; height: 18px; accent-color: #EF4444;" onchange="toggleClosureNoticeInput('putrajaya')">
+                <span>🚨 Temporary Closure / Special Notice</span>
+              </label>
+              <div id="putrajaya-notice-fields" style="display: none; margin-top: 12px;">
+                <label for="putrajaya-closure-notice" style="color: #FCA5A5; font-size: 0.78rem;">Closure Notice / Announcement to Public</label>
+                <input type="text" id="putrajaya-closure-notice" class="form-control" placeholder="e.g. Tutup sempena Cuti Aidilfitri dari 10 - 12 April. Buka semula Sabtu!">
+                <small style="color: #FCA5A5; font-size: 0.74rem; margin-top: 4px; display: block;">When enabled, this outlet will show as CLOSED / NOTIS and display this banner to all customers.</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label for="putrajaya-gmaps" style="margin-bottom: 0;">Google Maps URL</label>
+                <a href="#" id="preview-gmaps-putrajaya" target="_blank" rel="noopener noreferrer" style="color: var(--gold); font-size: 0.78rem; text-decoration: none; font-weight: 600;">Test Link ↗</a>
+              </div>
+              <input type="url" id="putrajaya-gmaps" class="form-control" required oninput="updateLinkPreview('putrajaya', 'gmaps')">
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label for="putrajaya-waze" style="margin-bottom: 0;">Waze Navigation URL</label>
+                <a href="#" id="preview-waze-putrajaya" target="_blank" rel="noopener noreferrer" style="color: var(--gold); font-size: 0.78rem; text-decoration: none; font-weight: 600;">Test Link ↗</a>
+              </div>
+              <input type="url" id="putrajaya-waze" class="form-control" required oninput="updateLinkPreview('putrajaya', 'waze')">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 22px;">
+              <button type="button" class="btn-seed-menu" style="flex: 1;" onclick="autoGenerateMapLinks('putrajaya', true)">
+                🔄 Auto-Generate Links
+              </button>
+              <button type="submit" class="btn-primary-admin" style="flex: 1.2;">
+                Save Putrajaya
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sepang Outlet Card -->
+        <div class="outlet-admin-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 14px;">
+            <div>
+              <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF;">Pelita Cafe Sepang</h2>
+              <span style="font-size: 0.8rem; color: var(--gold); font-weight: 600;">Heritage Origin (Since 2004)</span>
+            </div>
+            <span style="font-size: 1.8rem;">🏡</span>
+          </div>
+
+          <form onsubmit="handleSaveOutletLocation(event, 'sepang')">
+            <div class="form-group">
+              <label for="sepang-addr">Full Address</label>
+              <textarea id="sepang-addr" class="form-control" rows="3" required oninput="autoGenerateMapLinks('sepang')"></textarea>
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Displayed on website & copied when customers click 📋 Copy Address.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="sepang-short">Short Area Label (For Footer)</label>
+              <input type="text" id="sepang-short" class="form-control" placeholder="e.g. Bandar Baru Salak Tinggi">
+            </div>
+
+            <div class="form-group">
+              <label for="sepang-phone">Phone & WhatsApp Number</label>
+              <input type="text" id="sepang-phone" class="form-control" placeholder="+6012-337 7807" required>
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">Updates call numbers, WhatsApp ordering, and chat links for Sepang.</small>
+            </div>
+
+            <!-- Operating Hours & Schedule Section -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 8px; padding: 16px; margin-bottom: 18px;">
+              <h4 style="color: var(--gold); font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                <span>⏰</span> Operating Hours & Schedule
+              </h4>
+              
+              <div class="form-group">
+                <label for="sepang-hours">Display Hours (English)</label>
+                <input type="text" id="sepang-hours" class="form-control" placeholder="Sat – Thu: 9:00 AM – 7:00 PM (Closed Friday)" required>
+              </div>
+
+              <div class="form-group">
+                <label for="sepang-hours-bm">Display Hours (Bahasa Melayu)</label>
+                <input type="text" id="sepang-hours-bm" class="form-control" placeholder="Sabtu – Khamis: 9:00 PG – 7:00 PTG (Tutup Jumaat)">
+              </div>
+
+              <div class="form-group">
+                <label>Open Days (Active Schedule)</label>
+                <div id="sepang-days-group" style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button type="button" class="day-pill-btn" data-day="0" onclick="toggleDayPill(this, 'sepang')">Sun</button>
+                  <button type="button" class="day-pill-btn" data-day="1" onclick="toggleDayPill(this, 'sepang')">Mon</button>
+                  <button type="button" class="day-pill-btn" data-day="2" onclick="toggleDayPill(this, 'sepang')">Tue</button>
+                  <button type="button" class="day-pill-btn" data-day="3" onclick="toggleDayPill(this, 'sepang')">Wed</button>
+                  <button type="button" class="day-pill-btn" data-day="4" onclick="toggleDayPill(this, 'sepang')">Thu</button>
+                  <button type="button" class="day-pill-btn" data-day="5" onclick="toggleDayPill(this, 'sepang')">Fri</button>
+                  <button type="button" class="day-pill-btn" data-day="6" onclick="toggleDayPill(this, 'sepang')">Sat</button>
+                </div>
+                <small style="color: var(--text-muted); font-size: 0.74rem; margin-top: 5px; display: block;">Days highlighted in gold will calculate as OPEN on the live site.</small>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="sepang-open-time">Daily Open Time</label>
+                  <input type="time" id="sepang-open-time" class="form-control" value="09:00" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="sepang-close-time">Daily Close Time</label>
+                  <input type="time" id="sepang-close-time" class="form-control" value="19:00" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Holiday / Special Closure Notice Box -->
+            <div id="sepang-closure-box" class="closure-notice-box">
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 0; text-transform: none; font-size: 0.88rem; color: #FFF; font-weight: 600;">
+                <input type="checkbox" id="sepang-is-closed" style="width: 18px; height: 18px; accent-color: #EF4444;" onchange="toggleClosureNoticeInput('sepang')">
+                <span>🚨 Temporary Closure / Special Notice</span>
+              </label>
+              <div id="sepang-notice-fields" style="display: none; margin-top: 12px;">
+                <label for="sepang-closure-notice" style="color: #FCA5A5; font-size: 0.78rem;">Closure Notice / Announcement to Public</label>
+                <input type="text" id="sepang-closure-notice" class="form-control" placeholder="e.g. Tutup sempena Hari Raya Haji. Buka semula Ahad!">
+                <small style="color: #FCA5A5; font-size: 0.74rem; margin-top: 4px; display: block;">When enabled, this outlet will show as CLOSED / NOTIS and display this banner to all customers.</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label for="sepang-gmaps" style="margin-bottom: 0;">Google Maps URL</label>
+                <a href="#" id="preview-gmaps-sepang" target="_blank" rel="noopener noreferrer" style="color: var(--gold); font-size: 0.78rem; text-decoration: none; font-weight: 600;">Test Link ↗</a>
+              </div>
+              <input type="url" id="sepang-gmaps" class="form-control" required oninput="updateLinkPreview('sepang', 'gmaps')">
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label for="sepang-waze" style="margin-bottom: 0;">Waze Navigation URL</label>
+                <a href="#" id="preview-waze-sepang" target="_blank" rel="noopener noreferrer" style="color: var(--gold); font-size: 0.78rem; text-decoration: none; font-weight: 600;">Test Link ↗</a>
+              </div>
+              <input type="url" id="sepang-waze" class="form-control" required oninput="updateLinkPreview('sepang', 'waze')">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 22px;">
+              <button type="button" class="btn-seed-menu" style="flex: 1;" onclick="autoGenerateMapLinks('sepang', true)">
+                🔄 Auto-Generate Links
+              </button>
+              <button type="submit" class="btn-primary-admin" style="flex: 1.2;">
+                Save Sepang
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tab 3: Staff & Team Management -->
+    <div id="tab-content-staff" style="display: none;">
+      <div class="staff-admin-grid">
+        
+        <!-- Add Staff Form Card -->
+        <div class="staff-admin-card">
+          <div style="margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 14px;">
+            <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <span>➕</span> Add New Staff / Admin
+            </h2>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
+              Create login credentials so cafe staff or managers can access this dashboard.
+            </p>
+          </div>
+
+          <form id="add-staff-form" onsubmit="handleCreateStaff(event)">
+            <div class="form-group">
+              <label for="new-staff-name">Staff Full Name</label>
+              <input type="text" id="new-staff-name" class="form-control" placeholder="e.g. Siti Aminah" required>
+            </div>
+
+            <div class="form-group">
+              <label for="new-staff-email">Staff Email Address</label>
+              <input type="email" id="new-staff-email" class="form-control" placeholder="staff@pelitacafe.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="new-staff-password">Temporary Password</label>
+              <input type="text" id="new-staff-password" class="form-control" placeholder="Minimum 6 characters" minlength="6" required>
+              <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">They can use this password to sign in immediately.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="new-staff-role">Role / Position</label>
+              <select id="new-staff-role" class="form-control" required>
+                <option value="Staff">Kitchen / Counter Staff</option>
+                <option value="Supervisor">Shift Supervisor</option>
+                <option value="Manager">Cafe Manager / Admin</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-primary-admin" id="btn-submit-staff" style="width: 100%; margin-top: 14px;">
+              <span>Create Staff Account</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Staff List Card -->
+        <div class="staff-admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 14px;">
+            <div>
+              <h2 style="font-size: 1.25rem; font-family: 'Fraunces', serif; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                <span>👥</span> Authorized Team Members
+              </h2>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Users with access to manage dishes, prices, and outlet addresses.</p>
+            </div>
+            <button type="button" class="btn-seed-menu" onclick="loadStaffList()" style="padding: 6px 12px; font-size: 0.8rem;">
+              🔄 Refresh List
+            </button>
+          </div>
+
+          <div id="staff-list-container">
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">Loading staff members...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tab 4: Kitchen Display & Live Orders (KDS) -->
+    <div id="tab-content-orders" style="display: none;">
+      <!-- Orders Header Card -->
+      <div class="setup-banner kds-header-bar" style="margin-bottom: 24px;">
+        <div>
+          <h3 style="color: var(--gold); font-size: 1.15rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+            <span>📋</span> Kitchen Display System (KDS) & Live Orders
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin: 0;">
+            Track incoming customer orders in real time. Advancing an order's status immediately updates the customer's live tracking screen!
+          </p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <button type="button" id="btn-audio-toggle" class="btn-seed-menu" onclick="toggleKitchenAudio()" style="font-size: 0.82rem; padding: 7px 14px;">
+            🔔 Sound Chime: ON
+          </button>
+          <button type="button" class="btn-seed-menu" onclick="loadAdminOrders()" style="font-size: 0.82rem; padding: 7px 14px;">
+            🔄 Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Search Toolbar -->
+      <div class="kds-toolbar">
+        <!-- Outlet Filter Pills -->
+        <div class="kds-pills-row" id="order-branch-filters">
+          <button type="button" class="pill-btn is-active" data-order-branch="all" onclick="setOrderBranchFilter('all')">All Outlets</button>
+          <button type="button" class="pill-btn" data-order-branch="putrajaya" onclick="setOrderBranchFilter('putrajaya')">🏛️ Putrajaya</button>
+          <button type="button" class="pill-btn" data-order-branch="sepang" onclick="setOrderBranchFilter('sepang')">🏡 Sepang</button>
+        </div>
+
+        <!-- Status Filter Pills -->
+        <div class="kds-pills-row" id="order-status-filters">
+          <button type="button" class="pill-btn is-active" data-order-status="active" onclick="setOrderStatusFilter('active')">Active Orders</button>
+          <button type="button" class="pill-btn" data-order-status="received" onclick="setOrderStatusFilter('received')">📥 Received</button>
+          <button type="button" class="pill-btn" data-order-status="in_progress" onclick="setOrderStatusFilter('in_progress')">🍳 Cooking</button>
+          <button type="button" class="pill-btn" data-order-status="prepared" onclick="setOrderStatusFilter('prepared')">📦 Ready</button>
+          <button type="button" class="pill-btn" data-order-status="served" onclick="setOrderStatusFilter('served')">✅ Served (History)</button>
+        </div>
+
+        <!-- Search input -->
+        <div class="kds-search-box">
+          <input type="text" id="order-search-input" class="form-control" placeholder="Search order ID or name..." oninput="handleOrderSearchInput(event)" style="padding: 8px 12px; font-size: 0.85rem;">
+        </div>
+      </div>
+
+      <!-- Orders Cards Grid -->
+      <div id="admin-orders-grid" class="kds-grid">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
+          Loading live orders...
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden file input for photo upload -->
+    <input type="file" id="photo-file-input" accept="image/*" style="display: none;" onchange="handlePhotoFileSelected(event)">
+  </main>
+
+  <!-- Edit / Add Dish Modal -->
+  <div class="admin-modal-backdrop" id="dish-modal-backdrop">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h2 id="modal-title">Edit Dish Details</h2>
+        <button type="button" class="close-modal-btn" onclick="closeDishModal()">&times;</button>
+      </div>
+
+      <form id="dish-edit-form" onsubmit="handleSaveDish(event)">
+        <input type="hidden" id="edit-dish-id">
+
+        <div class="form-group">
+          <label for="edit-name-en">English Name</label>
+          <input type="text" id="edit-name-en" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-name-bm">Bahasa Melayu Name</label>
+          <input type="text" id="edit-name-bm" class="form-control" required>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="edit-price">Price (RM)</label>
+            <input type="number" step="0.10" id="edit-price" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-category">Category</label>
+            <select id="edit-category" class="form-control" required>
+              <option value="signatures">Signatures</option>
+              <option value="kopitiam">All-Day Kopitiam</option>
+              <option value="wok">Wok Specialties</option>
+              <option value="omelettes">Omelettes</option>
+              <option value="bites">Light Bites</option>
+              <option value="coffee">Barista Coffee</option>
+              <option value="noncoffee">Teas & Local Kaw</option>
+              <option value="juices">Cold Pressed & Coolers</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="edit-badge">Badge Label (Optional)</label>
+            <input type="text" id="edit-badge" class="form-control" placeholder="e.g. Best Seller, Local Pride">
+          </div>
+          <div class="form-group">
+            <label for="edit-spicy">Spicy Level (0 - 3)</label>
+            <select id="edit-spicy" class="form-control">
+              <option value="0">0 - Non-spicy</option>
+              <option value="1">1 - Mild</option>
+              <option value="2">2 - Medium Spicy</option>
+              <option value="3">3 - Fiery Sambal</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-img-url">Image URL</label>
+          <input type="text" id="edit-img-url" class="form-control" placeholder="assets/images/... or https://...">
+        </div>
+
+        <div class="form-group">
+          <label for="edit-desc-en">Description (English)</label>
+          <textarea id="edit-desc-en" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-desc-bm">Description (Bahasa Melayu)</label>
+          <textarea id="edit-desc-bm" class="form-control" rows="2"></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary-admin" style="margin-top: 10px;">
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="admin-toast" class="toast-admin"></div>
+
+  <script src="script.js?v=4.7"></script>
+  <script>
+    // --- CYBERSECURITY SANITIZATION HELPERS (Anti-XSS & Safe Attributes) ---
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function sanitizeId(id) {
+      return String(id || '').replace(/[^a-zA-Z0-9_-]/g, '');
+    }
+
+    let currentAdminDishes = [];
+    let selectedCategoryFilter = 'all';
+    let targetUploadDishId = null;
+    let currentStaffRole = null;
+
+    // Check Firebase Configuration State
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthState();
+      setupStatusBanner();
+    });
+
+    function setupStatusBanner() {
+      const bannerTitle = document.getElementById('firebase-status-title');
+      const bannerDesc = document.getElementById('firebase-status-desc');
+      const authHint = document.getElementById('auth-mode-hint');
+
+      bannerTitle.textContent = 'Welcome to Admin Portal';
+      if (bannerDesc) bannerDesc.style.display = 'none';
+
+      if (window.PelitaFirebase && window.PelitaFirebase.isConfigured) {
+        if (authHint) authHint.innerHTML = 'Secured by Firebase Authentication & Role-Based Access Control (RBAC).';
+      } else {
+        if (authHint) authHint.innerHTML = '<strong>Demo Mode:</strong> Configure Firebase to enable full role-based protection.';
+      }
+    }
+
+    async function checkAuthState() {
+      if (window.PelitaFirebase && window.PelitaFirebase.isConfigured && window.PelitaFirebase.auth) {
+        window.PelitaFirebase.auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            // Strict RBAC Verification: Ensure user is registered in staff_users
+            const roleData = await window.PelitaFirebase.checkUserRole(user.uid);
+            if (roleData) {
+              currentStaffRole = roleData;
+              showDashboard();
+            } else {
+              // Unauthorized user: deny access immediately & sign out
+              await window.PelitaFirebase.auth.signOut();
+              alert(`Akses Ditolak: Akaun (${escapeHtml(user.email)}) tidak berdaftar sebagai staf atau pentadbir yang sah.`);
+              showAuth();
+            }
+          } else {
+            showAuth();
+          }
+        });
+      } else {
+        // Fallback demo session
+        const demoAuth = sessionStorage.getItem('pelita_demo_admin');
+        if (demoAuth) {
+          showDashboard();
+        } else {
+          showAuth();
+        }
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
+      const submitBtn = document.getElementById('btn-login-submit');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Signing In...';
+
+      if (window.PelitaFirebase && window.PelitaFirebase.isConfigured && window.PelitaFirebase.auth) {
+        try {
+          const cred = await window.PelitaFirebase.auth.signInWithEmailAndPassword(email, password);
+          // Strict RBAC verification
+          const roleData = await window.PelitaFirebase.checkUserRole(cred.user.uid);
+          if (!roleData) {
+            await window.PelitaFirebase.auth.signOut();
+            alert('Akses Ditolak: Akaun anda tidak mempunyai kebenaran staf atau pentadbir.');
+            return;
+          }
+          currentStaffRole = roleData;
+          showToast('Log masuk berjaya!');
+        } catch (err) {
+          console.error(err);
+          alert('Log masuk gagal: ' + err.message);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Sign In to Dashboard';
+        }
+      } else {
+        alert('Firebase Authentication is not available. Please check your internet connection.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Sign In to Dashboard';
+      }
+    }
+
+    function handleLogout() {
+      if (window.PelitaFirebase && window.PelitaFirebase.isConfigured && window.PelitaFirebase.auth) {
+        window.PelitaFirebase.auth.signOut();
+      }
+      sessionStorage.removeItem('pelita_demo_admin');
+      currentStaffRole = null;
+      showAuth();
+      showToast('Logged out successfully.');
+    }
+
+    function showAuth() {
+      document.getElementById('auth-screen').style.display = 'flex';
+      document.getElementById('dashboard-screen').style.display = 'none';
+      document.getElementById('nav-actions').style.display = 'none';
+    }
+
+    async function showDashboard() {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('dashboard-screen').style.display = 'block';
+      document.getElementById('nav-actions').style.display = 'flex';
+      await loadDishes();
+      initKitchenOrdersListener();
+    }
+
+    async function loadDishes() {
+      let dishes = null;
+      if (window.PelitaFirebase) {
+        dishes = await window.PelitaFirebase.getMenuItems();
+      }
+
+      // If empty, load default static dishes
+      if (!dishes || !dishes.length) {
+        dishes = window.MENU_ITEMS || [];
+      }
+
+      currentAdminDishes = dishes;
+      renderDashboardGrid();
+      updateStats();
+
+      // If database already has dishes populated, hide the initial sync setup button
+      const seedBtn = document.getElementById('btn-seed');
+      if (seedBtn) {
+        if (dishes && dishes.length >= 20) {
+          seedBtn.style.display = 'none';
+        } else {
+          seedBtn.style.display = 'inline-block';
+        }
+      }
+
+      // Listen for realtime cloud updates
+      if (window.PelitaFirebase && window.PelitaFirebase.isConfigured) {
+        window.PelitaFirebase.onMenuChange((items) => {
+          if (items && items.length) {
+            currentAdminDishes = items;
+            renderDashboardGrid();
+            updateStats();
+            if (seedBtn && items.length >= 20) {
+              seedBtn.style.display = 'none';
+            }
+          }
+        });
+      }
+    }
+
+    function updateStats() {
+      const total = currentAdminDishes.length;
+      const soldOut = currentAdminDishes.filter(d => d.isSoldOut).length;
+      const available = total - soldOut;
+      const categories = new Set(currentAdminDishes.map(d => d.category)).size;
+
+      document.getElementById('stat-total-dishes').textContent = total;
+      document.getElementById('stat-available').textContent = available;
+      document.getElementById('stat-sold-out').textContent = soldOut;
+      document.getElementById('stat-categories').textContent = categories;
+    }
+
+    function setCategoryFilter(category) {
+      selectedCategoryFilter = category;
+      document.querySelectorAll('#category-pills .pill-btn').forEach(btn => {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        const isCurrent = onclickAttr.includes(`'${category}'`);
+        btn.classList.toggle('is-active', isCurrent);
+      });
+      renderDashboardGrid();
+    }
+
+    function renderDashboardGrid() {
+      const grid = document.getElementById('admin-menu-grid');
+      const searchQuery = (document.getElementById('search-input').value || '').toLowerCase().trim();
+
+      const filtered = currentAdminDishes.filter(dish => {
+        const matchesCat = selectedCategoryFilter === 'all' || dish.category === selectedCategoryFilter;
+        const matchesSearch = !searchQuery || 
+          (dish.name && dish.name.toLowerCase().includes(searchQuery)) ||
+          (dish.nameBM && dish.nameBM.toLowerCase().includes(searchQuery)) ||
+          (dish.id && dish.id.toLowerCase().includes(searchQuery));
+        return matchesCat && matchesSearch;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px; color: var(--text-muted);">No dishes found matching your criteria.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(dish => {
+        const isSoldOut = Boolean(dish.isSoldOut);
+        const safeId = sanitizeId(dish.id);
+        const safeName = escapeHtml(dish.name);
+        const safeNameBM = escapeHtml(dish.nameBM || '');
+        const safeCategory = escapeHtml(dish.category || 'signatures');
+        const safeDesc = escapeHtml(dish.description || '');
+        const imgUrl = escapeHtml(dish.image || 'assets/images/dishes-spread.webp');
+
+        return `
+          <div class="dish-card ${isSoldOut ? 'is-sold-out' : ''}" id="card-${safeId}">
+            <div class="dish-card-img-wrap">
+              <img src="${imgUrl}" alt="${safeName}" class="dish-card-img" id="img-${safeId}" onerror="this.src='assets/images/dishes-spread.webp'">
+              <span class="stock-badge ${isSoldOut ? 'sold-out' : 'available'}">
+                ${isSoldOut ? 'Sold Out' : 'In Stock'}
+              </span>
+              <button type="button" class="btn-upload-overlay" onclick="triggerPhotoUpload('${safeId}')">
+                📷 Change Photo
+              </button>
+            </div>
+
+            <div class="dish-card-body">
+              <div class="dish-card-title-row">
+                <div>
+                  <div class="dish-name-en">${safeName}</div>
+                  <div class="dish-nameBM">${safeNameBM}</div>
+                  <span style="display: inline-block; margin-top: 4px; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; background: rgba(200, 138, 54, 0.15); color: var(--gold); border: 1px solid rgba(200, 138, 54, 0.3);">
+                    ${safeCategory}
+                  </span>
+                </div>
+                <div class="dish-price-wrap">
+                  <span class="dish-price-prefix">RM</span>
+                  <input type="number" step="0.10" class="dish-price-input" value="${Number(dish.price || 0).toFixed(2)}" onchange="handleQuickPriceChange('${safeId}', this.value)">
+                </div>
+              </div>
+
+              <div class="dish-desc">${safeDesc}</div>
+
+              <div class="dish-card-actions">
+                <button type="button" class="toggle-stock-btn ${isSoldOut ? 'to-available' : 'to-sold-out'}" onclick="toggleStock('${safeId}')">
+                  ${isSoldOut ? '✓ Mark In Stock' : '✕ Mark Sold Out'}
+                </button>
+
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn-icon" title="Edit Details" onclick="openDishModal('${safeId}')">
+                    ✏️
+                  </button>
+                  <button type="button" class="btn-icon delete" title="Delete Dish" onclick="handleDeleteDish('${safeId}')">
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleQuickPriceChange(dishId, newPrice) {
+      const priceNum = parseFloat(newPrice);
+      if (isNaN(priceNum) || priceNum < 0) return;
+
+      const item = currentAdminDishes.find(d => d.id === dishId);
+      if (item) {
+        item.price = priceNum;
+        if (window.PelitaFirebase) {
+          await window.PelitaFirebase.saveMenuItem(item);
+        }
+        showToast(`Price for ${item.name} updated to RM ${priceNum.toFixed(2)}`);
+      }
+    }
+
+    async function toggleStock(dishId) {
+      const item = currentAdminDishes.find(d => d.id === dishId);
+      if (item) {
+        item.isSoldOut = !item.isSoldOut;
+        if (window.PelitaFirebase) {
+          await window.PelitaFirebase.saveMenuItem(item);
+        }
+        renderDashboardGrid();
+        updateStats();
+        showToast(`${item.name} marked as ${item.isSoldOut ? 'Sold Out' : 'In Stock'}`);
+      }
+    }
+
+    function triggerPhotoUpload(dishId) {
+      targetUploadDishId = dishId;
+      document.getElementById('photo-file-input').click();
+    }
+
+    async function handlePhotoFileSelected(event) {
+      const file = event.target.files[0];
+      if (!file || !targetUploadDishId) return;
+
+      const item = currentAdminDishes.find(d => d.id === targetUploadDishId);
+      if (!item) return;
+
+      showToast(`Uploading photo for ${item.name}...`);
+
+      try {
+        let photoUrl = '';
+        if (window.PelitaFirebase) {
+          photoUrl = await window.PelitaFirebase.uploadPhoto(file, targetUploadDishId);
+        }
+
+        item.image = photoUrl;
+        if (window.PelitaFirebase) {
+          await window.PelitaFirebase.saveMenuItem(item);
+        }
+
+        renderDashboardGrid();
+        showToast('Photo uploaded and updated successfully!');
+      } catch (err) {
+        console.error(err);
+        alert('Photo upload failed: ' + err.message);
+      } finally {
+        event.target.value = '';
+        targetUploadDishId = null;
+      }
+    }
+
+    function openDishModal(dishId) {
+      const modal = document.getElementById('dish-modal-backdrop');
+      const title = document.getElementById('modal-title');
+      const form = document.getElementById('dish-edit-form');
+
+      if (dishId) {
+        const item = currentAdminDishes.find(d => d.id === dishId);
+        if (!item) return;
+        title.textContent = 'Edit Dish: ' + item.name;
+        document.getElementById('edit-dish-id').value = item.id;
+        document.getElementById('edit-name-en').value = item.name || '';
+        document.getElementById('edit-name-bm').value = item.nameBM || '';
+        document.getElementById('edit-price').value = item.price || 0;
+        document.getElementById('edit-category').value = item.category || 'signatures';
+        document.getElementById('edit-badge').value = item.badge || '';
+        document.getElementById('edit-spicy').value = item.spicyLevel || 0;
+        document.getElementById('edit-img-url').value = item.image || '';
+        document.getElementById('edit-desc-en').value = item.description || '';
+        document.getElementById('edit-desc-bm').value = item.descriptionBM || '';
+      } else {
+        title.textContent = 'Add New Menu Dish';
+        form.reset();
+        document.getElementById('edit-dish-id').value = '';
+      }
+
+      modal.classList.add('is-open');
+    }
+
+    function closeDishModal() {
+      document.getElementById('dish-modal-backdrop').classList.remove('is-open');
+    }
+
+    async function handleSaveDish(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-dish-id').value;
+      const name = document.getElementById('edit-name-en').value.trim();
+      const nameBM = document.getElementById('edit-name-bm').value.trim();
+      const price = parseFloat(document.getElementById('edit-price').value);
+      const category = document.getElementById('edit-category').value;
+      const badge = document.getElementById('edit-badge').value.trim();
+      const spicyLevel = parseInt(document.getElementById('edit-spicy').value, 10);
+      const image = document.getElementById('edit-img-url').value.trim();
+      const description = document.getElementById('edit-desc-en').value.trim();
+      const descriptionBM = document.getElementById('edit-desc-bm').value.trim();
+
+      const existing = id ? currentAdminDishes.find(d => d.id === id) : null;
+
+      const updatedItem = {
+        id: id || ('dish-' + Date.now()),
+        name,
+        nameBM,
+        price,
+        category,
+        badge,
+        spicyLevel,
+        image: image || (existing ? existing.image : 'assets/images/dishes-spread.webp'),
+        description,
+        descriptionBM,
+        isSoldOut: existing ? Boolean(existing.isSoldOut) : false,
+        isChefPick: existing ? Boolean(existing.isChefPick) : false,
+        isHalal: true,
+        order: existing && existing.order ? existing.order : (currentAdminDishes.length + 1)
+      };
+
+      if (window.PelitaFirebase) {
+        await window.PelitaFirebase.saveMenuItem(updatedItem);
+      }
+
+      const idx = currentAdminDishes.findIndex(d => d.id === updatedItem.id);
+      if (idx >= 0) {
+        currentAdminDishes[idx] = updatedItem;
+      } else {
+        currentAdminDishes.unshift(updatedItem);
+      }
+
+      closeDishModal();
+      renderDashboardGrid();
+      updateStats();
+      showToast(`Dish "${name}" saved successfully!`);
+    }
+
+    async function handleDeleteDish(dishId) {
+      const item = currentAdminDishes.find(d => d.id === dishId);
+      if (!item) return;
+
+      if (!confirm(`Are you sure you want to delete "${item.name}"? This action cannot be undone.`)) {
+        return;
+      }
+
+      if (window.PelitaFirebase) {
+        await window.PelitaFirebase.deleteMenuItem(dishId);
+      }
+
+      currentAdminDishes = currentAdminDishes.filter(d => d.id !== dishId);
+      renderDashboardGrid();
+      updateStats();
+      showToast(`Deleted "${item.name}".`);
+    }
+
+    async function handleSyncInitialMenu() {
+      if (!window.MENU_ITEMS || !window.MENU_ITEMS.length) {
+        alert('Default menu data not found.');
+        return;
+      }
+
+      if (!confirm('This will upload all 20+ default dishes to your database. Continue?')) {
+        return;
+      }
+
+      showToast('Syncing default menu to database...');
+      if (window.PelitaFirebase) {
+        await window.PelitaFirebase.seedInitialMenu(window.MENU_ITEMS);
+      }
+      await loadDishes();
+      showToast('Initial menu synced successfully!');
+    }
+
+    
+    let currentOutletsData = {
+      putrajaya: {
+        address: 'Jalan Diplomatik 1, Presint 15, 62050 Putrajaya, Wilayah Persekutuan Putrajaya',
+        shortAddress: 'Presint 15',
+        phone: '+6012-337 7807',
+        phoneRaw: '60123377807',
+        mapsUrl: 'https://maps.google.com/?q=Pelita+Cafe+Putrajaya+Presint+15',
+        wazeUrl: 'https://waze.com/ul?q=Pelita+Cafe+Putrajaya',
+        hoursText: 'Sat – Wed: 9:00 AM – 10:00 PM (Closed Thursday & Friday)',
+        hoursTextBM: 'Sabtu – Rabu: 9:00 PG – 10:00 MLM (Tutup Khamis & Jumaat)',
+        openDays: [6, 0, 1, 2, 3],
+        openHour: 9,
+        closeHour: 22,
+        isTemporaryClosed: false,
+        closureNotice: ''
+      },
+      sepang: {
+        address: 'Medan 23, Bandar Baru Salak Tinggi, 43900 Sepang, Selangor',
+        shortAddress: 'Bandar Baru Salak Tinggi',
+        phone: '+6012-337 7807',
+        phoneRaw: '60123377807',
+        mapsUrl: 'https://maps.google.com/?q=Pelita+Cafe+Sepang+Medan+23',
+        wazeUrl: 'https://waze.com/ul?q=Pelita+Cafe+Sepang',
+        hoursText: 'Sat – Thu: 9:00 AM – 7:00 PM (Closed Friday)',
+        hoursTextBM: 'Sabtu – Khamis: 9:00 PG – 7:00 PTG (Tutup Jumaat)',
+        openDays: [6, 0, 1, 2, 3, 4],
+        openHour: 9,
+        closeHour: 19,
+        isTemporaryClosed: false,
+        closureNotice: ''
+      }
+    };
+
+    function decimalHourToTime(dec, defaultHour = 9) {
+      const h = typeof dec === 'number' && !isNaN(dec) ? dec : defaultHour;
+      const hh = String(Math.floor(h)).padStart(2, '0');
+      const mm = String(Math.round((h % 1) * 60)).padStart(2, '0');
+      return `${hh}:${mm}`;
+    }
+
+    function timeToDecimalHour(timeStr, defaultHour = 9) {
+      if (!timeStr) return defaultHour;
+      const parts = timeStr.split(':').map(Number);
+      return (parts[0] || 0) + ((parts[1] || 0) / 60);
+    }
+
+    function toggleDayPill(btn, branchKey) {
+      btn.classList.toggle('is-active');
+    }
+
+    function toggleClosureNoticeInput(branchKey) {
+      const checkbox = document.getElementById(branchKey + '-is-closed');
+      const fields = document.getElementById(branchKey + '-notice-fields');
+      const box = document.getElementById(branchKey + '-closure-box');
+      if (checkbox && fields && box) {
+        if (checkbox.checked) {
+          fields.style.display = 'block';
+          box.classList.add('is-active');
+        } else {
+          fields.style.display = 'none';
+          box.classList.remove('is-active');
+        }
+      }
+    }
+
+    function switchAdminTab(tab) {
+      const menuBtn = document.getElementById('tab-btn-menu');
+      const outletsBtn = document.getElementById('tab-btn-outlets');
+      const staffBtn = document.getElementById('tab-btn-staff');
+      const ordersBtn = document.getElementById('tab-btn-orders');
+      const menuContent = document.getElementById('tab-content-menu');
+      const outletsContent = document.getElementById('tab-content-outlets');
+      const staffContent = document.getElementById('tab-content-staff');
+      const ordersContent = document.getElementById('tab-content-orders');
+
+      [menuBtn, outletsBtn, staffBtn, ordersBtn].forEach(b => b && b.classList.remove('is-active'));
+      [menuContent, outletsContent, staffContent, ordersContent].forEach(c => c && (c.style.display = 'none'));
+
+      if (tab === 'menu') {
+        menuBtn.classList.add('is-active');
+        menuContent.style.display = 'block';
+      } else if (tab === 'outlets') {
+        outletsBtn.classList.add('is-active');
+        outletsContent.style.display = 'block';
+        loadOutletForms();
+      } else if (tab === 'staff') {
+        staffBtn.classList.add('is-active');
+        staffContent.style.display = 'block';
+        loadStaffList();
+      } else if (tab === 'orders') {
+        ordersBtn.classList.add('is-active');
+        ordersContent.style.display = 'block';
+        loadAdminOrders();
+      }
+    }
+
+    async function loadOutletForms() {
+      if (window.PelitaFirebase) {
+        const saved = await window.PelitaFirebase.getOutlets();
+        if (saved) {
+          if (saved.putrajaya) currentOutletsData.putrajaya = { ...currentOutletsData.putrajaya, ...saved.putrajaya };
+          if (saved.sepang) currentOutletsData.sepang = { ...currentOutletsData.sepang, ...saved.sepang };
+        }
+      }
+
+      // Populate Putrajaya
+      const pj = currentOutletsData.putrajaya;
+      document.getElementById('putrajaya-addr').value = pj.address || '';
+      document.getElementById('putrajaya-short').value = pj.shortAddress || 'Presint 15';
+      document.getElementById('putrajaya-phone').value = pj.phone || '+6012-337 7807';
+      document.getElementById('putrajaya-hours').value = pj.hoursText || 'Sat – Wed: 9:00 AM – 10:00 PM (Closed Thursday & Friday)';
+      document.getElementById('putrajaya-hours-bm').value = pj.hoursTextBM || 'Sabtu – Rabu: 9:00 PG – 10:00 MLM (Tutup Khamis & Jumaat)';
+      document.getElementById('putrajaya-open-time').value = decimalHourToTime(pj.openHour, 9);
+      document.getElementById('putrajaya-close-time').value = decimalHourToTime(pj.closeHour, 22);
+
+      const pjDays = Array.isArray(pj.openDays) ? pj.openDays : [6, 0, 1, 2, 3];
+      document.querySelectorAll('#putrajaya-days-group .day-pill-btn').forEach(btn => {
+        const day = parseInt(btn.getAttribute('data-day'), 10);
+        if (pjDays.includes(day)) {
+          btn.classList.add('is-active');
+        } else {
+          btn.classList.remove('is-active');
+        }
+      });
+
+      const pjClosed = Boolean(pj.isTemporaryClosed);
+      const pjClosedCheckbox = document.getElementById('putrajaya-is-closed');
+      if (pjClosedCheckbox) pjClosedCheckbox.checked = pjClosed;
+      document.getElementById('putrajaya-closure-notice').value = pj.closureNotice || '';
+      toggleClosureNoticeInput('putrajaya');
+
+      document.getElementById('putrajaya-gmaps').value = pj.mapsUrl || '';
+      document.getElementById('putrajaya-waze').value = pj.wazeUrl || '';
+      updateLinkPreview('putrajaya', 'gmaps');
+      updateLinkPreview('putrajaya', 'waze');
+
+      // Populate Sepang
+      const sp = currentOutletsData.sepang;
+      document.getElementById('sepang-addr').value = sp.address || '';
+      document.getElementById('sepang-short').value = sp.shortAddress || 'Bandar Baru Salak Tinggi';
+      document.getElementById('sepang-phone').value = sp.phone || '+6012-337 7807';
+      document.getElementById('sepang-hours').value = sp.hoursText || 'Sat – Thu: 9:00 AM – 7:00 PM (Closed Friday)';
+      document.getElementById('sepang-hours-bm').value = sp.hoursTextBM || 'Sabtu – Khamis: 9:00 PG – 7:00 PTG (Tutup Jumaat)';
+      document.getElementById('sepang-open-time').value = decimalHourToTime(sp.openHour, 9);
+      document.getElementById('sepang-close-time').value = decimalHourToTime(sp.closeHour, 19);
+
+      const spDays = Array.isArray(sp.openDays) ? sp.openDays : [6, 0, 1, 2, 3, 4];
+      document.querySelectorAll('#sepang-days-group .day-pill-btn').forEach(btn => {
+        const day = parseInt(btn.getAttribute('data-day'), 10);
+        if (spDays.includes(day)) {
+          btn.classList.add('is-active');
+        } else {
+          btn.classList.remove('is-active');
+        }
+      });
+
+      const spClosed = Boolean(sp.isTemporaryClosed);
+      const spClosedCheckbox = document.getElementById('sepang-is-closed');
+      if (spClosedCheckbox) spClosedCheckbox.checked = spClosed;
+      document.getElementById('sepang-closure-notice').value = sp.closureNotice || '';
+      toggleClosureNoticeInput('sepang');
+
+      document.getElementById('sepang-gmaps').value = sp.mapsUrl || '';
+      document.getElementById('sepang-waze').value = sp.wazeUrl || '';
+      updateLinkPreview('sepang', 'gmaps');
+      updateLinkPreview('sepang', 'waze');
+    }
+
+    function autoGenerateMapLinks(branchKey, overwrite = false) {
+      const addrInput = document.getElementById(branchKey + '-addr');
+      const gmapsInput = document.getElementById(branchKey + '-gmaps');
+      const wazeInput = document.getElementById(branchKey + '-waze');
+
+      const addr = (addrInput.value || '').trim();
+      if (!addr) return;
+
+      const query = encodeURIComponent('Pelita Cafe ' + addr);
+
+      if (overwrite || !gmapsInput.value) {
+        gmapsInput.value = 'https://maps.google.com/?q=' + query;
+        updateLinkPreview(branchKey, 'gmaps');
+      }
+
+      if (overwrite || !wazeInput.value) {
+        wazeInput.value = 'https://waze.com/ul?q=' + query;
+        updateLinkPreview(branchKey, 'waze');
+      }
+    }
+
+    function updateLinkPreview(branchKey, type) {
+      const input = document.getElementById(branchKey + '-' + type);
+      const previewLink = document.getElementById('preview-' + type + '-' + branchKey);
+      if (input && previewLink) {
+        previewLink.href = input.value || '#';
+      }
+    }
+
+    async function handleSaveOutletLocation(event, branchKey) {
+      event.preventDefault();
+      const addr = document.getElementById(branchKey + '-addr').value.trim();
+      const shortAddr = document.getElementById(branchKey + '-short').value.trim();
+      const phone = document.getElementById(branchKey + '-phone').value.trim();
+      const gmaps = document.getElementById(branchKey + '-gmaps').value.trim();
+      const waze = document.getElementById(branchKey + '-waze').value.trim();
+
+      const hoursText = document.getElementById(branchKey + '-hours').value.trim();
+      const hoursTextBM = document.getElementById(branchKey + '-hours-bm').value.trim();
+
+      const openDays = Array.from(document.querySelectorAll('#' + branchKey + '-days-group .day-pill-btn.is-active'))
+        .map(b => parseInt(b.getAttribute('data-day'), 10));
+
+      const defaultClose = branchKey === 'putrajaya' ? 22 : 19;
+      const openHour = timeToDecimalHour(document.getElementById(branchKey + '-open-time').value, 9);
+      const closeHour = timeToDecimalHour(document.getElementById(branchKey + '-close-time').value, defaultClose);
+
+      const isTemporaryClosed = document.getElementById(branchKey + '-is-closed').checked;
+      const closureNotice = (document.getElementById(branchKey + '-closure-notice').value || '').trim();
+
+      // Clean raw phone for WhatsApp wa.me links
+      let rawPhone = phone.replace(/[^0-9]/g, '');
+      if (rawPhone.startsWith('0')) {
+        rawPhone = '60' + rawPhone.slice(1);
+      } else if (!rawPhone.startsWith('60') && rawPhone.length > 0) {
+        rawPhone = '60' + rawPhone;
+      }
+
+      currentOutletsData[branchKey] = {
+        ...currentOutletsData[branchKey],
+        address: addr,
+        shortAddress: shortAddr,
+        phone: phone,
+        phoneRaw: rawPhone || '60123377807',
+        mapsUrl: gmaps,
+        wazeUrl: waze,
+        hoursText: hoursText,
+        hoursTextBM: hoursTextBM,
+        openDays: openDays.length > 0 ? openDays : (branchKey === 'putrajaya' ? [6, 0, 1, 2, 3] : [6, 0, 1, 2, 3, 4]),
+        openHour: openHour,
+        closeHour: closeHour,
+        isTemporaryClosed: isTemporaryClosed,
+        closureNotice: closureNotice
+      };
+
+      if (window.PelitaFirebase) {
+        await window.PelitaFirebase.saveOutlets(currentOutletsData);
+      }
+
+      const branchName = branchKey === 'putrajaya' ? 'Putrajaya' : 'Sepang';
+      showToast('Hours, schedule & details for ' + branchName + ' saved & updated live!');
+    }
+
+    async function handleCreateStaff(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-staff-name').value.trim();
+      const email = document.getElementById('new-staff-email').value.trim();
+      const password = document.getElementById('new-staff-password').value;
+      const role = document.getElementById('new-staff-role').value;
+      const submitBtn = document.getElementById('btn-submit-staff');
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating Account...';
+
+      try {
+        if (!window.PelitaFirebase || !window.PelitaFirebase.createStaffUser) {
+          throw new Error('Firebase service not initialized.');
+        }
+
+        await window.PelitaFirebase.createStaffUser(email, password, name, role);
+        showToast(`Staff account for ${name} created successfully!`);
+        document.getElementById('add-staff-form').reset();
+        await loadStaffList();
+      } catch (err) {
+        console.error(err);
+        alert('Could not create account: ' + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Staff Account';
+      }
+    }
+
+    async function loadStaffList() {
+      const container = document.getElementById('staff-list-container');
+      if (!container) return;
+
+      container.innerHTML = '<div style="text-align: center; padding: 30px; color: var(--text-muted);">Fetching team members...</div>';
+
+      try {
+        let staffList = [];
+        if (window.PelitaFirebase && window.PelitaFirebase.getStaffUsers) {
+          staffList = await window.PelitaFirebase.getStaffUsers();
+        }
+
+        const authUser = (window.PelitaFirebase && window.PelitaFirebase.auth && window.PelitaFirebase.auth.currentUser) || 
+                         (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
+        
+        const adminEmail = authUser && authUser.email ? authUser.email : 'admin@pelitacafe.com';
+        const alreadyInList = staffList.some(s => s.email && s.email.toLowerCase() === adminEmail.toLowerCase());
+
+        if (!alreadyInList) {
+          staffList.unshift({
+            id: authUser ? authUser.uid : 'admin-root',
+            displayName: (authUser && authUser.displayName) ? authUser.displayName : 'Primary Admin (You)',
+            email: adminEmail,
+            role: 'Owner / Primary Admin',
+            createdAt: (authUser && authUser.metadata) ? authUser.metadata.creationTime : new Date().toISOString()
+          });
+        }
+
+        if (!staffList.length) {
+          container.innerHTML = '<div style="text-align: center; padding: 30px; color: var(--text-muted);">No additional staff members added yet. Fill in the form on the left to add one.</div>';
+          return;
+        }
+
+        container.innerHTML = staffList.map(member => {
+          const dateFormatted = member.createdAt ? new Date(member.createdAt).toLocaleDateString() : 'Active';
+          const safeName = escapeHtml(member.displayName || member.email);
+          const safeEmail = escapeHtml(member.email);
+          const safeRole = escapeHtml(member.role || 'Staff');
+          const safeUid = sanitizeId(member.id || member.uid);
+
+          return `
+            <div class="staff-item-row">
+              <div style="min-width: 0; word-break: break-word; flex: 1;">
+                <div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">${safeName}</div>
+                <div style="font-size: 0.82rem; color: var(--gold); word-break: break-all;">${safeEmail}</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Added on: ${dateFormatted}</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; background: rgba(200, 138, 54, 0.15); color: var(--gold); border: 1px solid rgba(200, 138, 54, 0.3);">
+                  ${safeRole}
+                </span>
+                ${(member.email.toLowerCase() !== adminEmail.toLowerCase()) ? `
+                  <button type="button" class="btn-icon delete" title="Delete / Remove Staff" onclick="handleRemoveStaff('${safeUid}', '${safeName}')">
+                    🗑️
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div style="text-align: center; padding: 30px; color: #EF4444;">Failed to load staff list.</div>';
+      }
+    }
+
+    async function handleRemoveStaff(uid, name) {
+      if (!confirm(`Are you sure you want to remove ${name} from the staff records?`)) {
+        return;
+      }
+      try {
+        if (window.PelitaFirebase && window.PelitaFirebase.removeStaffRecord) {
+          await window.PelitaFirebase.removeStaffRecord(uid);
+          showToast(`Staff record for ${name} removed.`);
+          await loadStaffList();
+        }
+      } catch (err) {
+        alert('Failed to remove: ' + err.message);
+      }
+    }
+
+    // ==========================================
+    // --- KITCHEN ORDERS & LIVE TRACKING (KDS) ---
+    // ==========================================
+    let adminAllOrders = [];
+    let orderBranchFilter = 'all';
+    let orderStatusFilter = 'active';
+    let orderSearchQuery = '';
+    let kitchenAudioEnabled = true;
+    let previousOrderIds = new Set();
+    let isFirstOrdersLoad = true;
+
+    function playKitchenChime() {
+      if (!kitchenAudioEnabled) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+
+        // Dual pleasant chime: D5 (587.33Hz) -> A5 (880Hz)
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(587.33, now);
+        gain1.gain.setValueAtTime(0.2, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.35);
+
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(880.0, now + 0.15);
+        gain2.gain.setValueAtTime(0.25, now + 0.15);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now + 0.15);
+        osc2.stop(now + 0.55);
+      } catch (e) {
+        console.warn('Audio chime notice:', e);
+      }
+    }
+
+    function toggleKitchenAudio() {
+      kitchenAudioEnabled = !kitchenAudioEnabled;
+      const btn = document.getElementById('btn-audio-toggle');
+      if (btn) {
+        btn.innerHTML = kitchenAudioEnabled ? '🔔 Sound Chime: ON' : '🔕 Sound Chime: OFF';
+      }
+      if (kitchenAudioEnabled) {
+        playKitchenChime();
+        showToast('Kitchen chime enabled.');
+      } else {
+        showToast('Kitchen chime muted.');
+      }
+    }
+
+    function initKitchenOrdersListener() {
+      if (window.PelitaFirebase && window.PelitaFirebase.onOrdersChange) {
+        window.PelitaFirebase.onOrdersChange((orders) => {
+          if (!isFirstOrdersLoad && orders && orders.length) {
+            const hasNewOrder = orders.some(o => {
+              const id = o.orderId || o.id;
+              return id && !previousOrderIds.has(id) && o.status === 'received';
+            });
+            if (hasNewOrder) {
+              playKitchenChime();
+            }
+          }
+          isFirstOrdersLoad = false;
+          previousOrderIds = new Set((orders || []).map(o => o.orderId || o.id));
+
+          adminAllOrders = orders || [];
+          updateOrdersBadgeCount();
+          renderAdminOrders();
+        });
+      } else {
+        loadAdminOrders();
+      }
+    }
+
+    async function loadAdminOrders() {
+      if (window.PelitaFirebase && window.PelitaFirebase.getOrders) {
+        adminAllOrders = await window.PelitaFirebase.getOrders();
+      } else {
+        try {
+          adminAllOrders = JSON.parse(localStorage.getItem('pelita_orders_list') || '[]');
+        } catch (e) {
+          adminAllOrders = [];
+        }
+      }
+      previousOrderIds = new Set((adminAllOrders || []).map(o => o.orderId || o.id));
+      updateOrdersBadgeCount();
+      renderAdminOrders();
+    }
+
+    function updateOrdersBadgeCount() {
+      const badge = document.getElementById('orders-badge-count');
+      if (!badge) return;
+      const activeCount = (adminAllOrders || []).filter(o => o.status !== 'served' && o.status !== 'cancelled').length;
+      if (activeCount > 0) {
+        badge.textContent = activeCount;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function setOrderBranchFilter(branch) {
+      orderBranchFilter = branch;
+      document.querySelectorAll('#order-branch-filters .pill-btn').forEach(btn => {
+        btn.classList.toggle('is-active', btn.getAttribute('data-order-branch') === branch);
+      });
+      renderAdminOrders();
+    }
+
+    function setOrderStatusFilter(status) {
+      orderStatusFilter = status;
+      document.querySelectorAll('#order-status-filters .pill-btn').forEach(btn => {
+        btn.classList.toggle('is-active', btn.getAttribute('data-order-status') === status);
+      });
+      renderAdminOrders();
+    }
+
+    function handleOrderSearchInput(e) {
+      orderSearchQuery = (e.target.value || '').trim().toLowerCase();
+      renderAdminOrders();
+    }
+
+    function renderAdminOrders() {
+      const container = document.getElementById('admin-orders-grid');
+      if (!container) return;
+
+      const filtered = (adminAllOrders || []).filter(order => {
+        // Branch filter
+        if (orderBranchFilter !== 'all') {
+          const b = (order.branch || '').toLowerCase();
+          if (b !== orderBranchFilter) return false;
+        }
+        // Status filter
+        if (orderStatusFilter === 'active') {
+          if (order.status === 'served' || order.status === 'cancelled') return false;
+        } else if (orderStatusFilter !== 'all') {
+          if (order.status !== orderStatusFilter) return false;
+        }
+        // Search query
+        if (orderSearchQuery) {
+          const id = (order.orderId || order.id || '').toLowerCase();
+          const name = (order.customerName || '').toLowerCase();
+          const itemsText = (order.items || []).map(i => i.name || i.nameBM || '').join(' ').toLowerCase();
+          if (!id.includes(orderSearchQuery) && !name.includes(orderSearchQuery) && !itemsText.includes(orderSearchQuery)) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--bg-espresso); border: 1px dashed var(--border); border-radius: var(--radius);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">📋</div>
+            <div style="font-weight: 600; font-size: 1rem; color: #FFF;">No orders found</div>
+            <p style="font-size: 0.82rem; margin-top: 6px;">There are no orders matching the selected filter (${orderStatusFilter === 'active' ? 'Active Orders' : orderStatusFilter}).</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(order => {
+        const rawOrderId = order.orderId || order.id || 'N/A';
+        const safeOrderId = sanitizeId(rawOrderId);
+        const status = order.status || 'received';
+        const branchBadge = (order.branch === 'putrajaya') ? '🏛️ Putrajaya' : '🏡 Sepang';
+
+        // Robust order type detection ('dinein', 'dine_in', 'dine-in', 'takeaway', 'delivery')
+        const rawType = (order.orderType || '').toLowerCase().replace(/[-_\s]/g, '');
+        let orderTypeBadge = '🥡 Takeaway';
+        let orderTypeStyle = 'background: rgba(255, 255, 255, 0.08); color: #E5E7EB; border: 1px solid rgba(255, 255, 255, 0.15);';
+        if (rawType === 'dinein') {
+          orderTypeBadge = '🍽️ Dine-in';
+          orderTypeStyle = 'background: rgba(200, 138, 54, 0.2); color: var(--gold); border: 1px solid rgba(200, 138, 54, 0.4); font-weight: 700;';
+        } else if (rawType === 'delivery') {
+          orderTypeBadge = '🛵 Delivery';
+          orderTypeStyle = 'background: rgba(59, 130, 246, 0.2); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.4); font-weight: 700;';
+        }
+        
+        let statusBadgeClass = 'order-status-received';
+        let statusLabel = '📥 Received';
+        if (status === 'in_progress') {
+          statusBadgeClass = 'order-status-in_progress';
+          statusLabel = '🍳 In Progress';
+        } else if (status === 'prepared') {
+          statusBadgeClass = 'order-status-prepared';
+          statusLabel = '📦 Food Ready';
+        } else if (status === 'served') {
+          statusBadgeClass = 'order-status-served';
+          statusLabel = '✅ Served';
+        }
+
+        // Format time
+        let timeStr = 'Just now';
+        if (order.createdAt) {
+          const d = new Date(order.createdAt);
+          timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' (' + d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ')';
+        }
+
+        // Action Buttons according to state
+        let actionButtonsHtml = '';
+        if (status === 'received') {
+          actionButtonsHtml = `
+            <button type="button" class="btn-primary-admin" style="flex: 2; min-width: 120px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'in_progress')">
+              🍳 Start Cooking
+            </button>
+            <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem; color: #EF4444;" onclick="cancelAdminOrder('${safeOrderId}')">
+              🗑️ Void
+            </button>
+          `;
+        } else if (status === 'in_progress') {
+          actionButtonsHtml = `
+            <button type="button" class="btn-primary-admin" style="flex: 2; min-width: 120px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem; background: #10B981; border-color: #10B981;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'prepared')">
+              📦 Food Ready
+            </button>
+            <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'received')">
+              ↩ Reset
+            </button>
+          `;
+        } else if (status === 'prepared') {
+          actionButtonsHtml = `
+            <button type="button" class="btn-primary-admin" style="flex: 2; min-width: 120px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem; background: #3B82F6; border-color: #3B82F6;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'served')">
+              ✅ Mark Served
+            </button>
+            <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 42px; padding: 9px 12px; font-size: 0.82rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'in_progress')">
+              ↩ Revert
+            </button>
+          `;
+        } else if (status === 'served') {
+          actionButtonsHtml = `
+            <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 90px; min-height: 40px; padding: 8px 12px; font-size: 0.8rem;" onclick="advanceAdminOrderStatus('${safeOrderId}', 'prepared')">
+              ↩ Re-open
+            </button>
+            <button type="button" class="btn-seed-menu" style="flex: 1; min-width: 70px; min-height: 40px; padding: 8px 12px; font-size: 0.8rem; color: #EF4444;" onclick="cancelAdminOrder('${safeOrderId}')">
+              🗑️ Delete
+            </button>
+          `;
+        }
+
+        const itemsListHtml = (order.items || []).map(item => `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); font-size: 0.84rem;">
+            <div style="flex: 1; padding-right: 8px;">
+              <span style="font-weight: 700; color: var(--gold); margin-right: 6px;">${Number(item.qty || 1)}x</span>
+              <span style="color: #FFF;">${escapeHtml(item.name || item.nameBM)}</span>
+            </div>
+            <div style="font-weight: 600; color: var(--text-muted); font-size: 0.82rem; white-space: nowrap;">
+              RM ${Number(item.cost || (item.price * (item.qty || 1))).toFixed(2)}
+            </div>
+          </div>
+        `).join('');
+
+        const safeCustomerName = escapeHtml(order.customerName || 'Customer');
+        const safeCustomerNotes = order.customerNotes ? escapeHtml(order.customerNotes) : '';
+
+        return `
+          <div class="kds-order-card" style="background: var(--bg-espresso); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 16px rgba(0,0,0,0.25); position: relative; overflow: hidden;">
+            
+            <!-- Top bar -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                <div>
+                  <div style="font-size: 1.15rem; font-weight: 800; font-family: monospace; color: #FFF; letter-spacing: 0.5px;">
+                    #${safeOrderId}
+                  </div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+                    ${timeStr}
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                  <span class="order-status-badge ${statusBadgeClass}">
+                    ${statusLabel}
+                  </span>
+                  <div style="display: flex; gap: 4px; font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">
+                    <span style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px;">${branchBadge}</span>
+                    <span style="${orderTypeStyle} padding: 2px 7px; border-radius: 4px;">${orderTypeBadge}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Customer Info -->
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-dark); border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.82rem;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted);">Customer:</span>
+                  <strong style="color: #FFF;">${safeCustomerName}</strong>
+                </div>
+                ${safeCustomerNotes ? `
+                  <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border-dark); color: #FCA5A5; font-size: 0.78rem;">
+                    <strong>Note:</strong> "${safeCustomerNotes}"
+                  </div>
+                ` : ''}
+              </div>
+
+              <!-- Items Breakdown -->
+              <div style="margin-bottom: 14px;">
+                ${itemsListHtml}
+              </div>
+            </div>
+
+            <!-- Footer: Total & Actions -->
+            <div style="border-top: 1px solid var(--border-dark); padding-top: 12px; margin-top: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+                <span style="font-size: 0.82rem; color: var(--text-muted);">Total Amount</span>
+                <span style="font-size: 1.15rem; font-weight: 800; color: var(--gold);">RM ${Number(order.totalAmount || 0).toFixed(2)}</span>
+              </div>
+
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                ${actionButtonsHtml}
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function advanceAdminOrderStatus(orderId, newStatus) {
+      try {
+        if (window.PelitaFirebase && window.PelitaFirebase.updateOrderStatus) {
+          await window.PelitaFirebase.updateOrderStatus(orderId, newStatus);
+        } else {
+          // Local fallback
+          const existing = JSON.parse(localStorage.getItem('pelita_orders_list') || '[]');
+          const updated = existing.map(o => {
+            if ((o.orderId || o.id) === orderId) return { ...o, status: newStatus, updatedAt: Date.now() };
+            return o;
+          });
+          localStorage.setItem('pelita_orders_list', JSON.stringify(updated));
+        }
+
+        // Immediate optimistic update
+        adminAllOrders = adminAllOrders.map(o => {
+          if ((o.orderId || o.id) === orderId) return { ...o, status: newStatus, updatedAt: Date.now() };
+          return o;
+        });
+
+        updateOrdersBadgeCount();
+        renderAdminOrders();
+
+        const labels = {
+          received: 'Received',
+          in_progress: 'In Progress (Cooking)',
+          prepared: 'Prepared (Ready)',
+          served: 'Served'
+        };
+        showToast(`Order #${orderId} moved to ${labels[newStatus] || newStatus}`);
+      } catch (e) {
+        alert('Failed to update status: ' + e.message);
+      }
+    }
+
+    async function cancelAdminOrder(orderId) {
+      if (!confirm(`Are you sure you want to delete order #${orderId}?`)) return;
+      try {
+        if (window.PelitaFirebase && window.PelitaFirebase.deleteOrder) {
+          await window.PelitaFirebase.deleteOrder(orderId);
+        } else {
+          const existing = JSON.parse(localStorage.getItem('pelita_orders_list') || '[]');
+          const updated = existing.filter(o => (o.orderId || o.id) !== orderId);
+          localStorage.setItem('pelita_orders_list', JSON.stringify(updated));
+        }
+
+        adminAllOrders = adminAllOrders.filter(o => (o.orderId || o.id) !== orderId);
+        previousOrderIds.delete(orderId);
+        updateOrdersBadgeCount();
+        renderAdminOrders();
+        showToast(`Order #${orderId} deleted.`);
+      } catch (e) {
+        alert('Failed to delete order: ' + e.message);
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('admin-toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => {
+        t.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

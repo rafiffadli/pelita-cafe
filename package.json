@@ -1,0 +1,21 @@
+{
+  "name": "pelita-cafe",
+  "version": "2.0.0",
+  "description": "Pelita Cafe - Authentic Malaysian Heritage Eatery & Contemporary Cafe (Since 2004)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "pelita-cafe",
+    "malaysia-cafe",
+    "restaurant",
+    "kopitiam",
+    "putrajaya",
+    "sepang"
+  ],
+  "author": "Pelita Cafe Team",
+  "license": "MIT"
+}

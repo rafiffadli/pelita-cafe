@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pelita Cafe | Authentic Heritage & Artisan Coffee (Since 2004)</title>
+  <meta name="description" content="Pelita Cafe - Contemporary Dining & Authentic Malaysian Heritage in Sepang & Putrajaya since 2004. Famous for Nasi Ayam Pelita, fiery Geprek, sizzling hot wok, and artisan brews.">
+  <meta name="keywords" content="Pelita Cafe, Nasi Ayam Pelita, Putrajaya Cafe, Sepang Restaurant, Halal Malaysian Food, Nasi Ayam Geprek, Kopi Putrajaya">
+  <meta name="theme-color" content="#18110D">
+
+  <!-- Security Headers & Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://elfsightcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://firebasestorage.googleapis.com https://pelita-cafe.firebasestorage.app; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com; frame-src 'self' https://www.google.com https://maps.google.com; base-uri 'self'; object-src 'none';">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <!-- Favicon & PWA Icons -->
+  <link rel="icon" type="image/webp" href="assets/images/logo.webp">
+  <link rel="apple-touch-icon" href="assets/images/logo.webp">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Typography: Google Fonts (Fraunces & Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Design System Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=4.8">
+</head>
+<body>
+
+  <!-- DYNAMIC INTERACTIVE PARALLAX & AMBIENT BACKGROUND -->
+  <div class="interactive-bg-wrapper" aria-hidden="true">
+    <!-- Ambient Dynamic Glow Orbs -->
+    <div class="bg-orb bg-orb-primary" id="bg-orb-1"></div>
+    <div class="bg-orb bg-orb-gold" id="bg-orb-2"></div>
+    <div class="bg-orb bg-orb-terracotta" id="bg-orb-3"></div>
+
+    <!-- Interactive Cursor Ambient Spotlight -->
+    <div class="cursor-ambient-spotlight" id="cursor-spotlight"></div>
+    <!-- Fine Grain / Paper Canvas Texture Overlay -->
+    <div class="bg-texture-canvas"></div>
+  </div>
+
+  <!-- 1. TOP ANNOUNCEMENT & LIVE HOURS BAR -->
+  <div class="top-announcement-bar">
+    <div class="container announcement-inner">
+      <div class="live-outlets-ticker" id="header-live-ticker">
+        <span class="ticker-item"><span class="ticker-dot is-open"></span> <strong>Putrajaya:</strong> Buka Sekarang (Open)</span>
+        <span class="ticker-divider">•</span>
+        <span class="ticker-item"><span class="ticker-dot is-open"></span> <strong>Sepang:</strong> Buka Sekarang (Open)</span>
+      </div>
+      <div class="top-actions">
+        <a href="tel:+60123377807" class="top-phone-link" id="top-phone-link">
+          <span>📞</span> <span id="top-phone-text">+6012-337 7807</span>
+        </a>
+        <div class="lang-switch-pills">
+          <button type="button" class="lang-btn is-active" data-action="toggle-lang" data-lang="en">EN</button>
+          <button type="button" class="lang-btn" data-action="toggle-lang" data-lang="bm">BM</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SITE HEADER & NAVIGATION -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="#home" class="brand-link" aria-label="Pelita Cafe Home">
+        <img src="assets/images/logo-dark.webp" alt="Pelita Cafe" class="brand-logo-img">
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link" data-i18n="nav_home">Utama</a></li>
+          <li><a href="#menu" class="nav-link" data-i18n="nav_menu">Menu</a></li>
+          <li><a href="#menu-book" class="nav-link" data-i18n="nav_book">Buku Menu</a></li>
+          <li><a href="#heritage" class="nav-link" data-i18n="nav_story">Kisah Warisan</a></li>
+          <li><a href="#outlets" class="nav-link" data-i18n="nav_outlets">Cawangan</a></li>
+          <li><a href="#gallery" class="nav-link" data-i18n="nav_gallery">Galeri</a></li>
+          <li><a href="#reviews" class="nav-link" data-i18n="nav_reviews">Ulasan Pelanggan</a></li>
+        </ul>
+      </nav>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <button type="button" class="btn-header-track" onclick="openOrderTrackerModal()" aria-label="Jejak Status Pesanan">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span data-i18n="nav_track_order">Jejak Pesanan</span>
+        </button>
+        <button type="button" class="btn-header-reserve" data-action="open-reserve" aria-label="Tempah Meja">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span data-i18n="btn_book_table">Tempah Meja</span>
+        </button>
+        <button type="button" class="btn-header-wa" onclick="openCartDrawer()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+          </svg>
+          <span data-i18n="order_wa_btn">Pesan Melalui WhatsApp</span>
+          <span class="cart-count-badge is-hidden">0</span>
+        </button>
+        <button type="button" class="mobile-burger-trigger" id="mobile-burger-btn" aria-label="Buka Menu Navigasi" onclick="if(window.openMobileDrawer)window.openMobileDrawer()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Modern Dynamic Scroll Reading Progress Indicator -->
+  <div class="scroll-progress-container" aria-hidden="true">
+    <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+  </div>
+
+  <main>
+    <!-- 3. HERO SECTION -->
+    <section class="hero-section" id="home">
+      <!-- Section Interactive Parallax Background -->
+      <div class="section-parallax-bg" aria-hidden="true">
+        <div class="sec-bg-item pos-left-top" data-travel="120" data-rot="25">
+          <svg width="90" height="90" viewBox="0 0 100 100" fill="none">
+            <ellipse cx="50" cy="50" rx="38" ry="46" stroke="#C88A36" stroke-width="3" fill="rgba(200, 138, 54, 0.12)"/>
+            <path d="M48 10C40 32 60 68 52 90" stroke="#9B4A24" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="4" fill="#C88A36" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-top" data-travel="-140" data-rot="-20">
+          <svg width="95" height="140" viewBox="0 0 100 140" fill="none">
+            <path d="M30 130C10 105 45 75 25 45C10 25 35 12 25 2" stroke="#C88A36" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 6"/>
+            <path d="M65 135C85 110 50 80 70 50C85 30 60 18 70 8" stroke="#9B4A24" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container hero-grid">
+        <div class="hero-text-col" data-reveal>
+          <div class="hero-badge-wrap">
+            <span class="badge-sparkle">✨</span>
+            <span class="badge-text" data-i18n="badge_heritage">SEJAK 2004 • RESIPI WARISAN ASLI</span>
+          </div>
+          <h1 class="hero-heading" data-i18n="hero_title">
+            Harmoni Rasa Warisan & Aroma Kopi Kontemporari
+          </h1>
+          <p class="hero-subtext" data-i18n="hero_subtitle">
+            Menyajikan Nasi Ayam Pelita legenda, masakan kuali panas berasap, dan kopi barista bermutu tinggi sejak 2004 di Sepang & Putrajaya.
+          </p>
+          <div class="hero-cta-group">
+            <a href="#menu" class="btn-primary-hero">
+              <span data-i18n="btn_explore_menu">Terokai Semua Menu</span>
+              <span>↓</span>
+            </a>
+            <button type="button" class="btn-secondary-hero" onclick="openCartDrawer()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+              </svg>
+              <span data-i18n="order_wa_btn">Pesan Melalui WhatsApp</span>
+            </button>
+          </div>
+          <div class="hero-trust-bar">
+            <div class="trust-item">
+              <div class="trust-icon-box">✓</div>
+              <div>
+                <div class="trust-title" data-i18n="badge_halal">100% Ramuan Halal</div>
+                <div class="trust-subtitle" data-i18n="badge_halal_sub">Diiktiraf Bersih & Suci</div>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon-box">📍</div>
+              <div>
+                <div class="trust-title" data-i18n="badge_branches">2 Cawangan: Sepang & Putrajaya</div>
+                <div class="trust-subtitle" data-i18n="badge_branches_sub">Ruang Selesa Berhawa Dingin</div>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon-box">⭐</div>
+              <div>
+                <div class="trust-title">4.8★ di Google Reviews</div>
+                <div class="trust-subtitle" data-i18n="badge_reviews">451+ Ulasan Pelanggan Disahkan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Media Showcase -->
+        <div class="hero-media-showcase" data-reveal>
+          <div class="hero-card-stack">
+            <img src="assets/images/dishes-spread.webp" alt="Sajian istimewa Pelita Cafe" class="hero-showcase-img" fetchpriority="high" decoding="async" width="620" height="440">
+            <div class="floating-badge-dish">
+              <img src="assets/images/nasi-ayam-pelita.webp" alt="Nasi Ayam Pelita" class="badge-thumb">
+              <div>
+                <h4>Nasi Ayam Pelita</h4>
+                <span data-i18n="hero_floating_badge">RM 8.90 • Resipi Ikonik Sejak 2004</span>
+              </div>
+            </div>
+            <div class="floating-rating-pill">
+              <span class="star-rating">⭐</span>
+              <span data-i18n="hero_rating_badge">Resipi Warisan Sejak 2004</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. FULL INTERACTIVE MENU EXPLORER -->
+    <section class="menu-explorer-section" id="menu">
+      <!-- Section Interactive Parallax Background -->
+      <div class="section-parallax-bg" aria-hidden="true">
+        <div class="sec-bg-item pos-left-top" data-travel="130" data-rot="25">
+          <svg width="90" height="90" viewBox="0 0 100 100" fill="none">
+            <path d="M15 85C15 85 20 35 65 20C100 5 85 60 70 75C50 95 15 85 15 85Z" stroke="#9B4A24" stroke-width="3" fill="rgba(155, 74, 36, 0.12)"/>
+            <path d="M15 85Q55 55 65 20" stroke="#C88A36" stroke-width="2.5"/>
+            <path d="M40 60Q55 65 65 72" stroke="#C88A36" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-top" data-travel="-130" data-rot="-20">
+          <svg width="95" height="140" viewBox="0 0 100 140" fill="none">
+            <path d="M30 130C10 105 45 75 25 45C10 25 35 12 25 2" stroke="#C88A36" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 6"/>
+            <path d="M65 135C85 110 50 80 70 50C85 30 60 18 70 8" stroke="#9B4A24" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-left-bot" data-travel="100" data-rot="-15">
+          <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
+            <ellipse cx="50" cy="50" rx="38" ry="46" stroke="#C88A36" stroke-width="3" fill="rgba(200, 138, 54, 0.12)"/>
+            <path d="M48 10C40 32 60 68 52 90" stroke="#9B4A24" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-bot" data-travel="-100" data-rot="30">
+          <svg width="45" height="45" viewBox="0 0 50 50" fill="none">
+            <path d="M25 0L28 18L46 21L31 31L35 49L25 38L15 49L19 31L4 21L22 18L25 0Z" fill="#C88A36" opacity="0.6"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="section-head-center" data-reveal>
+          <span class="section-eyebrow" data-i18n="menu_eyebrow">NIKMATI SETIAP HIDANGAN</span>
+          <h2 class="section-title" data-i18n="menu_title">Terokai Semua Pilihan Menu</h2>
+          <p class="section-subtext" data-i18n="menu_subtext">Lebih 60 sajian asli, masakan kuali panas, sarapan kopitiam, dan kopi barista segar mengikut pesanan anda.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="menu-search-wrapper" data-reveal>
+          <div class="search-input-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="menu-search-input" class="menu-search-input" placeholder="Cari hidangan, kopi, ramuan..." data-i18n-placeholder="search_placeholder" aria-label="Cari sajian menu">
+            <button type="button" id="menu-search-clear" class="search-clear-btn" aria-label="Padam Carian">✕</button>
+          </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="category-filter-nav" data-reveal>
+          <button type="button" class="filter-btn is-active" data-category="all" data-i18n="filter_all">Semua Menu</button>
+          <button type="button" class="filter-btn" data-category="signatures" data-i18n="filter_signatures">Sajian Pilihan</button>
+          <button type="button" class="filter-btn" data-category="kopitiam" data-i18n="filter_kopitiam">Kopitiam Sepanjang Hari</button>
+          <button type="button" class="filter-btn" data-category="wok" data-i18n="filter_wok">Masakan Kuali Panas</button>
+          <button type="button" class="filter-btn" data-category="omelettes" data-i18n="filter_omelettes">Siri Omelette</button>
+          <button type="button" class="filter-btn" data-category="bites" data-i18n="filter_bites">Kudapan & Minum Petang</button>
+          <button type="button" class="filter-btn" data-category="coffee" data-i18n="filter_coffee">Kopi Barista</button>
+          <button type="button" class="filter-btn" data-category="noncoffee" data-i18n="filter_noncoffee">Teh & Minuman Kaw</button>
+          <button type="button" class="filter-btn" data-category="juices" data-i18n="filter_juices">Jus Buah & Penyejuk Tekak</button>
+        </div>
+
+        <!-- Menu Dishes Grid -->
+        <div id="menu-items-grid" class="menu-items-grid" data-reveal>
+          <!-- Populated dynamically by script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. DIGITAL INTERACTIVE MENU BOOK SECTION -->
+    <section class="menu-book-section" id="menu-book">
+      <!-- Section Interactive Parallax Background -->
+      <div class="section-parallax-bg" aria-hidden="true">
+        <div class="sec-bg-item pos-left-mid" data-travel="100" data-rot="25">
+          <svg width="120" height="120" viewBox="0 0 140 140" fill="none">
+            <circle cx="70" cy="70" r="62" stroke="#C88A36" stroke-width="2" stroke-dasharray="8 6"/>
+            <circle cx="70" cy="70" r="48" stroke="#E5A853" stroke-width="1.5"/>
+            <rect x="50" y="50" width="40" height="40" stroke="#C88A36" stroke-width="1.5" transform="rotate(45 70 70)"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-mid" data-travel="-100" data-rot="-25">
+          <svg width="110" height="110" viewBox="0 0 140 140" fill="none">
+            <circle cx="70" cy="70" r="54" stroke="#9B4A24" stroke-width="2" stroke-dasharray="8 6"/>
+            <circle cx="70" cy="70" r="38" stroke="#C88A36" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="section-head-center" data-reveal>
+          <span class="section-eyebrow" style="color: var(--gold-accent);" data-i18n="book_eyebrow">RUANG BACAAN MAYA</span>
+          <h2 class="section-title book-section-title" data-i18n="book_title">Buku Menu Digital Interaktif</h2>
+          <p class="section-subtext book-section-sub" data-i18n="book_subtitle">
+            Selak halaman buku menu fizikal Pelita Cafe secara maya terus pada skrin peranti anda.
+          </p>
+        </div>
+
+        <div class="menu-book-wrapper" data-reveal>
+          <div class="menu-book-viewport">
+            <div id="menu-book-canvas" class="menu-book-canvas">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+
+            <!-- Book Nav Controls -->
+            <div class="book-nav-controls">
+              <button type="button" class="btn-book-nav" id="book-prev-btn" aria-label="Halaman Sebelumnya">
+                <span>←</span> <span data-i18n="btn_prev">Halaman Sebelumnya</span>
+              </button>
+              <div class="book-page-indicator" id="book-page-indicator">Halaman 1 / 9</div>
+              <button type="button" class="btn-book-nav" id="book-next-btn" aria-label="Halaman Seterusnya">
+                <span data-i18n="btn_next">Halaman Seterusnya</span> <span>→</span>
+              </button>
+            </div>
+
+            <!-- Page Thumbnails -->
+            <div class="book-thumbnails-bar" aria-label="Menu Book Pages Selector">
+              <button type="button" class="thumb-btn is-current-page" data-book-page="1">1</button>
+              <button type="button" class="thumb-btn" data-book-page="2">2</button>
+              <button type="button" class="thumb-btn" data-book-page="3">3</button>
+              <button type="button" class="thumb-btn" data-book-page="4">4</button>
+              <button type="button" class="thumb-btn" data-book-page="5">5</button>
+              <button type="button" class="thumb-btn" data-book-page="6">6</button>
+              <button type="button" class="thumb-btn" data-book-page="7">7</button>
+              <button type="button" class="thumb-btn" data-book-page="8">8</button>
+              <button type="button" class="thumb-btn" data-book-page="9">9</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. HERITAGE STORY SECTION -->
+    <section class="story-section" id="heritage">
+      <!-- Section Interactive Parallax Background -->
+      <div class="section-parallax-bg" aria-hidden="true">
+        <div class="sec-bg-item pos-left-top" data-travel="120" data-rot="30">
+          <svg width="120" height="120" viewBox="0 0 140 140" fill="none">
+            <circle cx="70" cy="70" r="62" stroke="#C88A36" stroke-width="2" stroke-dasharray="8 6"/>
+            <circle cx="70" cy="70" r="48" stroke="#9B4A24" stroke-width="1.5"/>
+            <rect x="50" y="50" width="40" height="40" stroke="#E5A853" stroke-width="1.5" transform="rotate(45 70 70)"/>
+            <circle cx="70" cy="70" r="10" fill="rgba(200, 138, 54, 0.16)" stroke="#C88A36" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-mid" data-travel="-110" data-rot="-25">
+          <svg width="90" height="90" viewBox="0 0 100 100" fill="none">
+            <path d="M15 85C15 85 20 35 65 20C100 5 85 60 70 75C50 95 15 85 15 85Z" stroke="#9B4A24" stroke-width="3" fill="rgba(155, 74, 36, 0.12)"/>
+            <path d="M15 85Q55 55 65 20" stroke="#C88A36" stroke-width="2.5"/>
+            <path d="M40 60Q55 65 65 72" stroke="#C88A36" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container story-grid">
+        <div class="story-media-wrap" data-reveal>
+          <img src="assets/images/chef-story.webp" alt="Pelita Cafe founders and heritage story" class="story-img-main" loading="lazy">
+          <div class="story-badge-floating">
+            <span class="badge-year-num">20+</span>
+            <span class="badge-year-label" data-i18n="story_badge_label">Tahun Warisan Rasa</span>
+          </div>
+        </div>
+
+        <div class="story-content" data-reveal>
+          <span class="section-eyebrow" data-i18n="story_eyebrow">PERJALANAN KAMI SEJAK 2004</span>
+          <h2 data-i18n="story_title">Daripada Permulaan Sederhana di Sepang Menjadi Ikon Putrajaya</h2>
+          <p class="story-lead" data-i18n="story_lead">
+            Bermula pada tahun 2004 sebagai sebuah gerai sederhana di Medan 23, Bandar Baru Salak Tinggi, Pelita Cafe telah berkembang menjadi destinasi menjamu selera yang dekat di hati ramai.
+          </p>
+          <p class="story-text" data-i18n="story_p1">
+            Berakar umbi daripada teknik masakan Hainan asli dan disebatikan bersama rempah ratus Malaysia, Pelita Cafe sentiasa berpegang pada janji asal: hidangan ikhlas, porsi memuaskan, dan bahan yang dimasak segar setiap pagi tanpa sebarang kompromi.
+          </p>
+          <p class="story-text" data-i18n="story_p2">
+            Hari ini, cawangan kami di Putrajaya dan Sepang merapatkan kenikmatan sajian tradisi dengan keselesaan kafe kontemporari — menyediakan kopi barista artisan, teh tarik kaw yang menenangkan, serta ruang mesra untuk seisi keluarga, sahabat handai dan rakan sekerja.
+          </p>
+
+          <div class="story-timeline">
+            <div class="timeline-step">
+              <span class="step-year">2004</span>
+              <div class="step-info">
+                <strong data-i18n="story_tl_title_1">Kedai Pertama di Sepang</strong>
+                <small data-i18n="story_tl_desc_1">Mula beroperasi di Medan 23 Salak Tinggi dengan resipi legenda Nasi Ayam Panggang kami.</small>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <span class="step-year">2012</span>
+              <div class="step-info">
+                <strong data-i18n="story_tl_title_2">Memperluas Sajian Kuali Panas</strong>
+                <small data-i18n="story_tl_desc_2">Memperkenalkan masakan kuali panas berasap, hidangan geprek berapi, dan menambat hati pelanggan setia.</small>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <span class="step-year">2019</span>
+              <div class="step-info">
+                <strong data-i18n="story_tl_title_3">Cawangan Utama Putrajaya</strong>
+                <small data-i18n="story_tl_desc_3">Melancarkan konsep kafe moden di Presint 15 bersama bancuhan kopi barista istimewa.</small>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <span class="step-year">Kini</span>
+              <div class="step-info">
+                <strong data-i18n="story_tl_title_4">4.8★ Menerusi 451+ Ulasan Google</strong>
+                <small data-i18n="story_tl_desc_4">Menyajikan ribuan pelanggan gembira setiap minggu dengan jaminan kualiti 100% Halal.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. OUTLETS & OPERATING HOURS SECTION -->
+    <section class="outlets-section" id="outlets">
+      <!-- Section Interactive Parallax Background -->
+      <div class="section-parallax-bg" aria-hidden="true">
+        <div class="sec-bg-item pos-left-mid" data-travel="110" data-rot="20">
+          <svg width="85" height="85" viewBox="0 0 100 100" fill="none">
+            <ellipse cx="50" cy="50" rx="38" ry="46" stroke="#C88A36" stroke-width="3" fill="rgba(200, 138, 54, 0.12)"/>
+            <path d="M48 10C40 32 60 68 52 90" stroke="#9B4A24" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-mid" data-travel="-120" data-rot="-20">
+          <svg width="105" height="95" viewBox="0 0 120 110" fill="none">
+            <path d="M20 30H90C90 70 75 90 55 90C35 90 20 70 20 30Z" stroke="#C88A36" stroke-width="3" fill="rgba(200, 138, 54, 0.1)"/>
+            <path d="M90 40H105C112 40 115 48 115 55C115 65 108 70 90 70" stroke="#9B4A24" stroke-width="3" stroke-linecap="round"/>
+            <path d="M10 95H100" stroke="#C88A36" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="section-head-center" data-reveal>
+          <span class="section-eyebrow" data-i18n="outlets_eyebrow">KUNJUNGI KAMI HARI INI</span>
+          <h2 class="section-title" data-i18n="outlets_title">Cawangan & Waktu Operasi</h2>
+          <p class="section-subtext" data-i18n="outlets_subtext">Ketahui lokasi cawangan kami di Putrajaya dan Sepang, lengkap dengan kemas kini waktu operasi secara langsung.</p>
+        </div>
+
+        <div class="outlets-grid">
+          <!-- Putrajaya Card -->
+          <div class="outlet-card" data-reveal>
+            <div class="outlet-card-header">
+              <div>
+                <h3 class="outlet-title">Pelita Cafe Putrajaya</h3>
+                <span class="outlet-sub" data-i18n="outlet_sub_putrajaya">Cawangan Utama Presint 15</span>
+              </div>
+              <div id="status-badge-putrajaya" class="status-pill status-open">
+                <span class="status-dot"></span>
+                <span data-i18n="open_now">BUKA SEKARANG</span>
+              </div>
+            </div>
+            <!-- Holiday / Temporary Closure Notice Banner -->
+            <div id="outlet-notice-putrajaya" class="outlet-notice-banner"></div>
+            <div class="outlet-card-body">
+              <div class="outlet-info-row">
+                <span class="outlet-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </span>
+                <div class="outlet-info-content">
+                  <h4 data-i18n="label_address">Alamat</h4>
+                  <p id="outlet-addr-putrajaya">Jalan Diplomatik 1, Presint 15, 62050 Putrajaya, Wilayah Persekutuan</p>
+                  <button type="button" class="outlet-copy-btn" id="outlet-copy-btn-putrajaya" onclick="copyTextToClipboard(this.previousElementSibling.textContent.trim(), this)" data-i18n="btn_copy_addr">📋 Salin Alamat</button>
+                </div>
+              </div>
+              <div class="outlet-info-row">
+                <span class="outlet-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </span>
+                <div class="outlet-info-content">
+                  <h4 data-i18n="label_hours">Waktu Operasi</h4>
+                  <p class="outlet-hours-text" id="outlet-hours-putrajaya">Sabtu – Rabu: 9:00 PG – 10:00 MLM</p>
+                  <small id="status-note-putrajaya" style="color: var(--text-light);">Tutup Khamis & Jumaat</small>
+                </div>
+              </div>
+              <div class="outlet-info-row">
+                <span class="outlet-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </span>
+                <div class="outlet-info-content">
+                  <h4 data-i18n="label_phone">Telefon & WhatsApp</h4>
+                  <p id="outlet-phone-putrajaya">+6012-337 7807</p>
+                  <button type="button" class="outlet-copy-btn" id="outlet-copy-phone-putrajaya" onclick="copyTextToClipboard(this.previousElementSibling.textContent.trim(), this)" data-i18n="btn_copy_phone">📋 Salin Nombor</button>
+                </div>
+              </div>
+            </div>
+            <div class="outlet-card-actions">
+              <a href="https://maps.google.com/?q=Pelita+Cafe+Putrajaya+Presint+15" id="outlet-gmaps-putrajaya" target="_blank" rel="noopener noreferrer" class="btn-outlet-action btn-gmaps">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/>
+                  <circle cx="12" cy="9" r="2.8" fill="#FFFFFF"/>
+                </svg>
+                <span>Google Maps</span>
+              </a>
+              <a href="https://waze.com/ul?q=Pelita+Cafe+Putrajaya" id="outlet-waze-putrajaya" target="_blank" rel="noopener noreferrer" class="btn-outlet-action btn-waze">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#33CCFF">
+                  <path d="M13.314 1.59c-.225.003-.45.013-.675.03-2.165.155-4.295.924-6.069 2.327-2.194 1.732-3.296 4.325-3.496 7.05h.002c-.093 1.22-.23 2.15-.469 2.63-.238.479-.42.638-1.24.639C.27 14.259-.4 15.612.266 16.482c1.248 1.657 2.902 2.705 4.72 3.364a2.198 2.198 0 00-.033.367 2.198 2.198 0 002.2 2.197 2.198 2.198 0 002.128-1.668c1.307.12 2.607.14 3.824.1.364-.012.73-.045 1.094-.092a2.198 2.198 0 002.127 1.66 2.198 2.198 0 002.2-2.197 2.198 2.198 0 00-.151-.797 12.155 12.155 0 002.303-1.549c2.094-1.807 3.511-4.399 3.302-7.404-.112-1.723-.761-3.298-1.748-4.608-2.143-2.86-5.53-4.309-8.918-4.265zm.366 1.54c.312.008.623.027.933.063 2.48.288 4.842 1.496 6.4 3.577v.001c.829 1.1 1.355 2.386 1.446 3.792v.003c.173 2.477-.965 4.583-2.777 6.147a10.66 10.66 0 01-2.375 1.535 2.198 2.198 0 00-.98-.234 2.198 2.198 0 00-1.934 1.158 9.894 9.894 0 01-1.338.146 27.323 27.323 0 01-3.971-.148 2.198 2.198 0 00-1.932-1.156 2.198 2.198 0 00-1.347.463c-1.626-.553-3.078-1.422-4.155-2.762 1.052-.096 1.916-.6 2.319-1.408.443-.889.53-1.947.625-3.198v-.002c.175-2.391 1.11-4.536 2.92-5.964h.002c1.77-1.402 3.978-2.061 6.164-2.012zm-3.157 4.638c-.688 0-1.252.579-1.252 1.298 0 .72.564 1.297 1.252 1.297.689 0 1.252-.577 1.252-1.297 0-.711-.563-1.298-1.252-1.298zm5.514 0c-.688 0-1.25.579-1.25 1.298-.008.72.554 1.297 1.25 1.297.688 0 1.252-.577 1.252-1.297 0-.711-.564-1.298-1.252-1.298zM9.641 11.78a.72.72 0 00-.588.32.692.692 0 00-.11.54c.345 1.783 2.175 3.129 4.264 3.129h.125c1.056-.032 2.026-.343 2.816-.922.767-.556 1.29-1.316 1.477-2.137a.746.746 0 00-.094-.547.69.69 0 00-.445-.32.714.714 0 00-.867.539c-.22.93-1.299 1.9-2.934 1.94-1.572.046-2.738-.986-2.926-1.956a.72.72 0 00-.718-.586Z"/>
+                </svg>
+                <span>Waze</span>
+              </a>
+              <a href="https://wa.me/60123377807?text=Hello%20Pelita%20Cafe%20Putrajaya,%20saya%20ingin%20bertanya" id="outlet-wa-putrajaya" target="_blank" rel="noopener noreferrer" class="btn-outlet-action btn-wa-direct">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+                </svg>
+                <span>WhatsApp</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Sepang Card -->
+          <div class="outlet-card" data-reveal>
+            <div class="outlet-card-header">
+              <div>
+                <h3 class="outlet-title">Pelita Cafe Sepang</h3>
+                <span class="outlet-sub" data-i18n="outlet_sub_sepang">Asal Usul Warisan (Sejak 2004)</span>
+              </div>
+              <div id="status-badge-sepang" class="status-pill status-open">
+                <span class="status-dot"></span>
+                <span data-i18n="open_now">BUKA SEKARANG</span>
+              </div>
+            </div>
+            <!-- Holiday / Temporary Closure Notice Banner -->
+            <div id="outlet-notice-sepang" class="outlet-notice-banner"></div>
+            <div class="outlet-card-body">
+              <div class="outlet-info-row">
+                <span class="outlet-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </span>
+                <div class="outlet-info-content">
+                  <h4 data-i18n="label_address">Alamat</h4>
+                  <p id="outlet-addr-sepang">Medan 23, Bandar Baru Salak Tinggi, 43900 Sepang, Selangor</p>
+                  <button type="button" class="outlet-copy-btn" id="outlet-copy-btn-sepang" onclick="copyTextToClipboard(this.previousElementSibling.textContent.trim(), this)" data-i18n="btn_copy_addr">📋 Salin Alamat</button>
+                </div>
+              </div>
+              <div class="outlet-info-row">
+                <span class="outlet-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </span>
+                <div class="outlet-info-content">
+                  <h4 data-i18n="label_hours">Waktu Operasi</h4>
+                  <p class="outlet-hours-text" id="outlet-hours-sepang">Sabtu – Khamis: 9:00 PG – 7:00 PTG</p>
+                  <small id="status-note-sepang" style="color: var(--text-light);">Tutup Jumaat</small>
+                </div>
+              </div>
+              <div class="outlet-info-row">
+                <span class="outlet-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </span>
+                <div class="outlet-info-content">
+                  <h4 data-i18n="label_phone">Telefon & WhatsApp</h4>
+                  <p id="outlet-phone-sepang">+6012-337 7807</p>
+                  <button type="button" class="outlet-copy-btn" id="outlet-copy-phone-sepang" onclick="copyTextToClipboard(this.previousElementSibling.textContent.trim(), this)" data-i18n="btn_copy_phone">📋 Salin Nombor</button>
+                </div>
+              </div>
+            </div>
+            <div class="outlet-card-actions">
+              <a href="https://maps.google.com/?q=Pelita+Cafe+Sepang+Medan+23" id="outlet-gmaps-sepang" target="_blank" rel="noopener noreferrer" class="btn-outlet-action btn-gmaps">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/>
+                  <circle cx="12" cy="9" r="2.8" fill="#FFFFFF"/>
+                </svg>
+                <span>Google Maps</span>
+              </a>
+              <a href="https://waze.com/ul?q=Pelita+Cafe+Sepang" id="outlet-waze-sepang" target="_blank" rel="noopener noreferrer" class="btn-outlet-action btn-waze">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#33CCFF">
+                  <path d="M13.314 1.59c-.225.003-.45.013-.675.03-2.165.155-4.295.924-6.069 2.327-2.194 1.732-3.296 4.325-3.496 7.05h.002c-.093 1.22-.23 2.15-.469 2.63-.238.479-.42.638-1.24.639C.27 14.259-.4 15.612.266 16.482c1.248 1.657 2.902 2.705 4.72 3.364a2.198 2.198 0 00-.033.367 2.198 2.198 0 002.2 2.197 2.198 2.198 0 002.128-1.668c1.307.12 2.607.14 3.824.1.364-.012.73-.045 1.094-.092a2.198 2.198 0 002.127 1.66 2.198 2.198 0 002.2-2.197 2.198 2.198 0 00-.151-.797 12.155 12.155 0 002.303-1.549c2.094-1.807 3.511-4.399 3.302-7.404-.112-1.723-.761-3.298-1.748-4.608-2.143-2.86-5.53-4.309-8.918-4.265zm.366 1.54c.312.008.623.027.933.063 2.48.288 4.842 1.496 6.4 3.577v.001c.829 1.1 1.355 2.386 1.446 3.792v.003c.173 2.477-.965 4.583-2.777 6.147a10.66 10.66 0 01-2.375 1.535 2.198 2.198 0 00-.98-.234 2.198 2.198 0 00-1.934 1.158 9.894 9.894 0 01-1.338.146 27.323 27.323 0 01-3.971-.148 2.198 2.198 0 00-1.932-1.156 2.198 2.198 0 00-1.347.463c-1.626-.553-3.078-1.422-4.155-2.762 1.052-.096 1.916-.6 2.319-1.408.443-.889.53-1.947.625-3.198v-.002c.175-2.391 1.11-4.536 2.92-5.964h.002c1.77-1.402 3.978-2.061 6.164-2.012zm-3.157 4.638c-.688 0-1.252.579-1.252 1.298 0 .72.564 1.297 1.252 1.297.689 0 1.252-.577 1.252-1.297 0-.711-.563-1.298-1.252-1.298zm5.514 0c-.688 0-1.25.579-1.25 1.298-.008.72.554 1.297 1.25 1.297.688 0 1.252-.577 1.252-1.297 0-.711-.564-1.298-1.252-1.298zM9.641 11.78a.72.72 0 00-.588.32.692.692 0 00-.11.54c.345 1.783 2.175 3.129 4.264 3.129h.125c1.056-.032 2.026-.343 2.816-.922.767-.556 1.29-1.316 1.477-2.137a.746.746 0 00-.094-.547.69.69 0 00-.445-.32.714.714 0 00-.867.539c-.22.93-1.299 1.9-2.934 1.94-1.572.046-2.738-.986-2.926-1.956a.72.72 0 00-.718-.586Z"/>
+                </svg>
+                <span>Waze</span>
+              </a>
+              <a href="https://wa.me/60123377807?text=Hello%20Pelita%20Cafe%20Sepang,%20saya%20ingin%20bertanya" id="outlet-wa-sepang" target="_blank" rel="noopener noreferrer" class="btn-outlet-action btn-wa-direct">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+                </svg>
+                <span>WhatsApp</span>
+              </a>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. PHOTO GALLERY SECTION -->
+    <section class="gallery-section" id="gallery">
+      <!-- Section Interactive Parallax Background -->
+      <div class="section-parallax-bg" aria-hidden="true">
+        <div class="sec-bg-item pos-left-mid" data-travel="120" data-rot="-25">
+          <svg width="95" height="140" viewBox="0 0 100 140" fill="none">
+            <path d="M30 130C10 105 45 75 25 45C10 25 35 12 25 2" stroke="#C88A36" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6 6"/>
+            <path d="M65 135C85 110 50 80 70 50C85 30 60 18 70 8" stroke="#9B4A24" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-mid" data-travel="-110" data-rot="25">
+          <svg width="110" height="110" viewBox="0 0 140 140" fill="none">
+            <circle cx="70" cy="70" r="54" stroke="#9B4A24" stroke-width="2" stroke-dasharray="6 6"/>
+            <circle cx="70" cy="70" r="38" stroke="#C88A36" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="section-head-center" data-reveal>
+          <span class="section-eyebrow" data-i18n="gallery_eyebrow">TATAPAN MATA & RASA</span>
+          <h2 class="section-title" data-i18n="gallery_title">Suasana & Detik Indah Pelita</h2>
+          <p class="section-subtext" data-i18n="gallery_subtext">Gambaran suasana kafe kami yang tenang, sajian istimewa, dan bancuhan artisan. Klik foto untuk paparan besar.</p>
+        </div>
+
+        <div class="gallery-slider-wrapper" id="gallery-slider-wrapper" data-reveal>
+          <div class="gallery-slider-track" id="gallery-slider-track">
+            <!-- Set 1 (8 Photos) -->
+            <div class="gallery-item" data-caption="Ruang Santai Kontemporari Pelita Cafe di Putrajaya">
+              <img src="assets/images/cafe-interior.webp" alt="Ruang Makan Selesa & Tenang" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_1">Ruang Makan Selesa & Tenang</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Hidangan Warisan Legenda Nasi Ayam & Sajian Kuali Panas">
+              <img src="assets/images/dishes-spread.webp" alt="Jamuan Makanan Warisan Asli" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_2">Jamuan Makanan Warisan Asli</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Keraian Majlis Hari Lahir dan Jamuan Bersama Keluarga di Pelita Cafe">
+              <img src="assets/images/cafe-event.webp" alt="Ruang Majlis & Keraian Khas" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_3">Ruang Majlis & Keraian Khas</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Seni Kopi Barista Artisan Tulen">
+              <img src="assets/images/coffee/latte-art.webp" alt="Seni Kopi Barista Artisan" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_4">Seni Kopi Barista Artisan</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Nasi Ayam Geprek Sambal Cili Padi Membara">
+              <img src="assets/images/nasi-ayam-geprek.webp" alt="Sambal Ayam Geprek Membara" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_5">Sambal Ayam Geprek Membara</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Soto Ayam Madura Tradisional Bersama Bergedil Buatan Tangan">
+              <img src="assets/images/soto-ayam.webp" alt="Sup Herba Soto Tradisional" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_6">Sup Herba Soto Tradisional</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Mee Goreng Mamak Kuali Panas Beraroma (Wok Hei)">
+              <img src="assets/images/fried_dishes/mee-goreng.webp" alt="Aroma Kuali Panas Berasap (Wok Hei)" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_7">Aroma Kuali Panas Berasap (Wok Hei)</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Kopi Ais Kaw & Aneka Minuman Segar Tempatan">
+              <img src="assets/images/coffee/iced-coffee.webp" alt="Minuman Segar Tempatan & Kopi Ais" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_8">Minuman Segar Tempatan & Kopi Ais</span>
+              </div>
+            </div>
+
+            <!-- Set 2 (Duplicate for Seamless Infinite Loop) -->
+            <div class="gallery-item" data-caption="Ruang Santai Kontemporari Pelita Cafe di Putrajaya">
+              <img src="assets/images/cafe-interior.webp" alt="Ruang Makan Selesa & Tenang" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_1">Ruang Makan Selesa & Tenang</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Hidangan Warisan Legenda Nasi Ayam & Sajian Kuali Panas">
+              <img src="assets/images/dishes-spread.webp" alt="Jamuan Makanan Warisan Asli" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_2">Jamuan Makanan Warisan Asli</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Keraian Majlis Hari Lahir dan Jamuan Bersama Keluarga di Pelita Cafe">
+              <img src="assets/images/cafe-event.webp" alt="Ruang Majlis & Keraian Khas" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_3">Ruang Majlis & Keraian Khas</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Seni Kopi Barista Artisan Tulen">
+              <img src="assets/images/coffee/latte-art.webp" alt="Seni Kopi Barista Artisan" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_4">Seni Kopi Barista Artisan</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Nasi Ayam Geprek Sambal Cili Padi Membara">
+              <img src="assets/images/nasi-ayam-geprek.webp" alt="Sambal Ayam Geprek Membara" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_5">Sambal Ayam Geprek Membara</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Soto Ayam Madura Tradisional Bersama Bergedil Buatan Tangan">
+              <img src="assets/images/soto-ayam.webp" alt="Sup Herba Soto Tradisional" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_6">Sup Herba Soto Tradisional</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Mee Goreng Mamak Kuali Panas Beraroma (Wok Hei)">
+              <img src="assets/images/fried_dishes/mee-goreng.webp" alt="Aroma Kuali Panas Berasap (Wok Hei)" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_7">Aroma Kuali Panas Berasap (Wok Hei)</span>
+              </div>
+            </div>
+
+            <div class="gallery-item" data-caption="Kopi Ais Kaw & Aneka Minuman Segar Tempatan">
+              <img src="assets/images/coffee/iced-coffee.webp" alt="Minuman Segar Tempatan & Kopi Ais" loading="lazy">
+              <div class="gallery-overlay">
+                <span class="gallery-caption" data-i18n="gallery_cap_8">Minuman Segar Tempatan & Kopi Ais</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. TABLE RESERVATION & EVENT BANNER -->
+    <section class="reserve-banner-section" id="reserve">
+      <div class="container">
+        <div class="reserve-content-box" data-reveal>
+          <span class="section-eyebrow" style="color: var(--gold-accent);" data-i18n="reserve_eyebrow">RANCANG KUNJUNGAN ANDA</span>
+          <h2 data-i18n="reserve_title">Tempahan Meja & Majlis Khas</h2>
+          <p data-i18n="reserve_desc">
+            Mahu meraikan hari lahir, makan beramai-ramai atau perjumpaan santai? Tempah meja terbaik anda hari ini.
+          </p>
+          <div class="reserve-cta-buttons">
+            <button type="button" class="btn-gold-reserve" data-action="open-reserve">
+              <span data-i18n="btn_book_table">Tempah Meja</span>
+            </button>
+            <a href="tel:+60123377807" class="btn-call-direct" id="btn-call-direct">
+              <span id="btn-call-direct-text" data-i18n="btn_call_putrajaya">Hubungi Cawangan Putrajaya (+6012-337 7807)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. TESTIMONIALS SECTION -->
+    <section class="testimonials-section" id="reviews">
+      <!-- Section Interactive Parallax Background -->
+      <div class="section-parallax-bg" aria-hidden="true">
+        <div class="sec-bg-item pos-left-mid" data-travel="110" data-rot="30">
+          <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+            <path d="M25 0L28 18L46 21L31 31L35 49L25 38L15 49L19 31L4 21L22 18L25 0Z" fill="#C88A36" opacity="0.65"/>
+          </svg>
+        </div>
+        <div class="sec-bg-item pos-right-mid" data-travel="-110" data-rot="-25">
+          <svg width="85" height="85" viewBox="0 0 100 100" fill="none">
+            <ellipse cx="50" cy="50" rx="36" ry="44" stroke="#9B4A24" stroke-width="3" fill="rgba(155, 74, 36, 0.12)" transform="rotate(-30 50 50)"/>
+            <path d="M35 22C46 38 42 62 68 78" stroke="#C88A36" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="section-head-center" data-reveal>
+          <span class="section-eyebrow" data-i18n="reviews_eyebrow">SUARA PELANGGAN</span>
+          <h2 class="section-title" data-i18n="reviews_title">Ulasan Google & Maklum Balas Pelanggan</h2>
+          <p class="section-subtext" data-i18n="reviews_subtext">Pengalaman sebenar yang dikongsi oleh para pengunjung di cawangan Putrajaya dan Sepang.</p>
+        </div>
+
+        <!-- Google Reviews Lead Card -->
+        <div class="google-reviews-lead-card" data-reveal>
+          <div class="google-lead-left">
+            <div class="google-badge-pill">
+              <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+              <strong data-i18n="google_rating_label">Penarafan Google Business</strong>
+            </div>
+            <div class="google-score-row">
+              <span class="google-score-num">4.8</span>
+              <div class="google-stars-wrap">
+                <span class="google-stars-stars">★★★★★</span>
+                <span class="google-verified-text" data-i18n="google_verified_text">Berdasarkan 451 Ulasan Disahkan di Google Maps</span>
+              </div>
+            </div>
+          </div>
+          <div class="google-lead-right">
+            <a href="https://www.google.com/maps/search/?api=1&query=Pelita+Cafe+Putrajaya" target="_blank" rel="noopener noreferrer" class="btn-write-google-review">
+              <span data-i18n="google_leave_review">⭐ Baca Ulasan atau Tinggalkan Ulasan di Google ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Live Google Reviews Embed (Elfsight Auto-Sync with Google Business Profile) -->
+        <div id="live-google-reviews-container" class="live-google-reviews-container" data-reveal>
+          <div class="elfsight-app-7684bfc6-1dde-4610-967b-8ca998bfe9d6" data-elfsight-app-lazy></div>
+        </div>
+
+        <!-- Horizontal Interactive Google Reviews Carousel Fallback -->
+        <div class="reviews-slider-wrapper" data-reveal>
+          <div class="reviews-carousel-track" id="reviews-carousel-track">
+            
+            <!-- 5-Star Review 1 -->
+            <div class="review-slide-card">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="review-google-badge"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Google Review</span>
+              </div>
+              <p class="review-text" data-i18n="review_text_1">
+                "Pelita Cafe Presint 15 adalah tempat makan tengah hari tetap keluarga kami. Nasi Ayam istimewa mereka ada ayam panggang yang juicy dan nasi wangi yang mengingatkan pada masakan tradisional. Ruang sangat bersih, berhawa dingin dan kakitangan mesra!"
+              </p>
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar">ZA</div>
+                <div>
+                  <h4 class="reviewer-name">Zulkhairi A.</h4>
+                  <span class="reviewer-origin" data-i18n="reviewer_origin_1">Pemandu Tempatan (Local Guide) • Cawangan Putrajaya</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5-Star Review 2 -->
+            <div class="review-slide-card">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="review-google-badge"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Google Review</span>
+              </div>
+              <p class="review-text" data-i18n="review_text_2">
+                "Dah makan kat sini sejak awal pembukaan di Salak Tinggi lagi! Sambal Ayam Gepuk & Ayam Geprek memang terbaik — ayam rangup dengan kepedasan asli menyengat. Kopi ais kaw mereka pun padu!"
+              </p>
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar">FH</div>
+                <div>
+                  <h4 class="reviewer-name">Farhana H.</h4>
+                  <span class="reviewer-origin" data-i18n="reviewer_origin_2">Pelanggan Disahkan • Cawangan Sepang</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5-Star Review 3 -->
+            <div class="review-slide-card">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="review-google-badge"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Google Review</span>
+              </div>
+              <p class="review-text" data-i18n="review_text_3">
+                "Permata tersembunyi di Diplomatik Putrajaya. Dah cuba Mee Goreng Mamak dan iced latte. Makanan sampai panas-panas dan pantas. Sangat disyorkan untuk makan malam santai atau sesi kerja sambil minum kopi."
+              </p>
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar">KT</div>
+                <div>
+                  <h4 class="reviewer-name">Kenneth Tan</h4>
+                  <span class="reviewer-origin" data-i18n="reviewer_origin_3">Pemandu Tempatan (Local Guide) • Cawangan Putrajaya</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5-Star Review 4 -->
+            <div class="review-slide-card">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="review-google-badge"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Google Review</span>
+              </div>
+              <p class="review-text" data-i18n="review_text_4">
+                "Tempat yang sangat sesuai untuk berkumpul! Suasana kafe moden, bersih, dan estetik. Porsi hidangan banyak dan berbaloi dengan harga. Pesan melalui WhatsApp untuk bungkus pun sangat lancar."
+              </p>
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar">SN</div>
+                <div>
+                  <h4 class="reviewer-name">Siti Nur Aisyah</h4>
+                  <span class="reviewer-origin" data-i18n="reviewer_origin_4">Pelanggan Disahkan • Cawangan Putrajaya</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5-Star Review 5 -->
+            <div class="review-slide-card">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="review-google-badge"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Google Review</span>
+              </div>
+              <p class="review-text" data-i18n="review_text_5">
+                "Nasi Ayam Pelita Cafe tak pernah mengecewakan. Rasanya konsisten sejak bertahun-tahun. Kuah Soto Ayam kaya dengan rempah herba yang wangi. 5 bintang tanpa ragu!"
+              </p>
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar">HR</div>
+                <div>
+                  <h4 class="reviewer-name">Hafizul Rahman</h4>
+                  <span class="reviewer-origin" data-i18n="reviewer_origin_5">Pelanggan Disahkan • Cawangan Sepang</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5-Star Review 6 -->
+            <div class="review-slide-card">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="review-google-badge"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Google Review</span>
+              </div>
+              <p class="review-text" data-i18n="review_text_6">
+                "Salah satu tempat makan paling selesa di Presint 15. Kopi barista sangat memuaskan untuk kafe warisan tempatan. Kakitangan berbudi bahasa dan servis sangat pantas."
+              </p>
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar">MW</div>
+                <div>
+                  <h4 class="reviewer-name">Marcus Wong</h4>
+                  <span class="reviewer-origin" data-i18n="reviewer_origin_6">Warga Kerja Cyberjaya • Cawangan Putrajaya</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Carousel Controls & Pagination -->
+          <div class="reviews-carousel-nav">
+            <button type="button" class="btn-review-nav btn-review-prev" id="review-prev-btn" aria-label="Ulasan Sebelumnya">←</button>
+            <div class="review-dots-container" id="review-dots-container"></div>
+            <button type="button" class="btn-review-nav btn-review-next" id="review-next-btn" aria-label="Ulasan Seterusnya">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 12. FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top-grid">
+        <!-- Brand Col -->
+        <div class="footer-brand-col">
+          <img src="assets/images/logo-white.webp" alt="Pelita Cafe" class="footer-logo-img">
+          <p data-i18n="footer_brand_desc">
+            Kafe Kontemporari & Sajian Warisan Asli Malaysia. Beriltizam mengekalkan keenakan rasa turun-temurun, suasana yang menenangkan, serta layanan mesra sejak 2004.
+          </p>
+          <div class="footer-social-links">
+            <a href="https://www.instagram.com/pelitacafe.official/" target="_blank" rel="noopener noreferrer" class="social-icon-btn btn-social-ig" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="https://www.threads.com/@pelita.cafe" target="_blank" rel="noopener noreferrer" class="social-icon-btn btn-social-threads" aria-label="Threads">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.69 11.24c-.1-.05-.21-.1-.32-.14-.19-3.41-2.05-5.37-5.18-5.39h-.02c-2.74 0-4.95 1.75-5.38 4.8l2.05.33c.29-2.04 1.65-3.16 3.33-3.16h.04c1.58.01 2.76 1.01 3.09 3.04-.93-.19-1.93-.28-3-.28-4.2 0-6.71 2.29-6.71 5.55 0 2.63 1.86 4.59 4.5 4.59 2.54 0 4.36-1.59 5.2-3.77 1.18 1.62 2.92 2.6 4.96 2.6.06 0 .12 0 .18 0 1.77-.1 2.88-1.28 3.11-3.04l-2.02-.26c-.13.98-.77 1.38-1.75 1.38-1.62 0-2.97-1.2-3.83-3.5 0.89-.73 1.52-1.67 1.78-2.73zm-7.38 7.36c-1.65 0-2.77-1.14-2.77-2.61 0-2.01 1.66-3.57 4.73-3.57.8 0 1.55.07 2.25.22-.35 4.29-2.17 5.96-4.21 5.96z"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/people/Pelita-Cafe/100064695456324" target="_blank" rel="noopener noreferrer" class="social-icon-btn btn-social-fb" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a href="https://wa.me/60123377807" id="footer-social-wa" target="_blank" rel="noopener noreferrer" class="social-icon-btn btn-social-wa" aria-label="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="footer-col-title" data-i18n="footer_nav_title">Navigasi</h4>
+          <ul class="footer-links-list">
+            <li><a href="#home" data-i18n="footer_link_home">Utama</a></li>
+            <li><a href="#menu" data-i18n="footer_link_menu">Terokai Menu</a></li>
+            <li><a href="#menu-book" data-i18n="footer_link_book">Buku Menu Interaktif</a></li>
+            <li><a href="#heritage" data-i18n="footer_link_heritage">Kisah Warisan (2004)</a></li>
+            <li><a href="#outlets" data-i18n="footer_link_outlets">Cawangan & Waktu Operasi</a></li>
+            <li><a href="#gallery" data-i18n="footer_link_gallery">Suasana & Galeri</a></li>
+          </ul>
+        </div>
+
+        <!-- Operating Hours Summary -->
+        <div>
+          <h4 class="footer-col-title" data-i18n="footer_locations_title">Lokasi Cawangan</h4>
+          <ul class="footer-links-list">
+            <li><strong>Putrajaya:</strong> <span id="footer-outlet-addr-putrajaya">Presint 15</span></li>
+            <li id="footer-outlet-hours-putrajaya">Sabtu – Rabu: 9pg – 10mlm</li>
+            <li style="margin-top: 10px;"><strong>Sepang:</strong> <span id="footer-outlet-addr-sepang">Bandar Baru Salak Tinggi</span></li>
+            <li id="footer-outlet-hours-sepang">Sabtu – Khamis: 9pg – 7ptg</li>
+            <li style="margin-top: 10px; color: var(--gold-accent);">✓ 100% Ramuan Halal</li>
+          </ul>
+        </div>
+
+        <!-- Contact & Newsletter -->
+        <div>
+          <h4 class="footer-col-title" data-i18n="footer_connect_title">Kekal Berhubung</h4>
+          <p style="font-size: 0.88rem; color: #AFA094; margin-bottom: 12px;" data-i18n="footer_news_text">
+            Langgan untuk menerima jemputan menu bermusim istimewa dan tawaran perayaan.
+          </p>
+          <form class="footer-newsletter-box" onsubmit="event.preventDefault(); showToast(AppState.lang === 'bm' ? 'Terima kasih kerana melanggan!' : 'Thank you for subscribing!'); this.reset();">
+            <input type="email" class="newsletter-input" placeholder="Alamat e-mel anda" data-i18n-placeholder="footer_news_placeholder" required aria-label="Alamat E-mel">
+            <button type="submit" class="newsletter-btn" data-i18n="footer_news_btn">Sertai</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div data-i18n="footer_copyright">
+          © 2004 – 2026 Pelita Heritage Sdn Bhd. Hak cipta terpelihara.
+        </div>
+        <div data-i18n="footer_crafted">
+          Disediakan dengan ikhlas • Putrajaya & Sepang, Malaysia
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 13. FLOATING WHATSAPP ORDER BUTTON -->
+  <button type="button" class="floating-wa-order-trigger" onclick="openCartDrawer()" aria-label="Buka Troli Pesanan WhatsApp">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="wa-btn-svg">
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+    </svg>
+    <span data-i18n="order_wa_btn">Pesan Melalui WhatsApp</span>
+    <span class="cart-count-badge is-hidden">0</span>
+  </button>
+
+  <!-- 14. BACK TO TOP BUTTON -->
+  <button type="button" id="back-to-top" class="btn-back-to-top" aria-label="Back to Top">
+    <span>↑</span>
+  </button>
+
+  <!-- 15. WHATSAPP ORDER CART DRAWER -->
+  <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="WhatsApp Order Cart Drawer">
+    <div class="cart-drawer-header">
+      <h3 data-i18n="cart_summary">Ringkasan Pesanan WhatsApp</h3>
+      <button type="button" class="close-drawer-btn" id="close-cart-btn" aria-label="Tutup Troli">✕</button>
+    </div>
+
+    <div class="cart-drawer-body">
+      <!-- Select Outlet -->
+      <div>
+        <div class="cart-section-label" data-i18n="cart_sec_outlet">1. Pilih Cawangan</div>
+        <div class="cart-branch-selector">
+          <button type="button" class="cart-branch-card is-selected" data-cart-branch="putrajaya">
+            <span class="branch-card-name">Putrajaya</span>
+            <span class="branch-card-note">Presint 15 (9am–10pm)</span>
+          </button>
+          <button type="button" class="cart-branch-card" data-cart-branch="sepang">
+            <span class="branch-card-name">Sepang</span>
+            <span class="branch-card-note">Salak Tinggi (9am–7pm)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Order Type -->
+      <div>
+        <div class="cart-section-label" data-i18n="cart_sec_type">2. Jenis Pesanan</div>
+        <div class="cart-order-type-group">
+          <button type="button" class="order-type-pill is-selected" data-order-type="takeaway" data-i18n="order_type_takeaway">Bungkus (Takeaway)</button>
+          <button type="button" class="order-type-pill" data-order-type="dinein" data-i18n="order_type_dinein">Makan Sini (Dine-In)</button>
+          <button type="button" class="order-type-pill" data-order-type="delivery" data-i18n="order_type_delivery">Penghantaran (Foodpanda ↗)</button>
+        </div>
+        <div id="cart-delivery-notice" style="display: none; background: rgba(215, 15, 100, 0.08); border: 1px solid rgba(215, 15, 100, 0.25); border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size: 0.82rem; color: #D70F64;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+            <div>
+              <span>🛵</span> <strong>Foodpanda Delivery</strong>
+              <div style="font-size: 0.76rem; color: #554438; margin-top: 2px;" id="cart-delivery-note-text">
+                Pesanan penghantaran (delivery) diuruskan terus melalui Foodpanda.
+              </div>
+            </div>
+            <a href="https://www.foodpanda.my/restaurant/yi1i/pelita-cafe-putrajaya-yi1i" target="_blank" rel="noopener noreferrer" style="background: #D70F64; color: #FFF; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.78rem; text-decoration: none; white-space: nowrap; display: inline-block;">
+              Buka Foodpanda ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Details -->
+      <div>
+        <div class="cart-section-label" data-i18n="cart_sec_cust">3. Butiran Pelanggan</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="text" id="cart-cust-name" class="cart-input-field" placeholder="Nama Anda" data-i18n-placeholder="cart_placeholder_name">
+          <input type="text" id="cart-cust-notes" class="cart-input-field" placeholder="Permintaan Khas (cth. Kurang manis, sambal asing)" data-i18n-placeholder="cart_placeholder_notes">
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <div>
+        <div class="cart-section-label" data-i18n="cart_sec_dishes">4. Hidangan Dipilih</div>
+        <div id="cart-items-list" class="cart-items-list">
+          <!-- Dynamically injected -->
+        </div>
+        <div id="cart-empty-message" class="cart-empty-box">
+          <div class="cart-empty-icon">🍽️</div>
+          <p class="cart-empty-text" data-i18n="cart_empty">Pesanan anda masih kosong. Pilih sajian kegemaran anda!</p>
+          <button type="button" class="btn-browse-menu-from-cart" onclick="navigateToMenuSection()">
+            <span data-i18n="cart_browse_btn">🍽️ Terokai Menu & Tambah Hidangan</span>
+            <span>↓</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-drawer-footer" id="cart-footer-panel" style="display: none;">
+      <div class="cart-summary-row">
+        <span class="summary-label" data-i18n="cart_est_total">Anggaran Jumlah:</span>
+        <span class="summary-val" id="cart-subtotal-val">RM 0.00</span>
+      </div>
+      <button type="button" class="btn-checkout-whatsapp" id="btn-send-whatsapp-order">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="wa-btn-svg">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+        </svg>
+        <span data-i18n="send_order_wa">Hantar Pesanan ke WhatsApp</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- 16. DISH DETAIL MODAL -->
+  <div class="pelita-modal" id="dish-detail-modal" role="dialog" aria-modal="true">
+    <div class="pelita-modal-backdrop" onclick="closeDishModal()"></div>
+    <div class="pelita-modal-box">
+      <button type="button" class="pelita-modal-close" onclick="closeDishModal()" aria-label="Close Dish Details">✕</button>
+      <div id="dish-modal-body">
+        <!-- Injected dynamically by openDishModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 17. TABLE RESERVATION MODAL -->
+  <div class="pelita-modal" id="reserve-modal" role="dialog" aria-modal="true">
+    <div class="pelita-modal-backdrop" id="reserve-modal-backdrop"></div>
+    <div class="pelita-modal-box reserve-modal-box">
+      <button type="button" class="pelita-modal-close" id="close-reserve-btn" aria-label="Tutup Borang Tempahan">✕</button>
+      <h3 class="reserve-modal-title" data-i18n="reserve_title">Tempahan Meja & Majlis Khas</h3>
+      <p class="reserve-modal-subtitle" data-i18n="reserve_desc">
+        Mahu meraikan hari lahir, makan beramai-ramai atau perjumpaan santai? Tempah meja terbaik anda hari ini.
+      </p>
+
+      <form id="reserve-table-form">
+        <div class="form-field-wrap">
+          <label for="reserve-branch" data-i18n="reserve_lbl_outlet">Cawangan Pilihan</label>
+          <select id="reserve-branch" name="reserve_branch" class="form-input" required>
+            <option value="putrajaya">Pelita Cafe Putrajaya (Presint 15)</option>
+            <option value="sepang">Pelita Cafe Sepang (Bandar Baru Salak Tinggi)</option>
+          </select>
+        </div>
+
+        <div class="form-group-grid">
+          <div class="form-field-wrap">
+            <label for="reserve-name" data-i18n="reserve_lbl_name">Nama Penuh Anda</label>
+            <input type="text" id="reserve-name" name="reserve_name" class="form-input" placeholder="cth. Syahrul Nizam" required>
+          </div>
+          <div class="form-field-wrap">
+            <label for="reserve-phone" data-i18n="reserve_lbl_phone">Nombor WhatsApp</label>
+            <input type="tel" id="reserve-phone" name="reserve_phone" class="form-input" placeholder="cth. 012-3456789" required>
+          </div>
+        </div>
+
+        <div class="form-group-grid">
+          <div class="form-field-wrap">
+            <label for="reserve-date" data-i18n="reserve_lbl_date">Tarikh</label>
+            <input type="date" id="reserve-date" name="reserve_date" class="form-input" required>
+          </div>
+          <div class="form-field-wrap">
+            <label for="reserve-time" data-i18n="reserve_lbl_time">Masa</label>
+            <input type="time" id="reserve-time" name="reserve_time" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-field-wrap">
+          <label for="reserve-pax" data-i18n="reserve_lbl_pax">Bilangan Tetamu (Pax)</label>
+          <select id="reserve-pax" name="reserve_pax" class="form-input" required>
+            <option value="2">2 Orang (Pasangan / Duo)</option>
+            <option value="3-4" selected>3 - 4 Orang (Keluarga Kecil / Rakan)</option>
+            <option value="5-8">5 - 8 Orang (Keluarga Besar)</option>
+            <option value="9-15">9 - 15 Orang (Jamuan Kumpulan)</option>
+            <option value="16+">16+ Orang (Majlis Khas / Hari Lahir)</option>
+          </select>
+        </div>
+
+        <div class="form-field-wrap">
+          <label for="reserve-notes" data-i18n="reserve_lbl_notes">Permintaan Khas / Catatan Tempat Duduk</label>
+          <input type="text" id="reserve-notes" name="reserve_notes" class="form-input" placeholder="cth. Kerusi bayi diperlukan, sambutan hari lahir" data-i18n-placeholder="reserve_notes_ph">
+        </div>
+
+        <button type="submit" class="btn-submit-booking">
+          <span data-i18n="btn_submit_reserve">Hantar Pengesahan Tempahan</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 18. GALLERY LIGHTBOX MODAL -->
+  <div class="lightbox-modal" id="gallery-lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-content">
+      <button type="button" class="lightbox-close-btn" id="lightbox-close" aria-label="Close Lightbox">✕</button>
+      <img src="" alt="Enlarged gallery view" id="lightbox-img" class="lightbox-img">
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- 19. MOBILE NAVIGATION DRAWER -->
+  <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop" onclick="if(window.closeMobileDrawer)window.closeMobileDrawer()"></div>
+  <aside class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Menu Navigasi Mudah Alih">
+    <div class="mobile-drawer-header">
+      <img src="assets/images/logo-white.webp" alt="Pelita Cafe" class="mobile-drawer-logo-img">
+      <button type="button" class="close-mobile-drawer" id="close-mobile-drawer" aria-label="Tutup Menu Navigasi" onclick="if(window.closeMobileDrawer)window.closeMobileDrawer()">✕</button>
+    </div>
+
+    <ul class="mobile-nav-links">
+      <li><a href="#home" class="mobile-nav-link" data-i18n="nav_home">Utama</a></li>
+      <li><a href="#menu" class="mobile-nav-link" data-i18n="nav_menu">Menu</a></li>
+      <li><a href="#menu-book" class="mobile-nav-link" data-i18n="nav_book">Buku Menu</a></li>
+      <li><a href="#heritage" class="mobile-nav-link" data-i18n="nav_story">Kisah Warisan</a></li>
+      <li><a href="#outlets" class="mobile-nav-link" data-i18n="nav_outlets">Cawangan</a></li>
+      <li><a href="#gallery" class="mobile-nav-link" data-i18n="nav_gallery">Galeri</a></li>
+      <li><a href="#reviews" class="mobile-nav-link" data-i18n="nav_reviews">Ulasan Pelanggan</a></li>
+    </ul>
+
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 12px;">
+      <button type="button" class="btn-gold-reserve" style="width: 100%; text-align: center;" data-action="open-reserve">
+        <span data-i18n="btn_book_table">Tempah Meja</span>
+      </button>
+      <button type="button" class="btn-mobile-track" onclick="openOrderTrackerModal(); if(window.closeMobileDrawer)closeMobileDrawer();">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span data-i18n="nav_track_order">Jejak Pesanan</span>
+      </button>
+      <button type="button" class="btn-checkout-whatsapp" style="width: 100%; text-align: center;" onclick="openCartDrawer()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+        </svg>
+        <span data-i18n="order_wa_btn">Pesan Melalui WhatsApp</span>
+      </button>
+      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+        <button type="button" class="lang-btn is-active" data-action="toggle-lang" data-lang="en">English</button>
+        <button type="button" class="lang-btn" data-action="toggle-lang" data-lang="bm">Bahasa Melayu</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 19. LIVE ORDER TRACKER MODAL -->
+  <div class="pelita-modal" id="track-order-modal" role="dialog" aria-modal="true">
+    <div class="pelita-modal-backdrop" id="track-order-backdrop" onclick="closeOrderTrackerModal()"></div>
+    <div class="pelita-modal-box track-order-modal-box">
+      <button type="button" class="pelita-modal-close" id="close-tracker-btn" onclick="closeOrderTrackerModal()" aria-label="Tutup Penjejak Pesanan">✕</button>
+      
+      <div class="tracker-modal-header">
+        <div class="tracker-icon-badge">🛵</div>
+        <div>
+          <h3 class="track-modal-title" data-i18n="tracker_title">Penjejak Pesanan Langsung</h3>
+          <p class="track-modal-subtitle" data-i18n="tracker_subtitle">Ikuti status hidangan anda terus dari kuali dapur ke meja atau kaunter anda</p>
+        </div>
+      </div>
+
+      <!-- Search / Input for Order ID -->
+      <form id="track-order-search-form" class="tracker-search-form" onsubmit="handleTrackerSearch(event)">
+        <div class="tracker-search-input-group" style="display: flex; gap: 8px;">
+          <input type="text" id="track-order-input" class="form-input" placeholder="Masukkan ID Pesanan (cth. PEL-1082)" data-i18n-placeholder="tracker_input_ph" style="text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;" required>
+          <button type="submit" class="btn-primary" style="padding: 10px 20px; white-space: nowrap; border-radius: var(--radius-sm); border: none; cursor: pointer;">
+            <span data-i18n="tracker_btn_track">Jejak</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Active Order Status Card -->
+      <div id="tracker-status-container" style="display: none; margin-top: 24px;">
+        <div class="tracker-order-meta">
+          <div>
+            <span class="meta-label" data-i18n="tracker_lbl_ticket">TIKET PESANAN</span>
+            <h4 id="tracker-order-id" class="meta-order-id">#PEL-0000</h4>
+          </div>
+          <div style="text-align: right;">
+            <span class="meta-label" data-i18n="tracker_lbl_outlet_type">CAWANGAN & JENIS</span>
+            <div id="tracker-branch-name" style="font-size: 0.88rem; font-weight: 700; color: var(--gold);">Pelita Cafe Putrajaya</div>
+            <div id="tracker-order-type" style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">Bungkus</div>
+          </div>
+        </div>
+
+        <!-- 4-Step Progress Stepper -->
+        <div class="order-stepper" id="order-stepper">
+          <!-- Step 1: Received -->
+          <div class="step-node" id="step-node-received">
+            <div class="step-circle">📥</div>
+            <div class="step-label" data-i18n="step_received">Diterima</div>
+            <small class="step-desc" data-i18n="tracker_step_received_sub">Disahkan</small>
+          </div>
+          <div class="step-line" id="step-line-1"></div>
+
+          <!-- Step 2: In Progress -->
+          <div class="step-node" id="step-node-in_progress">
+            <div class="step-circle">🍳</div>
+            <div class="step-label" data-i18n="step_in_progress">Sedang Dimasak</div>
+            <small class="step-desc" data-i18n="tracker_step_cooking_sub">Dimasak</small>
+          </div>
+          <div class="step-line" id="step-line-2"></div>
+
+          <!-- Step 3: Prepared -->
+          <div class="step-node" id="step-node-prepared">
+            <div class="step-circle">📦</div>
+            <div class="step-label" data-i18n="step_prepared">Sedia</div>
+            <small class="step-desc" data-i18n="tracker_step_ready_sub">Sedia</small>
+          </div>
+          <div class="step-line" id="step-line-3"></div>
+
+          <!-- Step 4: Served -->
+          <div class="step-node" id="step-node-served">
+            <div class="step-circle">✅</div>
+            <div class="step-label" data-i18n="step_served">Selesai</div>
+            <small class="step-desc" data-i18n="tracker_step_completed_sub">Selesai</small>
+          </div>
+        </div>
+
+        <!-- Current Status Banner -->
+        <div id="tracker-status-banner" class="tracker-status-banner">
+          <span id="tracker-status-emoji" style="font-size: 1.4rem;">⏳</span>
+          <span id="tracker-status-text">Pesanan anda telah diterima oleh pihak dapur Pelita Cafe.</span>
+        </div>
+
+        <!-- Order Items Detail Summary -->
+        <div class="tracker-items-summary" id="tracker-items-summary"></div>
+      </div>
+
+      <!-- No Order Found State -->
+      <div id="tracker-empty-state" style="display: none; text-align: center; padding: 26px 10px;">
+        <span style="font-size: 2.2rem;">🔍</span>
+        <h4 style="color: var(--text-main); margin-top: 8px;" data-i18n="tracker_not_found_title">Pesanan Tidak Dijumpai</h4>
+        <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 4px;" data-i18n="tracker_not_found_desc">
+          Sila semak semula ID Pesanan anda (cth. <strong>PEL-1082</strong>) yang dihantar melalui WhatsApp atau resit pesanan anda.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 20. GLOBAL TOAST NOTIFICATION -->
+  <div id="global-toast" class="pelita-toast" role="status" aria-live="polite"></div>
+
+  <!-- Live Google Reviews Auto-Sync Platform Script -->
+  <script src="https://elfsightcdn.com/platform.js" async></script>
+
+  <!-- Firebase Compat Libraries & Live Cloud Sync -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <!-- Vanilla JavaScript Application -->
+  <script src="script.js?v=5.1"></script>
+</body>
+</html>
