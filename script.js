@@ -1666,19 +1666,53 @@ function resetMenuFilters() {
 
 // --- 10. INTERACTIVE MENU BOOK ENGINE ---
 function initInteractiveBook() {
-  const bookContainer = document.getElementById('menu-book-canvas');
-  if (!bookContainer) return;
+  const canvas = document.getElementById('menu-book-canvas');
+  if (!canvas) return;
 
-  renderBookPage(AppState.currentPage);
+  // 1. Ensure track exists with all 9 sheets
+  let track = document.getElementById('book-pages-track');
+  if (!track) {
+    track = document.createElement('div');
+    track.className = 'book-pages-track';
+    track.id = 'book-pages-track';
+    for (let i = 1; i <= AppState.totalPages; i++) {
+      const sheet = document.createElement('div');
+      sheet.className = 'book-sheet';
+      sheet.setAttribute('data-page', String(i));
+      sheet.innerHTML = `
+        <img src="assets/images/menu-book/page-${i}.jpg" 
+             alt="Pelita Cafe Menu Page ${i}" 
+             class="book-page-image" 
+             width="905" height="1280"
+             loading="${i <= 2 ? 'eager' : 'lazy'}" 
+             decoding="async" />
+        <div class="book-spine-shadow"></div>
+        <div class="book-page-edge-highlight"></div>
+      `;
+      track.appendChild(sheet);
+    }
+    canvas.innerHTML = '';
+    canvas.appendChild(track);
+  }
 
+  // 2. Preload all 9 page images into browser memory for instant display
+  for (let i = 1; i <= AppState.totalPages; i++) {
+    const preImg = new Image();
+    preImg.decoding = 'async';
+    preImg.src = `assets/images/menu-book/page-${i}.jpg`;
+  }
+
+  // 3. Initialize to current page
+  goToBookPage(AppState.currentPage || 1);
+
+  // 4. Next / Prev navigation buttons
   const prevBtn = document.getElementById('book-prev-btn');
   const nextBtn = document.getElementById('book-next-btn');
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
       if (AppState.currentPage > 1) {
-        AppState.currentPage--;
-        renderBookPage(AppState.currentPage);
+        goToBookPage(AppState.currentPage - 1);
       }
     });
   }
@@ -1686,96 +1720,92 @@ function initInteractiveBook() {
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       if (AppState.currentPage < AppState.totalPages) {
-        AppState.currentPage++;
-        renderBookPage(AppState.currentPage);
+        goToBookPage(AppState.currentPage + 1);
       }
     });
   }
 
-  // Thumbnails click
+  // 5. Thumbnails navigation
   document.querySelectorAll('[data-book-page]').forEach(thumb => {
     thumb.addEventListener('click', () => {
       const pageNum = parseInt(thumb.getAttribute('data-book-page'), 10);
       if (pageNum >= 1 && pageNum <= AppState.totalPages) {
-        AppState.currentPage = pageNum;
-        renderBookPage(AppState.currentPage);
+        goToBookPage(pageNum);
       }
     });
   });
 
-  // Touch swipe gesture support for mobile smartphones
+  // 6. Natural touch swipe gestures for mobile smartphones
   let touchStartX = 0;
   let touchStartY = 0;
-  bookContainer.addEventListener('touchstart', (e) => {
+  let touchStartTime = 0;
+
+  canvas.addEventListener('touchstart', (e) => {
     if (e.touches && e.touches[0]) {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
     }
   }, { passive: true });
 
-  bookContainer.addEventListener('touchend', (e) => {
+  canvas.addEventListener('touchend', (e) => {
     if (e.changedTouches && e.changedTouches[0]) {
       const deltaX = e.changedTouches[0].clientX - touchStartX;
       const deltaY = e.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+      const deltaTime = Date.now() - touchStartTime;
+
+      // Ensure horizontal swipe intent (not vertical page scroll)
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 35 && deltaTime < 650) {
         if (deltaX < 0 && AppState.currentPage < AppState.totalPages) {
           // Swipe left -> next page
-          AppState.currentPage++;
-          renderBookPage(AppState.currentPage);
+          goToBookPage(AppState.currentPage + 1);
         } else if (deltaX > 0 && AppState.currentPage > 1) {
           // Swipe right -> previous page
-          AppState.currentPage--;
-          renderBookPage(AppState.currentPage);
+          goToBookPage(AppState.currentPage - 1);
         }
       }
     }
   }, { passive: true });
 
-  // Keyboard navigation when hovering/interacting
+  // 7. Keyboard arrow navigation when menu book is in viewport
   window.addEventListener('keydown', (e) => {
-    const rect = bookContainer.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
     if (isVisible) {
       if (e.key === 'ArrowLeft' && AppState.currentPage > 1) {
-        AppState.currentPage--;
-        renderBookPage(AppState.currentPage);
+        goToBookPage(AppState.currentPage - 1);
       } else if (e.key === 'ArrowRight' && AppState.currentPage < AppState.totalPages) {
-        AppState.currentPage++;
-        renderBookPage(AppState.currentPage);
+        goToBookPage(AppState.currentPage + 1);
       }
     }
   });
 }
 
-function renderBookPage(pageNum) {
-  const canvas = document.getElementById('menu-book-canvas');
+function goToBookPage(pageNum) {
+  if (pageNum < 1 || pageNum > AppState.totalPages) return;
+  AppState.currentPage = pageNum;
+
+  const track = document.getElementById('book-pages-track');
   const pageIndicator = document.getElementById('book-page-indicator');
   const prevBtn = document.getElementById('book-prev-btn');
   const nextBtn = document.getElementById('book-next-btn');
 
-  if (!canvas) return;
+  // Smooth GPU hardware-accelerated slide
+  if (track) {
+    track.style.transform = `translate3d(-${(pageNum - 1) * 100}%, 0, 0)`;
+  }
 
-  canvas.classList.add('is-flipping');
-
-  setTimeout(() => {
-    canvas.innerHTML = `
-      <div class="book-sheet">
-        <img src="assets/images/menu-book/page-${pageNum}.jpg" alt="Pelita Cafe Menu Page ${pageNum}" class="book-page-image" />
-        <div class="book-spine-shadow"></div>
-      </div>
-    `;
-    canvas.classList.remove('is-flipping');
-  }, 150);
-
+  // Update page counter indicator
   if (pageIndicator) {
     const isBM = AppState.lang === 'bm';
     pageIndicator.textContent = `${isBM ? 'Halaman' : 'Page'} ${pageNum} / ${AppState.totalPages}`;
   }
 
+  // Update button disabled states
   if (prevBtn) prevBtn.disabled = pageNum <= 1;
   if (nextBtn) nextBtn.disabled = pageNum >= AppState.totalPages;
 
-  // Update thumbnails active state
+  // Update thumbnail pills
   document.querySelectorAll('[data-book-page]').forEach(thumb => {
     const p = parseInt(thumb.getAttribute('data-book-page'), 10);
     if (p === pageNum) {
@@ -1785,6 +1815,11 @@ function renderBookPage(pageNum) {
     }
   });
 }
+
+// Alias for backwards compatibility
+const renderBookPage = goToBookPage;
+window.goToBookPage = goToBookPage;
+window.renderBookPage = goToBookPage;
 
 // --- 11. WHATSAPP ORDER & CART SYSTEM ---
 function initOrderSystem() {

@@ -24,7 +24,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=4.9">
+  <link rel="stylesheet" href="styles.css?v=5.0">
 </head>
 <body>
 
@@ -306,12 +306,58 @@
         <div class="menu-book-wrapper" data-reveal>
           <div class="menu-book-viewport">
             <div id="menu-book-canvas" class="menu-book-canvas">
-              <!-- Rendered dynamically by script.js -->
+              <div class="book-pages-track" id="book-pages-track">
+                <div class="book-sheet" data-page="1">
+                  <img src="assets/images/menu-book/page-1.jpg" alt="Pelita Cafe Menu Page 1" class="book-page-image" width="905" height="1280" loading="eager" fetchpriority="high" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="2">
+                  <img src="assets/images/menu-book/page-2.jpg" alt="Pelita Cafe Menu Page 2" class="book-page-image" width="905" height="1280" loading="eager" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="3">
+                  <img src="assets/images/menu-book/page-3.jpg" alt="Pelita Cafe Menu Page 3" class="book-page-image" width="905" height="1280" loading="lazy" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="4">
+                  <img src="assets/images/menu-book/page-4.jpg" alt="Pelita Cafe Menu Page 4" class="book-page-image" width="905" height="1280" loading="lazy" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="5">
+                  <img src="assets/images/menu-book/page-5.jpg" alt="Pelita Cafe Menu Page 5" class="book-page-image" width="905" height="1280" loading="lazy" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="6">
+                  <img src="assets/images/menu-book/page-6.jpg" alt="Pelita Cafe Menu Page 6" class="book-page-image" width="905" height="1280" loading="lazy" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="7">
+                  <img src="assets/images/menu-book/page-7.jpg" alt="Pelita Cafe Menu Page 7" class="book-page-image" width="905" height="1280" loading="lazy" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="8">
+                  <img src="assets/images/menu-book/page-8.jpg" alt="Pelita Cafe Menu Page 8" class="book-page-image" width="905" height="1280" loading="lazy" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+                <div class="book-sheet" data-page="9">
+                  <img src="assets/images/menu-book/page-9.jpg" alt="Pelita Cafe Menu Page 9" class="book-page-image" width="905" height="1280" loading="lazy" decoding="async">
+                  <div class="book-spine-shadow"></div>
+                  <div class="book-page-edge-highlight"></div>
+                </div>
+              </div>
             </div>
 
             <!-- Book Nav Controls -->
             <div class="book-nav-controls">
-              <button type="button" class="btn-book-nav" id="book-prev-btn" aria-label="Halaman Sebelumnya">
+              <button type="button" class="btn-book-nav" id="book-prev-btn" aria-label="Halaman Sebelumnya" disabled>
                 <span>←</span> <span data-i18n="btn_prev">Halaman Sebelumnya</span>
               </button>
               <div class="book-page-indicator" id="book-page-indicator">Halaman 1 / 9</div>
@@ -1359,6 +1405,6 @@
   <script src="firebase-config.js"></script>
 
   <!-- Vanilla JavaScript Application -->
-  <script src="script.js?v=5.1"></script>
+  <script src="script.js?v=5.2"></script>
 </body>
 </html>
