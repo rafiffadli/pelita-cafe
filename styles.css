@@ -2586,6 +2586,92 @@ input, textarea, select {
   border-color: var(--bg-espresso);
 }
 
+/* Delivery (Foodpanda) Card in Drawer */
+.cart-delivery-card {
+  background: rgba(215, 15, 100, 0.05);
+  border: 1px solid rgba(215, 15, 100, 0.22);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  margin-top: 14px;
+}
+
+.cart-delivery-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cart-delivery-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #D70F64;
+}
+
+.cart-delivery-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(215, 15, 100, 0.12);
+  color: #D70F64;
+  padding: 3px 9px;
+  border-radius: 12px;
+}
+
+.cart-delivery-desc {
+  font-size: 0.82rem;
+  color: #4B5563;
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+}
+
+.cart-delivery-features {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 16px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(215, 15, 100, 0.2);
+}
+
+.cart-delivery-feat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: #374151;
+}
+
+.btn-open-foodpanda {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #D70F64;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 12px 18px;
+  border-radius: 24px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(215, 15, 100, 0.25);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-open-foodpanda:hover {
+  background: #B80C54;
+  transform: translateY(-1px);
+}
+
 /* Cart Items List */
 .cart-items-list {
   display: flex;

@@ -24,7 +24,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Design System Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=5.3">
+  <link rel="stylesheet" href="styles.css?v=5.5">
 </head>
 <body>
 
@@ -1125,23 +1125,39 @@
           <button type="button" class="order-type-pill" data-order-type="dinein" data-i18n="order_type_dinein">Makan Sini (Dine-In)</button>
           <button type="button" class="order-type-pill" data-order-type="delivery" data-i18n="order_type_delivery">Penghantaran (Foodpanda ↗)</button>
         </div>
-        <div id="cart-delivery-notice" style="display: none; background: rgba(215, 15, 100, 0.08); border: 1px solid rgba(215, 15, 100, 0.25); border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size: 0.82rem; color: #D70F64;">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
-            <div>
-              <strong>Foodpanda Delivery</strong>
-              <div style="font-size: 0.76rem; color: #554438; margin-top: 2px;" id="cart-delivery-note-text">
-                Pesanan penghantaran (delivery) diuruskan terus melalui Foodpanda.
-              </div>
+        <!-- Foodpanda Delivery Notice / Panel -->
+        <div id="cart-delivery-notice" class="cart-delivery-card" style="display: none;">
+          <div class="cart-delivery-card-header">
+            <div class="cart-delivery-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>Foodpanda Delivery</span>
             </div>
-            <a id="cart-delivery-link" href="https://www.foodpanda.my/restaurant/yi1i/pelita-cafe-putrajaya-yi1i" target="_blank" rel="noopener noreferrer" style="background: #D70F64; color: #FFF; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.78rem; text-decoration: none; white-space: nowrap; display: inline-block;">
-              Buka Foodpanda ↗
-            </a>
+            <span class="cart-delivery-tag" id="cart-delivery-branch-tag">Putrajaya</span>
           </div>
+
+          <p class="cart-delivery-desc" id="cart-delivery-note-text">
+            Pesanan penghantaran (delivery) diuruskan sepenuhnya melalui aplikasi dan laman web Foodpanda.
+          </p>
+
+          <div class="cart-delivery-features">
+            <div class="cart-delivery-feat-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span id="cart-delivery-feat-1">Dihantar terus ke pintu rumah atau pejabat anda</span>
+            </div>
+            <div class="cart-delivery-feat-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span id="cart-delivery-feat-2">Pesanan disediakan segar dari dapur cawangan</span>
+            </div>
+          </div>
+
+          <a id="cart-delivery-link" href="https://www.foodpanda.my/restaurant/yi1i/pelita-cafe-putrajaya-yi1i" target="_blank" rel="noopener noreferrer" class="btn-open-foodpanda">
+            <span id="cart-delivery-btn-text">Buka Foodpanda (Putrajaya) ↗</span>
+          </a>
         </div>
       </div>
 
       <!-- Customer Details -->
-      <div>
+      <div id="cart-customer-section">
         <div class="cart-section-label" data-i18n="cart_sec_cust">3. Butiran Pelanggan</div>
         <div style="display: flex; flex-direction: column; gap: 10px;">
           <input type="text" id="cart-cust-name" class="cart-input-field" placeholder="Nama Anda" data-i18n-placeholder="cart_placeholder_name">
@@ -1150,7 +1166,7 @@
       </div>
 
       <!-- Items List -->
-      <div>
+      <div id="cart-items-section">
         <div class="cart-section-label" data-i18n="cart_sec_dishes">4. Hidangan Dipilih</div>
         <div id="cart-items-list" class="cart-items-list">
           <!-- Dynamically injected -->
@@ -1423,6 +1439,6 @@
   <script src="firebase-config.js"></script>
 
   <!-- Vanilla JavaScript Application -->
-  <script src="script.js?v=5.4"></script>
+  <script src="script.js?v=5.5"></script>
 </body>
 </html>

@@ -1985,46 +1985,94 @@ function updateCartDrawer() {
   const orderFooterEl = document.getElementById('cart-footer-panel');
   const deliveryNotice = document.getElementById('cart-delivery-notice');
   const deliveryNoteText = document.getElementById('cart-delivery-note-text');
+  const customerSection = document.getElementById('cart-customer-section');
+  const itemsSection = document.getElementById('cart-items-section');
   const checkoutBtn = document.getElementById('btn-send-whatsapp-order');
+  const drawerTitle = document.querySelector('.cart-drawer-header h3');
 
-  // Toggle delivery notice banner
-  if (deliveryNotice) {
-    if (AppState.orderType === 'delivery') {
+  const branchKey = (typeof AppState !== 'undefined' && AppState.selectedBranch) ? AppState.selectedBranch : 'putrajaya';
+  const branch = (typeof BRANCHES !== 'undefined' && BRANCHES[branchKey]) ? BRANCHES[branchKey] : null;
+  const shortBranchName = branchKey === 'sepang' ? 'Sepang' : 'Putrajaya';
+  const targetFoodpandaUrl = (branch && branch.foodpandaUrl) || FOODPANDA_DELIVERY_URL;
+
+  // Handle Delivery (Foodpanda) Mode:
+  // Delivery is purely managed by Foodpanda. Hide customer details, dish items, and WhatsApp footer.
+  if (AppState.orderType === 'delivery') {
+    if (customerSection) customerSection.style.display = 'none';
+    if (itemsSection) itemsSection.style.display = 'none';
+    if (orderFooterEl) orderFooterEl.style.display = 'none';
+    if (drawerTitle) {
+      drawerTitle.textContent = isBM ? 'Pesanan Penghantaran Foodpanda' : 'Foodpanda Delivery Order';
+    }
+
+    if (deliveryNotice) {
       deliveryNotice.style.display = 'block';
+
+      const branchTag = document.getElementById('cart-delivery-branch-tag');
+      if (branchTag) {
+        branchTag.textContent = shortBranchName;
+      }
+
       if (deliveryNoteText) {
         deliveryNoteText.textContent = isBM
-          ? 'Pesanan penghantaran (delivery) diuruskan terus melalui Foodpanda.'
-          : 'Pelita Cafe delivery is fulfilled directly via Foodpanda.';
+          ? `Pesanan penghantaran (delivery) cawangan ${shortBranchName} diuruskan sepenuhnya melalui aplikasi dan laman web Foodpanda.`
+          : `Pelita Cafe ${shortBranchName} delivery orders are fulfilled entirely via the Foodpanda app and website.`;
       }
+
+      const feat1 = document.getElementById('cart-delivery-feat-1');
+      if (feat1) {
+        feat1.textContent = isBM
+          ? 'Dihantar terus ke pintu rumah atau pejabat anda'
+          : 'Delivered straight to your doorstep or office';
+      }
+
+      const feat2 = document.getElementById('cart-delivery-feat-2');
+      if (feat2) {
+        feat2.textContent = isBM
+          ? 'Pesanan disediakan segar dari dapur cawangan'
+          : 'Prepared fresh from our kitchen upon order';
+      }
+
       const deliveryLink = document.getElementById('cart-delivery-link');
       if (deliveryLink) {
-        const branch = (typeof BRANCHES !== 'undefined' && typeof AppState !== 'undefined' && BRANCHES[AppState.selectedBranch]) ? BRANCHES[AppState.selectedBranch] : null;
-        deliveryLink.href = (branch && branch.foodpandaUrl) || FOODPANDA_DELIVERY_URL;
+        deliveryLink.href = targetFoodpandaUrl;
       }
-    } else {
-      deliveryNotice.style.display = 'none';
+
+      const deliveryBtnText = document.getElementById('cart-delivery-btn-text');
+      if (deliveryBtnText) {
+        deliveryBtnText.textContent = isBM
+          ? `Buka Foodpanda (${shortBranchName}) ↗`
+          : `Open Foodpanda (${shortBranchName}) ↗`;
+      }
     }
+
+    return; // Early return: skip item list rendering and subtotal recalculation
   }
 
-  // Update checkout button styling and text for Delivery vs WhatsApp order
+  // Restore non-delivery mode (Takeaway / Dine-in)
+  if (deliveryNotice) {
+    deliveryNotice.style.display = 'none';
+  }
+  if (customerSection) {
+    customerSection.style.display = 'block';
+  }
+  if (itemsSection) {
+    itemsSection.style.display = 'block';
+  }
+  if (drawerTitle) {
+    drawerTitle.textContent = isBM ? 'Ringkasan Pesanan WhatsApp' : 'Your WhatsApp Order';
+  }
+
+  // Reset checkout button styling for WhatsApp order
   if (checkoutBtn) {
-    if (AppState.orderType === 'delivery') {
-      checkoutBtn.style.background = '#D70F64';
-      checkoutBtn.style.borderColor = '#D70F64';
-      checkoutBtn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        <span>${isBM ? 'Pesan Melalui Foodpanda ↗' : 'Order on Foodpanda ↗'}</span>
-      `;
-    } else {
-      checkoutBtn.style.background = '';
-      checkoutBtn.style.borderColor = '';
-      checkoutBtn.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="wa-btn-svg">
-          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
-        </svg>
-        <span data-i18n="send_order_wa">${isBM ? 'Hantar Pesanan ke WhatsApp' : 'Send Order via WhatsApp'}</span>
-      `;
-    }
+    checkoutBtn.style.background = '';
+    checkoutBtn.style.borderColor = '';
+    checkoutBtn.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="wa-btn-svg">
+        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.067-2.025-.483-1.636-.677-2.673-2.338-2.753-2.446-.08-.108-.667-.887-.667-1.691 0-.804.421-1.2.57-1.358.144-.153.38-.225.507-.225.127 0 .254.002.365.008.118.006.275-.045.431.33.161.388.55 1.341.597 1.44.048.099.08.216.015.344-.064.127-.096.207-.191.319-.096.111-.202.248-.288.333-.096.095-.197.198-.085.39.112.192.498.822 1.069 1.33.734.654 1.353.856 1.545.952.192.096.305.08.418-.048.113-.128.483-.562.612-.755.129-.192.257-.16.432-.096.175.064 1.111.524 1.303.62.192.096.32.144.368.225.048.081.048.47-.096.875zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.957-1.396A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+      </svg>
+      <span data-i18n="send_order_wa">${isBM ? 'Hantar Pesanan ke WhatsApp' : 'Send Order via WhatsApp'}</span>
+    `;
   }
 
   if (!cartList) return;
