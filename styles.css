@@ -3961,6 +3961,12 @@ input, textarea, select {
     height: 165px;
   }
 
+  /* Customer Reviews Carousel */
+  .review-slide-card {
+    padding: 18px 16px;
+    min-width: 240px;
+  }
+
   /* Reservation & Event Banner */
   .reserve-banner-section {
     padding: 50px 0;
@@ -4169,6 +4175,16 @@ input, textarea, select {
   /* Story */
   .story-img-main {
     height: 260px;
+  }
+
+  /* Carousel Cards on 360px */
+  .review-slide-card {
+    padding: 14px 12px;
+    min-width: 210px;
+  }
+  .gallery-item {
+    width: 200px;
+    height: 150px;
   }
 }
 
