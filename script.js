@@ -562,6 +562,7 @@ const I18N = {
     nav_reviews: 'Reviews',
     nav_track_order: 'Track Order',
     btn_book_table: 'Reserve Table',
+    btn_order_now: 'Order Now',
     order_wa_btn: 'Order via WhatsApp',
     nav_order_wa: 'Order WhatsApp',
     admin_portal: 'Admin Portal',
@@ -573,12 +574,13 @@ const I18N = {
     badge_heritage: 'EST. 2004 • AUTHENTIC MALAYSIAN TASTE',
     hero_title: 'Where Heritage Flavours Meet Artisan Cafe Comfort',
     hero_subtitle: 'Serving beloved Hainanese chicken rice, authentic wok-fried dishes, and barista specialty coffees since 2004 across Sepang and Putrajaya.',
-    btn_explore_menu: 'Explore Full Menu',
+    btn_explore_menu: 'Explore Menu',
     badge_halal: '100% Halal Ingredients',
     badge_halal_sub: 'Certified Fresh & Clean',
-    badge_branches: '2 Outlets: Sepang & Putrajaya',
+    badge_branches: 'Sepang & Putrajaya Outlets',
     badge_branches_sub: 'Comfortable Air-Conditioned Dining',
     badge_reviews: '451 Verified Customer Reviews',
+    badge_reviews_short: '4.8★ Google Verified',
     badge_reviews_sub: '4.8-Star Google Rating',
     hero_floating_badge: 'RM 8.90 • Iconic Recipe Since 2004',
     hero_rating_badge: 'Heritage Recipe Since 2004',
@@ -611,13 +613,17 @@ const I18N = {
     filter_juices: 'Cold Pressed & Coolers',
     quick_add: '+ Add to WhatsApp Order',
     added_to_cart: 'Added to your order!',
+    btn_view_full_menu: 'View Full Menu (60+ Items)',
+    btn_show_less_menu: 'Show Signature Dishes Only',
+    menu_showing_signatures: 'Showing 6 Heritage Signatures • 60+ Full Menu Items Available',
 
     // Menu Book
-    book_eyebrow: 'VIRTUAL READING ROOM',
+    book_eyebrow: 'DIGITAL MENU BOOK',
     book_title: 'Digital Interactive Menu Book',
-    book_subtitle: 'Flip through our authentic physical menu book directly on your screen.',
+    book_subtitle: 'Browse our authentic physical menu pages with smooth swipe gestures. Tap any page to view in high resolution.',
     btn_prev: 'Previous Page',
     btn_next: 'Next Page',
+    book_tap_zoom: 'Click to Enlarge',
 
     // Heritage Story
     story_badge_label: 'Years of Heritage',
@@ -762,6 +768,7 @@ const I18N = {
     nav_reviews: 'Ulasan',
     nav_track_order: 'Jejak Pesanan',
     btn_book_table: 'Tempah Meja',
+    btn_order_now: 'Pesan Sekarang',
     order_wa_btn: 'Pesan Melalui WhatsApp',
     nav_order_wa: 'Pesan WhatsApp',
     admin_portal: 'Portal Admin',
@@ -773,12 +780,13 @@ const I18N = {
     badge_heritage: 'SEJAK 2004 • RESIPI WARISAN ASLI',
     hero_title: 'Harmoni Rasa Warisan & Aroma Kopi Kontemporari',
     hero_subtitle: 'Menyajikan Nasi Ayam Pelita legenda, masakan kuali panas berasap, dan kopi barista bermutu tinggi sejak 2004 di Sepang & Putrajaya.',
-    btn_explore_menu: 'Terokai Semua Menu',
+    btn_explore_menu: 'Terokai Menu',
     badge_halal: '100% Ramuan Halal',
     badge_halal_sub: 'Diiktiraf Bersih & Suci',
-    badge_branches: '2 Cawangan: Sepang & Putrajaya',
+    badge_branches: 'Cawangan Sepang & Putrajaya',
     badge_branches_sub: 'Ruang Selesa Berhawa Dingin',
     badge_reviews: '451+ Ulasan Pelanggan Disahkan',
+    badge_reviews_short: '4.8★ Ulasan Google',
     badge_reviews_sub: 'Penarafan Google 4.8 Bintang',
     hero_floating_badge: 'RM 8.90 • Resipi Ikonik Sejak 2004',
     hero_rating_badge: 'Resipi Warisan Sejak 2004',
@@ -811,13 +819,17 @@ const I18N = {
     filter_juices: 'Jus Buah & Penyejuk Tekak',
     quick_add: '+ Tambah Pesanan WhatsApp',
     added_to_cart: 'Ditambah ke dalam pesanan!',
+    btn_view_full_menu: 'Lihat Semua Menu (60+ Sajian)',
+    btn_show_less_menu: 'Papar Sajian Pilihan Sahaja',
+    menu_showing_signatures: 'Memaparkan 6 Sajian Pilihan • 60+ Sajian Lengkap Tersedia',
 
     // Menu Book
-    book_eyebrow: 'RUANG BACAAN MAYA',
+    book_eyebrow: 'BUKU MENU DIGITAL',
     book_title: 'Buku Menu Digital Interaktif',
-    book_subtitle: 'Selak halaman buku menu fizikal Pelita Cafe secara maya terus pada skrin peranti anda.',
+    book_subtitle: 'Semak helaian buku menu fizikal Pelita Cafe dengan leretan lancar. Sentuh mana-mana halaman untuk paparan resolusi tinggi.',
     btn_prev: 'Halaman Sebelumnya',
     btn_next: 'Halaman Seterusnya',
+    book_tap_zoom: 'Klik untuk Besarkan',
 
     // Heritage Story
     story_badge_label: 'Tahun Warisan Rasa',
@@ -999,7 +1011,8 @@ const AppState = {
   totalPages: 9,
   isCartOpen: false,
   isReserveModalOpen: false,
-  selectedDishModal: null
+  selectedDishModal: null,
+  isMenuExpanded: false
 };
 
 // --- 5. TIME & REAL-TIME BRANCH STATUS LOGIC ---
@@ -1522,6 +1535,7 @@ function initBranchStatusBadges() {
 function renderMenu() {
   const container = document.getElementById('menu-items-grid');
   if (!container) return;
+  const controlsContainer = document.getElementById('menu-progressive-controls');
 
   const isBM = AppState.lang === 'bm';
   const query = AppState.searchQuery.toLowerCase().trim();
@@ -1554,10 +1568,29 @@ function renderMenu() {
         </button>
       </div>
     `;
+    if (controlsContainer) controlsContainer.innerHTML = '';
     return;
   }
 
-  container.innerHTML = filtered.map(item => {
+  // Progressive Disclosure: Default to 6 Signature Dishes on initial 'all' view without active search
+  let displayList = filtered;
+  const isDefaultView = AppState.activeCategory === 'all' && !query;
+
+  if (isDefaultView && !AppState.isMenuExpanded) {
+    const preferredSignatureIds = ['sig-1', 'sig-2', 'sig-3', 'kop-1', 'kop-2', 'wok-1'];
+    const curated = [];
+    preferredSignatureIds.forEach(id => {
+      const found = filtered.find(item => item.id === id);
+      if (found && !curated.includes(found)) curated.push(found);
+    });
+    if (curated.length < 6) {
+      const extra = filtered.filter(item => !curated.includes(item) && (item.isChefPick || item.category === 'signatures'));
+      curated.push(...extra);
+    }
+    displayList = curated.slice(0, 6);
+  }
+
+  container.innerHTML = displayList.map(item => {
     const rawName = isBM ? item.nameBM : item.name;
     const rawDesc = isBM ? item.descriptionBM : item.description;
     const displayName = escapeHtml(rawName);
@@ -1615,8 +1648,52 @@ function renderMenu() {
       </article>
     `;
   }).join('');
+
+  // Render Progressive Disclosure Controls
+  if (controlsContainer) {
+    if (isDefaultView) {
+      if (!AppState.isMenuExpanded) {
+        controlsContainer.innerHTML = `
+          <div class="menu-unfold-wrapper">
+            <div class="menu-disclosure-hint">
+              <span class="disclosure-dot"></span>
+              <span>${isBM ? 'Memaparkan 6 Sajian Pilihan • 60+ Sajian Lengkap Tersedia' : 'Showing 6 Heritage Signatures • 60+ Full Menu Items Available'}</span>
+            </div>
+            <button type="button" class="btn-unfold-menu" onclick="toggleMenuExpand()">
+              <span>${isBM ? 'Lihat Semua Menu (60+ Sajian)' : 'View Full Menu (60+ Items)'}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+        `;
+      } else {
+        controlsContainer.innerHTML = `
+          <div class="menu-unfold-wrapper">
+            <button type="button" class="btn-unfold-menu btn-collapse-menu" onclick="toggleMenuExpand()">
+              <span>${isBM ? 'Papar Sajian Pilihan Sahaja' : 'Show Signature Dishes Only'}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            </button>
+          </div>
+        `;
+      }
+    } else {
+      controlsContainer.innerHTML = '';
+    }
+  }
+
   syncHighlightPrices();
 }
+
+function toggleMenuExpand() {
+  AppState.isMenuExpanded = !AppState.isMenuExpanded;
+  renderMenu();
+  if (!AppState.isMenuExpanded) {
+    const menuSec = document.getElementById('menu');
+    if (menuSec) {
+      menuSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
+window.toggleMenuExpand = toggleMenuExpand;
 
 function initMenuFilters() {
   const filterButtons = document.querySelectorAll('[data-category]');
@@ -1672,50 +1749,59 @@ function resetMenuFilters() {
   renderMenu();
 }
 
-// --- 10. INTERACTIVE MENU BOOK ENGINE ---
+// --- 10. INTERACTIVE MENU BOOK ENGINE (SWIPEABLE CAROUSEL & LIGHTBOX) ---
 function initInteractiveBook() {
+  const carousel = document.getElementById('menu-book-carousel');
   const canvas = document.getElementById('menu-book-canvas');
-  if (!canvas) return;
+  const prevBtn = document.getElementById('book-prev-btn');
+  const nextBtn = document.getElementById('book-next-btn');
+  const pageIndicator = document.getElementById('book-page-indicator');
+  const totalPages = AppState.totalPages || 9;
 
-  // 1. Ensure track exists with all 9 sheets
-  let track = document.getElementById('book-pages-track');
-  if (!track) {
-    track = document.createElement('div');
-    track.className = 'book-pages-track';
-    track.id = 'book-pages-track';
-    for (let i = 1; i <= AppState.totalPages; i++) {
-      const sheet = document.createElement('div');
-      sheet.className = 'book-sheet';
-      sheet.setAttribute('data-page', String(i));
-      sheet.innerHTML = `
-        <img src="assets/images/menu-book/page-${i}.jpg" 
-             alt="Pelita Cafe Menu Page ${i}" 
-             class="book-page-image" 
-             width="905" height="1280"
-             loading="${i <= 2 ? 'eager' : 'lazy'}" 
-             decoding="async" />
-        <div class="book-spine-shadow"></div>
-        <div class="book-page-edge-highlight"></div>
-      `;
-      track.appendChild(sheet);
-    }
-    canvas.innerHTML = '';
-    canvas.appendChild(track);
-  }
-
-  // 2. Preload all 9 page images into browser memory for instant display
-  for (let i = 1; i <= AppState.totalPages; i++) {
+  // Preload all 9 page images into browser memory for instant display
+  for (let i = 1; i <= totalPages; i++) {
     const preImg = new Image();
     preImg.decoding = 'async';
     preImg.src = `assets/images/menu-book/page-${i}.jpg`;
   }
 
-  // 3. Initialize to current page
-  goToBookPage(AppState.currentPage || 1);
+  function updateActivePageIndicator(pageNum) {
+    AppState.currentPage = pageNum;
+    const isBM = AppState.lang === 'bm';
+    if (pageIndicator) {
+      pageIndicator.textContent = `${isBM ? 'Halaman' : 'Page'} ${pageNum} / ${totalPages}`;
+    }
+    if (prevBtn) prevBtn.disabled = pageNum <= 1;
+    if (nextBtn) nextBtn.disabled = pageNum >= totalPages;
 
-  // 4. Next / Prev navigation buttons
-  const prevBtn = document.getElementById('book-prev-btn');
-  const nextBtn = document.getElementById('book-next-btn');
+    document.querySelectorAll('[data-book-page]').forEach(thumb => {
+      const p = parseInt(thumb.getAttribute('data-book-page'), 10);
+      if (p === pageNum) {
+        thumb.classList.add('is-current-page');
+      } else {
+        thumb.classList.remove('is-current-page');
+      }
+    });
+  }
+
+  function goToBookPage(pageNum) {
+    if (pageNum < 1 || pageNum > totalPages) return;
+    updateActivePageIndicator(pageNum);
+
+    if (carousel) {
+      const targetCard = carousel.querySelector(`[data-page="${pageNum}"]`);
+      if (targetCard) {
+        targetCard.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    } else {
+      const track = document.getElementById('book-pages-track');
+      if (track) {
+        track.style.transform = `translate3d(-${(pageNum - 1) * 100}%, 0, 0)`;
+      }
+    }
+  }
+  window.goToBookPage = goToBookPage;
+  window.renderBookPage = goToBookPage;
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
@@ -1727,107 +1813,65 @@ function initInteractiveBook() {
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-      if (AppState.currentPage < AppState.totalPages) {
+      if (AppState.currentPage < totalPages) {
         goToBookPage(AppState.currentPage + 1);
       }
     });
   }
 
-  // 5. Thumbnails navigation
+  // Thumbnails navigation
   document.querySelectorAll('[data-book-page]').forEach(thumb => {
     thumb.addEventListener('click', () => {
       const pageNum = parseInt(thumb.getAttribute('data-book-page'), 10);
-      if (pageNum >= 1 && pageNum <= AppState.totalPages) {
+      if (pageNum >= 1 && pageNum <= totalPages) {
         goToBookPage(pageNum);
       }
     });
   });
 
-  // 6. Natural touch swipe gestures for mobile smartphones
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchStartTime = 0;
+  // Track active page via carousel scroll position
+  if (carousel) {
+    let scrollTimer = null;
+    carousel.addEventListener('scroll', () => {
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        const cards = carousel.querySelectorAll('.menu-page-card');
+        if (!cards.length) return;
+        const carouselCenter = carousel.getBoundingClientRect().left + carousel.offsetWidth / 2;
+        let closestPage = 1;
+        let minDistance = Infinity;
 
-  canvas.addEventListener('touchstart', (e) => {
-    if (e.touches && e.touches[0]) {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      touchStartTime = Date.now();
-    }
-  }, { passive: true });
+        cards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          const cardCenter = rect.left + rect.width / 2;
+          const dist = Math.abs(carouselCenter - cardCenter);
+          if (dist < minDistance) {
+            minDistance = dist;
+            closestPage = parseInt(card.getAttribute('data-page'), 10) || 1;
+          }
+        });
+        updateActivePageIndicator(closestPage);
+      }, 50);
+    }, { passive: true });
+  }
 
-  canvas.addEventListener('touchend', (e) => {
-    if (e.changedTouches && e.changedTouches[0]) {
-      const deltaX = e.changedTouches[0].clientX - touchStartX;
-      const deltaY = e.changedTouches[0].clientY - touchStartY;
-      const deltaTime = Date.now() - touchStartTime;
-
-      // Ensure horizontal swipe intent (not vertical page scroll)
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 35 && deltaTime < 650) {
-        if (deltaX < 0 && AppState.currentPage < AppState.totalPages) {
-          // Swipe left -> next page
-          goToBookPage(AppState.currentPage + 1);
-        } else if (deltaX > 0 && AppState.currentPage > 1) {
-          // Swipe right -> previous page
-          goToBookPage(AppState.currentPage - 1);
-        }
-      }
-    }
-  }, { passive: true });
-
-  // 7. Keyboard arrow navigation when menu book is in viewport
+  // Keyboard arrow navigation when menu book is in viewport
   window.addEventListener('keydown', (e) => {
-    const rect = canvas.getBoundingClientRect();
+    const el = carousel || canvas || document.getElementById('menu-book');
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
     const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
     if (isVisible) {
       if (e.key === 'ArrowLeft' && AppState.currentPage > 1) {
         goToBookPage(AppState.currentPage - 1);
-      } else if (e.key === 'ArrowRight' && AppState.currentPage < AppState.totalPages) {
+      } else if (e.key === 'ArrowRight' && AppState.currentPage < totalPages) {
         goToBookPage(AppState.currentPage + 1);
       }
     }
   });
+
+  updateActivePageIndicator(1);
 }
-
-function goToBookPage(pageNum) {
-  if (pageNum < 1 || pageNum > AppState.totalPages) return;
-  AppState.currentPage = pageNum;
-
-  const track = document.getElementById('book-pages-track');
-  const pageIndicator = document.getElementById('book-page-indicator');
-  const prevBtn = document.getElementById('book-prev-btn');
-  const nextBtn = document.getElementById('book-next-btn');
-
-  // Smooth GPU hardware-accelerated slide
-  if (track) {
-    track.style.transform = `translate3d(-${(pageNum - 1) * 100}%, 0, 0)`;
-  }
-
-  // Update page counter indicator
-  if (pageIndicator) {
-    const isBM = AppState.lang === 'bm';
-    pageIndicator.textContent = `${isBM ? 'Halaman' : 'Page'} ${pageNum} / ${AppState.totalPages}`;
-  }
-
-  // Update button disabled states
-  if (prevBtn) prevBtn.disabled = pageNum <= 1;
-  if (nextBtn) nextBtn.disabled = pageNum >= AppState.totalPages;
-
-  // Update thumbnail pills
-  document.querySelectorAll('[data-book-page]').forEach(thumb => {
-    const p = parseInt(thumb.getAttribute('data-book-page'), 10);
-    if (p === pageNum) {
-      thumb.classList.add('is-current-page');
-    } else {
-      thumb.classList.remove('is-current-page');
-    }
-  });
-}
-
-// Alias for backwards compatibility
-const renderBookPage = goToBookPage;
-window.goToBookPage = goToBookPage;
-window.renderBookPage = goToBookPage;
 
 // --- 11. WHATSAPP ORDER & CART SYSTEM ---
 function initOrderSystem() {
@@ -2639,11 +2683,22 @@ function closeReserveModal() {
 window.closeReserveModal = closeReserveModal;
 
 // --- 14. GALLERY LIGHTBOX ---
-function initGalleryLightbox() {
-  const galleryItems = document.querySelectorAll('.gallery-item');
+function openLightboxImage(src, caption) {
   const lightbox = document.getElementById('gallery-lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCaption = document.getElementById('lightbox-caption');
+  if (!lightbox || !lightboxImg) return;
+
+  lightboxImg.src = src;
+  if (lightboxCaption) lightboxCaption.textContent = caption || '';
+  lightbox.classList.add('is-open');
+  document.body.classList.add('modal-locked');
+}
+window.openLightboxImage = openLightboxImage;
+
+function initGalleryLightbox() {
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const lightbox = document.getElementById('gallery-lightbox');
   const closeBtn = document.getElementById('lightbox-close');
 
   if (!lightbox) return;
@@ -2653,11 +2708,8 @@ function initGalleryLightbox() {
       const img = item.querySelector('img');
       const overlayCap = item.querySelector('.gallery-caption');
       const caption = (overlayCap && overlayCap.textContent.trim()) || item.getAttribute('data-caption') || (img ? img.alt : '');
-      if (img && lightboxImg) {
-        lightboxImg.src = img.src;
-        if (lightboxCaption) lightboxCaption.textContent = caption;
-        lightbox.classList.add('is-open');
-        document.body.classList.add('modal-locked');
+      if (img) {
+        openLightboxImage(img.src, caption);
       }
     });
   });
